@@ -3,1045 +3,757 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyFlow 2050 // Gemini 3.1 Pro Studio</title>
-
-    <!-- Fontes do Google -->
+    <title>Portal Educação Adventista // CLA</title>
+    
+    <!-- Fontes Google e Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;800;900&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
-    
-    <!-- Ícones Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-body: #ffffff;
-            --bg-card: #ffffff;
-            --border-color: #cbd5e1;
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --purple: #7c3aed;
-            --green: #16a34a;
-            --red: #dc2626;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
+            --purple-main: #6c3082;
+            --purple-dark: #522165;
+            --purple-light: #f3eef7;
+            --bg-app: #f2f4f8;
+            --card-bg: #ffffff;
+            --text-dark: #333333;
+            --text-muted: #777777;
+            --border-color: #e2e8f0;
+            --blue-accent: #0284c7;
+            --green-accent: #16a34a;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
 
         body {
-            background-color: var(--bg-body);
+            background-color: var(--purple-main);
             color: var(--text-dark);
-            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            display: flex;
             overflow-x: hidden;
         }
 
-        /* MODAL DE LOGIN (DESATIVADO POR PADRÃO) */
+        /* ================= 1. TELA DE LOGIN / ENTRY ================= */
+        #screen-login {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: var(--purple-main);
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 440px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .cla-logo-img {
+            width: 120px;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-card p.subtitle {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .btn-acessar {
+            background: linear-gradient(135deg, var(--purple-main), #8b3fa6);
+            color: #ffffff;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(108, 48, 130, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-acessar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(108, 48, 130, 0.4);
+        }
+
+        .tip-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 2rem;
+            text-align: left;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .tip-box strong { color: var(--purple-main); }
+
+        .login-footer {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ================= 2. MODAL GOOGLE OAUTH ================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 99999;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
         }
 
-        .modal-card {
-            background: #ffffff; border: 2px solid var(--primary);
-            border-radius: 12px; width: 90%; max-width: 500px; padding: 2.2rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        .google-modal {
+            background: #ffffff;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 480px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .gemini-badge {
-            background: linear-gradient(135deg, var(--purple), var(--primary));
-            color: #ffffff; font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
-            font-weight: 800; padding: 4px 10px; border-radius: 20px;
-            text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 10px;
+        .account-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .form-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-size: 0.8rem; font-weight: 700; color: var(--text-dark); }
-        .form-group input, .form-group select {
-            background: #f1f5f9; border: 1px solid var(--border-color);
-            padding: 10px 12px; border-radius: 6px; color: var(--text-dark); font-family: inherit; font-size: 0.95rem; outline: none;
+        .account-item:hover { background: #f1f5f9; }
+
+        .account-avatar {
+            width: 36px; height: 36px;
+            background: var(--purple-main);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.9rem;
         }
 
-        /* LAYOUT PRINCIPAL */
-        .app-container { display: flex; width: 100%; min-height: 100vh; }
-
-        aside {
-            width: 280px; background: #ffffff; border-right: 1px solid var(--border-color);
-            display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem 1rem; z-index: 10;
+        /* ================= 3. TELA DE CARREGAMENTO (LOADING) ================= */
+        #screen-loading {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--purple-main);
+            color: #ffffff;
         }
 
-        .brand { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--primary); }
-        .brand span { color: var(--purple); }
-
-        nav { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem; }
-        nav a {
-            color: var(--text-muted); text-decoration: none; font-weight: 600;
-            font-size: 0.85rem; padding: 10px 12px; border-radius: 6px; display: flex; align-items: center;
-            gap: 10px; transition: all 0.2s; border: 1px solid transparent;
-        }
-        nav a:hover, nav a.active {
-            color: var(--primary); background: #eff6ff; border-color: #bfdbfe;
+        .spinner-cla {
+            width: 80px;
+            height: 80px;
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 1.5rem;
         }
 
-        main { flex: 1; padding: 2rem; overflow-y: auto; background-color: #ffffff; }
-
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
-            background: #ffffff; padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .btn-main {
-            font-family: inherit; font-size: 0.85rem; font-weight: 700;
-            background: var(--primary); color: #ffffff; border: none; padding: 10px 16px;
-            border-radius: 6px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-main:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-        .btn-outline {
-            background: transparent; border: 1px solid var(--border-color); color: var(--text-dark);
-            font-size: 0.8rem; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
-        }
-        .btn-outline:hover { background: #f1f5f9; border-color: #94a3b8; }
-
-        /* LOBBY TILES */
-        .lobby-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;
+        /* ================= 4. DASHBOARD DO PORTAL ================= */
+        #screen-portal {
+            display: none;
+            min-height: 100vh;
+            background-color: var(--bg-app);
+            flex-direction: column;
         }
 
-        .lobby-card {
-            background: #ffffff; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.2s;
-        }
-        .lobby-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .lobby-card i { font-size: 2rem; color: var(--primary); margin-bottom: 1rem; }
-        .lobby-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-        .lobby-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
-
-        /* LIVROS A4 FORMATO FOLHA BRANCA */
-        .a4-wrapper { display: flex; justify-content: center; margin-top: 1rem; }
-
-        .a4-page {
-            width: 100%; max-width: 794px; min-height: 1123px; background: #ffffff;
-            color: #0f172a; border: 1px solid #cbd5e1; border-radius: 4px; padding: 3rem 2.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); display: flex; flex-direction: column;
-            justify-content: space-between; position: relative;
+        /* TOP NAVBAR */
+        header.portal-header {
+            background: #ffffff;
+            height: 60px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
-        /* CAPA DO LIVRO */
-        .book-cover {
-            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
-            text-align: center; height: 100%; min-height: 950px; padding: 3rem 1rem;
-            border: 8px double var(--primary); background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+        .header-school-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .a4-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 1.5rem;
+        .school-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--purple-main);
         }
 
-        .a4-body { flex: 1; display: flex; flex-direction: column; gap: 1.2rem; }
-
-        .graphic-area {
-            width: 100%; height: 210px; background: #f8fafc; border: 1px dashed var(--primary);
-            border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 10px;
+        .school-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
-        /* QUESTÃO INTERATIVA AUTÓNOMA */
-        .standalone-question-box {
-            background: #f0f9ff; border: 1px solid #bae6fd; padding: 1.5rem; border-radius: 8px; margin-top: 10px;
+        .header-user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .quiz-opt-btn {
-            display: block; width: 100%; text-align: left; padding: 12px 14px;
-            margin-top: 8px; background: #ffffff; border: 1px solid var(--border-color);
-            border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 500;
+        .user-details {
+            text-align: right;
+            font-size: 0.8rem;
+        }
+
+        .user-name { font-weight: 700; color: var(--text-dark); }
+        .user-code { color: var(--text-muted); font-size: 0.75rem; }
+
+        .user-avatar-img {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            object-fit: cover;
+        }
+
+        /* LAYOUT PRINCIPAL (3 COLUNAS) */
+        .portal-layout {
+            display: flex;
+            flex: 1;
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        /* COLUNA 1: SIDEBAR / NAVEGAÇÃO */
+        aside.portal-sidebar {
+            width: 80px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+            gap: 1rem;
+            transition: width 0.3s;
+        }
+
+        .sidebar-brand {
+            width: 45px;
+            height: 45px;
+            background: var(--purple-main);
+            color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-btn {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-left: 3px solid transparent;
+            cursor: pointer;
             transition: all 0.2s;
         }
-        .quiz-opt-btn:hover { border-color: var(--primary); background: #eff6ff; }
-        .quiz-opt-btn.correct-choice { background: #dcfce7 !important; border-color: var(--green) !important; color: #15803d; font-weight: bold; }
-        .quiz-opt-btn.wrong-choice { background: #fee2e2 !important; border-color: var(--red) !important; color: #b91c1c; font-weight: bold; }
 
-        .explanation-card {
-            margin-top: 15px; padding: 14px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5; display: none;
-        }
-        .explanation-card.correct { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-        .explanation-card.wrong { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .nav-btn i { font-size: 1.2rem; margin-bottom: 4px; }
 
-        /* PAINEL DE NOTAS DA IA MONITORADORA */
-        .grade-badge-card {
-            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
-            border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: bold;
-        }
-        .grade-pass { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
-        .grade-fail { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
-
-        /* CHAT IA & PROVAS */
-        .chat-box {
-            background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px;
-            padding: 1rem; height: 350px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--purple-main);
+            border-left-color: var(--purple-main);
+            background: var(--purple-light);
         }
 
-        .chat-msg { padding: 10px 14px; border-radius: 8px; max-width: 85%; font-size: 0.9rem; line-height: 1.5; }
-        .chat-msg.user { background: #eff6ff; color: var(--primary-hover); align-self: flex-end; border: 1px solid #bfdbfe; }
-        .chat-msg.ia { background: #f8fafc; color: var(--text-dark); align-self: flex-start; border: 1px solid var(--border-color); }
-
-        pre { background: #0f172a; color: #38bdf8; padding: 10px; border-radius: 6px; font-family: 'Roboto Mono', monospace; font-size: 0.85rem; overflow-x: auto; margin-top: 8px; }
-
-        /* CANAL AO VIVO */
-        .video-container {
-            width: 100%; height: 320px; background: #0f172a; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; color: #ffffff; position: relative; overflow: hidden;
+        /* COLUNA 2: CONTEÚDO CENTRO (CAIXA DE ENTRADA) */
+        main.portal-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-        video { width: 100%; height: 100%; object-fit: cover; }
 
-        #math-canvas { background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; width: 100%; height: 280px; cursor: crosshair; touch-action: none; }
+        .card-panel {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+        }
 
-        .hidden { display: none !important; }
+        .inbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
 
-        @media (max-width: 900px) {
-            .app-container { flex-direction: column; }
-            aside { width: 100%; }
-            .a4-page { padding: 1.5rem; min-height: auto; }
+        .inbox-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pill-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .pill-btn.active {
+            background: #e0f2fe;
+            border-color: #0284c7;
+            color: #0369a1;
+        }
+
+        /* TIMELINE DA CAIXA DE ENTRADA */
+        .timeline-group { margin-bottom: 1.5rem; }
+        .timeline-date-header {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .timeline-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border 0.2s;
+        }
+
+        .timeline-card:hover { border-color: var(--purple-main); }
+
+        .timeline-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            color: #475569;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        /* COLUNA 3: ATALHOS & PAINEL DIREITO */
+        aside.portal-widgets {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .shortcut-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 4px;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+
+        .shortcut-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--purple-main);
+            background: var(--purple-light);
+        }
+
+        .shortcut-icon {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: #e0f2fe;
+            color: #0284c7;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .shortcut-label { font-size: 0.7rem; font-weight: 600; text-align: center; }
+
+        /* CALENDÁRIO MINI */
+        .calendar-widget {
+            font-size: 0.8rem;
+        }
+        .cal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: 700; margin-bottom: 10px;
+        }
+        .cal-grid {
+            display: grid; grid-template-columns: repeat(7, 1fr);
+            gap: 4px; text-align: center;
+        }
+        .cal-day-name { font-weight: 700; color: #94a3b8; font-size: 0.7rem; }
+        .cal-day { padding: 6px 0; border-radius: 4px; cursor: pointer; }
+        .cal-day.active { background: var(--purple-main); color: #fff; font-weight: bold; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 1024px) {
+            .portal-layout { flex-direction: column; }
+            aside.portal-sidebar { width: 100%; flex-direction: row; justify-content: space-around; }
+            aside.portal-widgets { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- MODAL DE CADASTRO / LOGIN -->
-    <div class="modal-overlay" id="profile-modal">
-        <div class="modal-card">
-            <span class="gemini-badge"><i class="fas fa-microchip"></i> Gemini 3.1 Pro Engine</span>
-            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem;">ACESSO AO ESTÚDIO 2050</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">Preencha seus dados para acessar turmas, livros A4 e monitoramento de notas.</p>
+    <!-- ================= 1. TELA DE LOGIN INICIAL ================= -->
+    <div id="screen-login">
+        <div class="login-card">
+            <!-- LOGO CLA -->
+            <svg class="cla-logo-img" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="10" y="45" font-family="'Open Sans', sans-serif" font-weight="800" font-size="38" fill="#FFC72C">cla</text>
+                <path d="M 20 52 Q 60 70 100 52" stroke="#FFC72C" stroke-width="4" stroke-linecap="round" fill="none"/>
+            </svg>
 
-            <div class="form-group">
-                <label>NOME COMPLETO DO ESTUDANTE OU PROFESSOR</label>
-                <input type="text" id="user-name" placeholder="Ex: Lucas Silva">
-            </div>
+            <p class="subtitle">Clique no botão abaixo para acessar os serviços digitais do Portal.</p>
 
-            <div class="form-group">
-                <label>SOU PROFESSOR OU ALUNO?</label>
-                <select id="user-role" onchange="toggleRoleFields()">
-                    <option value="aluno">Aluno(a)</option>
-                    <option value="professor">Professor(a)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>SÉRIE / ANO ESCOLAR</label>
-                <select id="user-grade">
-                    <option value="6º Ano">6º Ano (Ensino Fundamental)</option>
-                    <option value="7º Ano">7º Ano (Ensino Fundamental)</option>
-                    <option value="8º Ano">8º Ano (Ensino Fundamental)</option>
-                    <option value="9º Ano">9º Ano (Ensino Fundamental)</option>
-                    <option value="1º Ano EM">1º Ano (Ensino Médio)</option>
-                    <option value="2º Ano EM">2º Ano (Ensino Médio)</option>
-                    <option value="3º Ano EM">3º Ano (Ensino Médio)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label id="classroom-label">NOME OU CÓDIGO DA(S) SALA(S)</label>
-                <input type="text" id="user-classroom" placeholder="Ex: Turma 7A, Sala de Geografia 2050">
-            </div>
-
-            <button type="button" id="btn-login-submit" class="btn-main" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
-                INICIAR ESTÚDIO <i class="fas fa-arrow-right"></i>
+            <button class="btn-acessar" onclick="openGoogleModal()">
+                ACESSAR <i class="fas fa-chevron-right"></i>
             </button>
+
+            <div class="tip-box">
+                <strong>Dica 3:</strong> Busca inteligente<br>
+                <span>Muitos resultados na tela? Refine sua busca utilizando as opções de filtro.</span>
+            </div>
+
+            <div class="login-footer">
+                <i class="fas fa-church"></i>
+                <span>Educação Adventista ©2026 Portal e-ea.org.br</span>
+            </div>
         </div>
     </div>
 
-    <!-- ESTRUTURA PRINCIPAL DA APLICAÇÃO -->
-    <div class="app-container">
-        <!-- BARRA LATERAL DA NAVEGAÇÃO -->
-        <aside>
-            <div>
-                <div class="brand"><i class="fas fa-graduation-cap"></i> STUDY<span>FLOW</span></div>
-                <div style="margin-top: 4px;"><span class="gemini-badge" style="font-size: 0.55rem;"><i class="fas fa-sparkles"></i> Software Gemini Pro 3.1</span></div>
-
-                <nav>
-                    <a href="#" class="active" onclick="switchTab('lobby', this)"><i class="fas fa-th-large"></i> LOBBY PRINCIPAL</a>
-                    <a href="#" onclick="switchTab('books', this)"><i class="fas fa-book"></i> LIVROS A4 (60-70 PÁGS)</a>
-                    <a href="#" onclick="switchTab('ia', this)"><i class="fas fa-robot"></i> IA GEMINI 3.1 PRO</a>
-                    <a href="#" onclick="switchTab('classes', this)"><i class="fas fa-chalkboard-teacher"></i> MONITOR DA IA / TURMAS</a>
-                    <a href="#" onclick="switchTab('live', this)"><i class="fas fa-video"></i> AULAS ON-LINE</a>
-                    <a href="#" onclick="switchTab('google', this)"><i class="fab fa-google"></i> PESQUISA GOOGLE</a>
-                    <a href="#" onclick="switchTab('scratch', this)"><i class="fas fa-pen-line"></i> LOUSA DE CÁLCULOS</a>
-                </nav>
+    <!-- ================= 2. MODAL GOOGLE OAUTH ================= -->
+    <div class="modal-overlay" id="google-modal">
+        <div class="google-modal">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                <i class="fab fa-google" style="color: #4285F4; font-size: 1.2rem;"></i>
+                <span style="font-size: 0.85rem; color: #5f6368; font-weight: 600;">Fazer login com o Google</span>
             </div>
 
-            <button class="btn-outline" onclick="openProfileModal()"><i class="fas fa-user-cog"></i> MEU PERFIL</button>
-        </aside>
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 4px;">Escolha uma conta do eaportal.org</h3>
+            <p style="font-size: 0.85rem; color: #5f6368; margin-bottom: 1rem;">Prosseguir para <strong>Educação Adventista</strong></p>
 
-        <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
-        <main>
-            <header>
+            <div class="account-item" onclick="startPortalLogin()">
+                <div class="account-avatar">D</div>
                 <div>
-                    <h2 id="welcome-title" style="font-size: 1.2rem; color: var(--text-dark);">BEM-VINDO AO ESTÚDIO</h2>
-                    <p style="color: var(--text-muted); font-size: 0.8rem;" id="sub-welcome">Carregando perfil do usuário...</p>
+                    <div style="font-size: 0.9rem; font-weight: 700;" id="modal-user-email">danilodeoliveira@eaportal.org</div>
+                    <div style="font-size: 0.75rem; color: #5f6368;">Sessão ativa</div>
                 </div>
+            </div>
 
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <div id="student-grade-header-badge" class="grade-badge-card grade-pass">
-                        <i class="fas fa-chart-line"></i> <span id="header-grade-val">Média: -- / 10.0</span>
-                    </div>
-                    <button class="btn-outline" onclick="toggleFullScreen()"><i class="fas fa-expand"></i> Tela Cheia</button>
-                    <span class="gemini-badge" id="badge-role" style="margin: 0;">--</span>
-                </div>
-            </header>
+            <div style="padding: 10px 0; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #1a73e8; font-weight: 600; cursor: pointer;">
+                <i class="fas fa-user-plus" style="margin-right: 6px;"></i> Usar outra conta
+            </div>
 
-            <!-- ABA 1: LOBBY PRINCIPAL -->
-            <section id="tab-lobby">
-                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Central de Recursos</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Escolha uma das opções para começar a estudar ou ministrar aulas:</p>
+            <div style="margin-top: 1.5rem; background: #f8fafc; padding: 12px; border-radius: 8px; font-size: 0.75rem; color: #64748b;">
+                O app <strong>Educação Adventista</strong> receberá seu nome, endereço de e-mail e foto do perfil ao continuar.
+            </div>
 
-                <div class="lobby-grid">
-                    <div class="lobby-card" onclick="switchTab('books')">
-                        <i class="fas fa-book-open"></i>
-                        <h3>Livros Digitais A4</h3>
-                        <p>Questões autônomas com imagem e justificativa explicativa imediata de certo/errado.</p>
-                    </div>
-
-                    <div class="lobby-card" onclick="switchTab('ia')">
-                        <i class="fas fa-brain"></i>
-                        <h3>IA Gemini 3.1 Pro</h3>
-                        <p>Assistente inteligente para criação de textos, códigos, geração de imagens ilustrativas e correção.</p>
-                    </div>
-
-                    <div class="lobby-card" onclick="switchTab('classes')">
-                        <i class="fas fa-chart-bar"></i>
-                        <h3>Monitoria da IA & Turmas</h3>
-                        <p>Cálculo em tempo real da média acumulada do aluno (Min: 6.0 | Max: 10.0).</p>
-                    </div>
-
-                    <div class="lobby-card" onclick="switchTab('live')">
-                        <i class="fas fa-video"></i>
-                        <h3>Aulas On-line ao Vivo</h3>
-                        <p>Transmissão interativa com câmera, microfone, compartilhamento de tela e lista de presença.</p>
-                    </div>
-
-                    <div class="lobby-card" onclick="switchTab('google')">
-                        <i class="fab fa-google"></i>
-                        <h3>Pesquisa Google</h3>
-                        <p>Aba de busca direta para pesquisas escolares sem sair da plataforma.</p>
-                    </div>
-
-                    <div class="lobby-card" onclick="switchTab('scratch')">
-                        <i class="fas fa-pencil-ruler"></i>
-                        <h3>Lousa de Cálculos</h3>
-                        <p>Espaço em branco para rascunho de matemática, desenhos geométricos e resolução de exercícios.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABA 2: LIVROS A4 DE 60-70 PÁGS -->
-            <section id="tab-books" class="hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
-                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                        <label style="font-weight: 700; font-size: 0.85rem;">MATÉRIA:</label>
-                        <select id="book-subject" onchange="loadBookPage()" style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
-                            <option value="geografia">🌍 Geografia</option>
-                            <option value="historia">📜 História</option>
-                            <option value="matematica">📐 Matemática</option>
-                            <option value="ciencias">🧪 Ciências / Física / Química</option>
-                            <option value="portugues">📖 Língua Portuguesa</option>
-                        </select>
-
-                        <label style="font-weight: 700; font-size: 0.85rem; margin-left: 10px;">BIMESTRE:</label>
-                        <select id="book-bimestre" onchange="loadBookPage()" style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
-                            <option value="1">1º Bimestre</option>
-                            <option value="2">2º Bimestre</option>
-                            <option value="3">3º Bimestre</option>
-                            <option value="4">4º Bimestre</option>
-                        </select>
-                    </div>
-
-                    <div style="display: flex; gap: 8px; align-items: center;">
-                        <button class="btn-outline" onclick="changePage(-1)"><i class="fas fa-chevron-left"></i> Anterior</button>
-                        <span style="font-family: 'Roboto Mono'; font-weight: bold; font-size: 0.9rem;" id="page-display">Capa do Livro</span>
-                        <button class="btn-outline" onclick="changePage(1)">Próxima <i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
-
-                <!-- ESTRUTURA DA FOLHA A4 -->
-                <div class="a4-wrapper">
-                    <div class="a4-page" id="a4-render">
-                        <!-- Injetado por JS -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABA 3: IA GEMINI 3.1 PRO -->
-            <section id="tab-ia" class="hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3><i class="fas fa-robot" style="color: var(--primary);"></i> Gemini 3.1 Pro Assistant</h3>
-                    <span class="gemini-badge">Software Gemini Pro 3.1 Active</span>
-                </div>
-
-                <div class="chat-box" id="chat-logs">
-                    <div class="chat-msg ia">
-                        Olá! Sou o **Gemini 3.1 Pro**. Posso gerar textos, criar códigos de programação, simular gráficos/imagens e ajudar a monitorar seu desempenho escolar. Como posso te ajudar hoje?
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; margin-top: 1rem;">
-                    <input type="text" id="ia-prompt" placeholder="Peça um texto, um código ou uma imagem..." style="flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none;">
-                    <button class="btn-main" onclick="sendPromptIA()"><i class="fas fa-paper-plane"></i> Enviar</button>
-                </div>
-            </section>
-
-            <!-- ABA 4: TURMAS E MONITORIA DA IA DA NOTA -->
-            <section id="tab-classes" class="hidden">
-                <h3><i class="fas fa-chart-pie" style="color: var(--purple);"></i> Monitoramento e Correção por IA (Gemini 3.1 Pro)</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Cálculo automático de notas, progresso das questões e relatório acadêmico.</p>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-                    <!-- CARD DA MÉDIA DO ALUNO -->
-                    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px;">
-                        <h4 style="margin-bottom: 10px;"><i class="fas fa-user-graduate"></i> Desempenho do Aluno</h4>
-                        <div style="margin-bottom: 1rem;">
-                            <span style="font-size: 0.85rem; color: var(--text-muted);">Média Atual Calculada pela IA:</span>
-                            <div style="font-size: 2.2rem; font-family: 'Orbitron', sans-serif; font-weight: 900; color: var(--primary);" id="dashboard-grade-display">0.0 / 10.0</div>
-                        </div>
-
-                        <div id="status-grade-box" class="grade-badge-card grade-fail" style="margin-bottom: 1rem;">
-                            <i class="fas fa-info-circle"></i> Status: EM RECUPERAÇÃO (Mínimo: 6.0)
-                        </div>
-
-                        <ul style="list-style: none; font-size: 0.88rem; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-                            <li><strong>Total de Questões Respondidas:</strong> <span id="stat-total">0</span></li>
-                            <li style="color: var(--green);"><strong>Questões Corretas:</strong> <span id="stat-correct">0</span></li>
-                            <li style="color: var(--red);"><strong>Questões Incorretas:</strong> <span id="stat-wrong">0</span></li>
-                        </ul>
-                    </div>
-
-                    <!-- RELATÓRIO DO PROFESSOR -->
-                    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px;">
-                        <h4 style="margin-bottom: 10px;"><i class="fas fa-microchip"></i> Relatório da IA Monitoradora para o Professor</h4>
-                        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5;" id="ai-teacher-report">
-                            Sincronizando dados das resoluções do aluno para emitir o parecer pedagógico...
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABA 5: AULAS ON-LINE -->
-            <section id="tab-live" class="hidden">
-                <h3><i class="fas fa-video" style="color: var(--red);"></i> Sala de Aula On-line ao Vivo</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Acompanhe a transmissão e interaja pelo microfone ou câmera:</p>
-
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
-                    <div>
-                        <div class="video-container">
-                            <video id="live-video" autoplay playsinline muted></video>
-                            <span style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.8rem;" id="live-status">🔴 CÂMERA DESLIGADA</span>
-                        </div>
-
-                        <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button class="btn-main" onclick="startCamera()"><i class="fas fa-camera"></i> Ligar Câmera/Mic</button>
-                            <button class="btn-outline" onclick="stopCamera()"><i class="fas fa-power-off"></i> Desligar</button>
-                        </div>
-                    </div>
-
-                    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px;">
-                        <h4 style="margin-bottom: 10px; font-size: 0.95rem;">Monitoramento / Presença</h4>
-                        <ul style="list-style: none; font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
-                            <li style="color: var(--green);"><i class="fas fa-check-circle"></i> Professor(a) [HOST ON]</li>
-                            <li><i class="fas fa-user"></i> Você (<span id="user-display-name">--</span>)</li>
-                            <li style="color: var(--text-muted);"><i class="fas fa-user"></i> Aluno Conectado 02</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABA 6: PESQUISA GOOGLE -->
-            <section id="tab-google" class="hidden">
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <h2 style="font-family: 'Product Sans', sans-serif; font-size: 2rem; color: #4285F4;">G<span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span> Search</h2>
-                    <p style="color: var(--text-muted); font-size: 0.85rem;">Pesquisa direta integrada para apoio nos estudos.</p>
-                </div>
-
-                <div style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
-                    <div style="display: flex; width: 100%; max-width: 600px; gap: 8px;">
-                        <input type="text" id="google-query" placeholder="Pesquisar no Google..." style="flex: 1; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 24px; outline: none; box-shadow: 0 1px 6px rgba(32,33,36,0.1);">
-                        <button class="btn-main" style="border-radius: 24px;" onclick="runGoogleSearch()"><i class="fas fa-search"></i> Pesquisar</button>
-                    </div>
-                </div>
-
-                <div id="google-results-box" style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; min-height: 200px;">
-                    <p style="color: var(--text-muted); text-align: center;">Digite sua pesquisa para exibir o link de busca no Google.</p>
-                </div>
-            </section>
-
-            <!-- ABA 7: LOUSA DE CÁLCULOS -->
-            <section id="tab-scratch" class="hidden">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3><i class="fas fa-pen-nib"></i> Lousa Neural de Rascunho</h3>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn-outline" onclick="setCanvasColor('#000000')">Preto</button>
-                        <button class="btn-outline" onclick="setCanvasColor('#2563eb')">Azul</button>
-                        <button class="btn-outline" onclick="setCanvasColor('#dc2626')">Vermelho</button>
-                        <button class="btn-outline" onclick="clearCanvas()"><i class="fas fa-eraser"></i> Limpar</button>
-                    </div>
-                </div>
-
-                <canvas id="math-canvas"></canvas>
-            </section>
-        </main>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem;">
+                <button onclick="closeGoogleModal()" style="background: transparent; border: none; padding: 8px 16px; font-weight: 600; color: #5f6368; cursor: pointer;">Cancelar</button>
+                <button onclick="startPortalLogin()" style="background: #1a73e8; color: #fff; border: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; cursor: pointer;">Continuar</button>
+            </div>
+        </div>
     </div>
 
-    <!-- LÓGICA JAVASCRIPT PRINCIPAL -->
-    <script>
-        /* ================= ESTADO E LOGIN GARANTIDO ================= */
-        let userProfile = JSON.parse(localStorage.getItem('studyflow_v7_profile')) || null;
-        let studentAnswers = JSON.parse(localStorage.getItem('studyflow_v7_answers')) || {};
-        let currentPage = 0; // 0 = Capa, 1 a 65 = Páginas
-        const totalPages = 65;
-
-        // FECHA O MODAL SEM ERRO EM TODAS AS SITUAÇÕES
-        function forceCloseModal() {
-            const modal = document.getElementById('profile-modal');
-            if (modal) {
-                modal.style.setProperty('display', 'none', 'important');
-            }
-        }
-
-        function openProfileModal() {
-            const modal = document.getElementById('profile-modal');
-            if (userProfile) {
-                const nameEl = document.getElementById('user-name');
-                const roleEl = document.getElementById('user-role');
-                const gradeEl = document.getElementById('user-grade');
-                const classroomEl = document.getElementById('user-classroom');
-
-                if (nameEl) nameEl.value = userProfile.name;
-                if (roleEl) roleEl.value = userProfile.role;
-                if (gradeEl) gradeEl.value = userProfile.grade;
-                if (classroomEl) classroomEl.value = userProfile.classroom;
-            }
-            if (modal) {
-                modal.style.setProperty('display', 'flex', 'important');
-            }
-        }
-
-        function executeLogin() {
-            try {
-                const nameEl = document.getElementById('user-name');
-                const roleEl = document.getElementById('user-role');
-                const gradeEl = document.getElementById('user-grade');
-                const classroomEl = document.getElementById('user-classroom');
-
-                const name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'Estudante';
-                const role = roleEl ? roleEl.value : 'aluno';
-                const grade = gradeEl ? gradeEl.value : '7º Ano';
-                const classroom = (classroomEl && classroomEl.value.trim()) ? classroomEl.value.trim() : 'Geral';
-
-                userProfile = { name, role, grade, classroom };
-                localStorage.setItem('studyflow_v7_profile', JSON.stringify(userProfile));
-
-                // 1. FECHA O MODAL PRIMEIRO
-                forceCloseModal();
-
-                // 2. ATUALIZA A INTERFACE E ABRE O LOBBY
-                updateProfileUI();
-                switchTab('lobby');
-            } catch (err) {
-                console.error("Erro no login:", err);
-                forceCloseModal(); // Garante fechar mesmo se der aviso
-            }
-        }
-
-        function updateProfileUI() {
-            try {
-                if (!userProfile) return;
-
-                const titleEl = document.getElementById('welcome-title');
-                const subEl = document.getElementById('sub-welcome');
-                const badgeEl = document.getElementById('badge-role');
-                const userDispEl = document.getElementById('user-display-name');
-
-                if (titleEl) titleEl.textContent = `OLÁ, ${userProfile.name.toUpperCase()} 👋`;
-                if (subEl) subEl.textContent = `Perfil: ${userProfile.role.toUpperCase()} | Série: ${userProfile.grade} | Sala: ${userProfile.classroom}`;
-                if (badgeEl) badgeEl.textContent = userProfile.role.toUpperCase();
-                if (userDispEl) userDispEl.textContent = userProfile.name;
-
-                calculateGradeAndStats();
-                loadBookPage();
-            } catch (e) {
-                console.error("Erro em updateProfileUI:", e);
-            }
-        }
-
-        function toggleRoleFields() {
-            const roleEl = document.getElementById('user-role');
-            const labelEl = document.getElementById('classroom-label');
-            if (roleEl && labelEl) {
-                if (roleEl.value === 'professor') {
-                    labelEl.textContent = "NOME DAS SALAS QUE IRÁ MINISTRAR AULA";
-                } else {
-                    labelEl.textContent = "NOME OU CÓDIGO DA(S) SALA(S) ONDE ESTUDA";
-                }
-            }
-        }
-
-        /* ================= CÁLCULO DA MÉDIA PELA IA MONITORADORA ================= */
-        function calculateGradeAndStats() {
-            try {
-                const keys = Object.keys(studentAnswers || {});
-                const total = keys.length;
-                let correct = 0;
-
-                keys.forEach(k => {
-                    if (studentAnswers[k] && studentAnswers[k].isCorrect) correct++;
-                });
-
-                const wrong = total - correct;
-                let grade = 0.0;
-
-                if (total > 0) {
-                    grade = parseFloat(((correct / total) * 10).toFixed(1));
-                }
-
-                const headerBadgeVal = document.getElementById('header-grade-val');
-                const dashDisplay = document.getElementById('dashboard-grade-display');
-                const statusBox = document.getElementById('status-grade-box');
-
-                if (headerBadgeVal) headerBadgeVal.textContent = `Média: ${grade.toFixed(1)} / 10.0`;
-                if (dashDisplay) dashDisplay.textContent = `${grade.toFixed(1)} / 10.0`;
-
-                const statTotal = document.getElementById('stat-total');
-                const statCorrect = document.getElementById('stat-correct');
-                const statWrong = document.getElementById('stat-wrong');
-
-                if (statTotal) statTotal.textContent = total;
-                if (statCorrect) statCorrect.textContent = correct;
-                if (statWrong) statWrong.textContent = wrong;
-
-                const isPassed = grade >= 6.0;
-
-                if (statusBox) {
-                    if (total === 0) {
-                        statusBox.className = "grade-badge-card grade-fail";
-                        statusBox.innerHTML = `<i class="fas fa-info-circle"></i> Status: PENDENTE (Nenhuma questão resolvida)`;
-                    } else if (isPassed) {
-                        statusBox.className = "grade-badge-card grade-pass";
-                        statusBox.innerHTML = `<i class="fas fa-check-circle"></i> Status: APROVADO (Média >= 6.0)`;
-                    } else {
-                        statusBox.className = "grade-badge-card grade-fail";
-                        statusBox.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Status: EM RECUPERAÇÃO (Média < 6.0)`;
-                    }
-                }
-
-                const report = document.getElementById('ai-teacher-report');
-                if (report) {
-                    if (total === 0) {
-                        report.innerHTML = `[**IA Gemini 3.1 Pro**]: O aluno **${userProfile ? userProfile.name : 'Estudante'}** ainda não iniciou a resolução das questões A4. Aguardando respostas.`;
-                    } else {
-                        report.innerHTML = `
-                            [**IA Gemini 3.1 Pro Monitoring**]:<br>
-                            - **Aluno:** ${userProfile ? userProfile.name : 'Estudante'} (${userProfile ? userProfile.grade : ''})<br>
-                            - **Média Geral:** <strong>${grade.toFixed(1)}</strong> / 10.0 (Mínimo para aprovação: 6.0)<br>
-                            - **Aproveitamento:** ${((correct/total)*100).toFixed(0)}% de acertos em ${total} questões.<br>
-                            - **Parecer Pedagógico:** ${isPassed ? 'O estudante apresenta excelente desempenho e está APROVADO.' : 'O estudante necessita de reforço para atingir a média 6.0.'}
-                        `;
-                    }
-                }
-            } catch (e) {
-                console.error("Erro ao calcular média:", e);
-            }
-        }
-
-        /* ================= GENERATOR DE QUESTÕES AUTÓNOMAS COM IMAGEM ================= */
-        function generateStandaloneQuestion(subject, page, bimestre, grade) {
-            const qKey = `${subject}_b${bimestre}_p${page}_${grade}`;
-
-            let qData = {
-                key: qKey,
-                title: `Questão Autônoma #${page} - ${subject.toUpperCase()}`,
-                enunciado: `[Questão ${page}]: Analise a representação gráfica abaixo e identifique a afirmação correta referente aos estudos de ${subject.toUpperCase()} do ${bimestre}º Bimestre:`,
-                imageSVG: `<svg width="100%" height="160" viewBox="0 0 300 160">
-                    <rect x="20" y="20" width="260" height="120" fill="#f1f5f9" stroke="#2563eb" stroke-width="2" rx="6"/>
-                    <circle cx="90" cy="80" r="35" fill="#3b82f6" opacity="0.3"/>
-                    <circle cx="210" cy="80" r="35" fill="#10b981" opacity="0.3"/>
-                    <text x="70" y="85" fill="#1e3a8a" font-weight="bold" font-size="12">Zona A</text>
-                    <text x="190" y="85" fill="#064e3b" font-weight="bold" font-size="12">Zona B</text>
-                </svg>`,
-                options: [
-                    "A interação demonstrada na figura reflete o equilíbrio direto entre os componentes.",
-                    "A Zona A é totalmente isolada da Zona B sem qualquer influência estrutural.",
-                    "Não há possibilidade de aplicar o conceito em situações práticas do cotidiano.",
-                    "O gráfico representa exclusivamente valores nulos e sem relevância científica."
-                ],
-                correctIndex: 0,
-                expRight: "Exato! A interação ilustrada na figura demonstra o equilíbrio funcional entre as duas zonas representadas.",
-                expWrong: "Incorreto! A opção escolhida não condiz com a representação gráfica. A alternativa correta é a 'A', pois ilustra a interação e o equilíbrio direto."
-            };
-
-            if (subject === 'geografia') {
-                if (grade.includes("6º")) {
-                    qData.enunciado = `[Geografia 6º Ano - Questão ${page}]: A imagem abaixo representa a projeção do Globo Terrestre Político. Qual linha imaginária divide a Terra nos Hemisférios Norte e Sul?`;
-                    qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
-                        <circle cx="150" cy="80" r="60" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
-                        <line x1="90" y1="80" x2="210" y2="80" stroke="#dc2626" stroke-width="2"/>
-                        <text x="110" y="75" fill="#dc2626" font-weight="bold" font-size="11">Linha do Equador (0°)</text>
-                    </svg>`;
-                    qData.options = [
-                        "Meridiano de Greenwich",
-                        "Linha do Equador",
-                        "Trópico de Câncer",
-                        "Trópico de Capricórnio"
-                    ];
-                    qData.correctIndex = 1;
-                    qData.expRight = "Correto! A Linha do Equador é o paralelo principal de latitude 0° que divide o planeta nos Hemisférios Norte e Sul.";
-                    qData.expWrong = "Incorreto! A resposta correta é a 'Linha do Equador'. O Meridiano de Greenwich divide a Terra em Leste e Oeste.";
-                } else {
-                    qData.enunciado = `[Geografia - Questão ${page}]: A imagem abaixo ilustra a divisão regional do Brasil segundo o IBGE. Qual região destaca-se por possuir o maior número de estados federativos?`;
-                    qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
-                        <rect x="10" y="10" width="280" height="140" fill="#eff6ff" stroke="#2563eb" stroke-width="2" rx="6"/>
-                        <path d="M 50 40 Q 150 20 220 50 Q 250 110 180 140 Q 80 130 50 40 Z" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
-                        <text x="110" y="85" fill="#15803d" font-weight="bold" font-size="14">Região Nordeste (9 Estados)</text>
-                    </svg>`;
-                    qData.options = [
-                        "Região Norte",
-                        "Região Nordeste",
-                        "Região Sudeste",
-                        "Região Sul"
-                    ];
-                    qData.correctIndex = 1;
-                    qData.expRight = "Correto! A região Nordeste conta com 9 estados (AL, BA, CE, MA, PB, PE, PI, RN, SE), sendo a região com a maior quantidade de unidades federativas do Brasil.";
-                    qData.expWrong = "Incorreto! A resposta correta é a opção 'Região Nordeste', que possui 9 estados no total.";
-                }
-            } else if (subject === 'matematica') {
-                const valA = page * 3;
-                const valB = 10;
-                const totalArea = valA * valB;
-                qData.enunciado = `[Matemática - Questão ${page}]: O retângulo representado abaixo possui base de ${valA} cm e altura de ${valB} cm. Qual é a área total desta figura geométrica?`;
-                qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
-                    <rect x="60" y="40" width="180" height="80" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
-                    <text x="120" y="30" fill="#b45309" font-weight="bold">Base = ${valA} cm</text>
-                    <text x="18" y="85" fill="#b45309" font-weight="bold">Altura = ${valB} cm</text>
-                </svg>`;
-                qData.options = [
-                    `${valA + valB} cm²`,
-                    `${totalArea} cm²`,
-                    `${totalArea * 2} cm²`,
-                    `${valA * 2} cm²`
-                ];
-                qData.correctIndex = 1;
-                qData.expRight = `Correto! A área de um retângulo é dada pela multiplicação da base pela altura: ${valA} cm × ${valB} cm = ${totalArea} cm².`;
-                qData.expWrong = `Incorreto! Para calcular a área do retângulo, multiplica-se a base pela altura (${valA} × ${valB} = ${totalArea} cm²).`;
-            }
-
-            return qData;
-        }
-
-        /* ================= SALVAMENTO DE RESPOSTAS DO ALUNO ================= */
-        function selectAnswer(qKey, chosenIdx, correctIdx, expRight, expWrong) {
-            try {
-                const isCorrect = (chosenIdx === correctIdx);
-
-                studentAnswers[qKey] = {
-                    chosenIdx,
-                    correctIdx,
-                    isCorrect,
-                    timestamp: Date.now()
-                };
-
-                localStorage.setItem('studyflow_v7_answers', JSON.stringify(studentAnswers));
-
-                const qBox = document.getElementById(`qbox-${qKey}`);
-                if (qBox) {
-                    const btns = qBox.querySelectorAll('.quiz-opt-btn');
-                    btns.forEach((btn, idx) => {
-                        btn.disabled = true;
-                        if (idx === correctIdx) btn.classList.add('correct-choice');
-                        if (idx === chosenIdx && !isCorrect) btn.classList.add('wrong-choice');
-                    });
-
-                    const expCard = document.getElementById(`exp-${qKey}`);
-                    if (expCard) {
-                        expCard.style.display = 'block';
-                        if (isCorrect) {
-                            expCard.className = "explanation-card correct";
-                            expCard.innerHTML = `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${expRight}`;
-                        } else {
-                            expCard.className = "explanation-card wrong";
-                            expCard.innerHTML = `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${expWrong}`;
-                        }
-                    }
-                }
-
-                calculateGradeAndStats();
-            } catch (err) {
-                console.error("Erro ao salvar resposta:", err);
-            }
-        }
-
-        /* ================= RENDERIZAÇÃO DO LIVRO A4 ================= */
-        function loadBookPage() {
-            try {
-                const subjEl = document.getElementById('book-subject');
-                const bimEl = document.getElementById('book-bimestre');
-
-                const subject = subjEl ? subjEl.value : 'geografia';
-                const bimestre = bimEl ? bimEl.value : '1';
-                const grade = userProfile ? userProfile.grade : "7º Ano";
-                const container = document.getElementById('a4-render');
-
-                if (!container) return;
-
-                if (currentPage === 0) {
-                    const pageDisp = document.getElementById('page-display');
-                    if (pageDisp) pageDisp.textContent = `Capa do Livro (${bimestre}º Bimestre)`;
-
-                    container.innerHTML = `
-                        <div class="book-cover">
-                            <div>
-                                <span class="gemini-badge">Apostila Oficial A4</span>
-                                <h1 style="font-family: 'Orbitron'; font-size: 2.2rem; color: var(--primary); margin-top: 1rem;">${subject.toUpperCase()}</h1>
-                                <h2 style="font-size: 1.2rem; color: var(--text-muted); margin-top: 0.5rem;">${subject.toUpperCase()} - ${bimestre}º BIMESTRE</h2>
-                            </div>
-
-                            <div>
-                                <svg width="100%" height="160" viewBox="0 0 300 160">
-                                    <circle cx="150" cy="80" r="50" fill="none" stroke="#2563eb" stroke-width="4"/>
-                                    <text x="100" y="85" fill="#2563eb" font-weight="bold">${subject.toUpperCase()}</text>
-                                </svg>
-                                <div style="margin-top: 1.5rem; padding: 1rem; background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px;">
-                                    <strong>SÉRIE: ${grade.toUpperCase()}</strong><br>
-                                    <span style="color: var(--text-muted); font-size: 0.9rem;">EDIÇÃO DE 65 PÁGINAS // ${bimestre}º BIMESTRE</span>
-                                </div>
-                            </div>
-
-                            <div style="font-size: 0.85rem; color: var(--text-muted);">
-                                Plataforma StudyFlow 2050 - Todos os direitos reservados
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    const pageDisp = document.getElementById('page-display');
-                    if (pageDisp) pageDisp.textContent = `Página ${currentPage} de ${totalPages}`;
-                    
-                    const qData = generateStandaloneQuestion(subject, currentPage, bimestre, grade);
-                    const savedAns = studentAnswers[qData.key];
-
-                    container.innerHTML = `
-                        <div class="a4-header">
-                            <div>
-                                <div style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--primary);">${subject.toUpperCase()} // QUESTÃO AUTÓNOMA</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">Módulo do ${bimestre}º Bimestre | ${grade}</div>
-                            </div>
-                            <div style="font-family: 'Roboto Mono'; font-weight: bold;">PÁG ${currentPage} / ${totalPages}</div>
-                        </div>
-
-                        <div class="a4-body">
-                            <div class="standalone-question-box" id="qbox-${qData.key}">
-                                <h4 style="color: var(--primary); margin-bottom: 10px;"><i class="fas fa-question-circle"></i> ${qData.title}</h4>
-                                <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 12px; font-weight: 600;">${qData.enunciado}</p>
-
-                                <div class="graphic-area" style="margin-bottom: 15px;">
-                                    ${qData.imageSVG}
-                                </div>
-
-                                <div style="display: flex; flex-direction: column; gap: 6px;">
-                                    ${qData.options.map((opt, idx) => {
-                                        let btnClass = "quiz-opt-btn";
-                                        let disabledAttr = "";
-
-                                        if (savedAns) {
-                                            disabledAttr = "disabled";
-                                            if (idx === qData.correctIndex) btnClass += " correct-choice";
-                                            if (idx === savedAns.chosenIdx && !savedAns.isCorrect) btnClass += " wrong-choice";
-                                        }
-
-                                        return `<button class="${btnClass}" ${disabledAttr} onclick="selectAnswer('${qData.key}', ${idx}, ${qData.correctIndex}, '${qData.expRight.replace(/'/g, "\\'")}', '${qData.expWrong.replace(/'/g, "\\')}')">
-                                            ${String.fromCharCode(65 + idx)}) ${opt}
-                                        </button>`;
-                                    }).join('')}
-                                </div>
-
-                                <div class="explanation-card ${savedAns ? (savedAns.isCorrect ? 'correct' : 'wrong') : ''}" id="exp-${qData.key}" style="display: ${savedAns ? 'block' : 'none'};">
-                                    ${savedAns ? (savedAns.isCorrect ? `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${qData.expRight}` : `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${qData.expWrong}`) : ''}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 1.5rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
-                            <span>StudyFlow 2050 - Material Didático Digital</span>
-                            <span>Página ${currentPage} / ${totalPages}</span>
-                        </div>
-                    `;
-                }
-            } catch (e) {
-                console.error("Erro em loadBookPage:", e);
-            }
-        }
-
-        function changePage(delta) {
-            currentPage += delta;
-            if (currentPage < 0) currentPage = 0;
-            if (currentPage > totalPages) currentPage = totalPages;
-            loadBookPage();
-        }
-
-        /* ================= NAVEGAÇÃO DE ABAS ================= */
-        function switchTab(tabId, el) {
-            const tabs = ['lobby', 'books', 'ia', 'classes', 'live', 'google', 'scratch'];
-            tabs.forEach(t => {
-                const section = document.getElementById(`tab-${t}`);
-                if (section) section.classList.add('hidden');
-            });
-
-            const target = document.getElementById(`tab-${tabId}`);
-            if (target) target.classList.remove('hidden');
-
-            if (el) {
-                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-                el.classList.add('active');
-            }
-
-            if (tabId === 'scratch') setTimeout(initCanvas, 200);
-        }
-
-        /* ================= GEMINI 3.1 PRO (CHAT) ================= */
-        function sendPromptIA() {
-            const input = document.getElementById('ia-prompt');
-            const prompt = input ? input.value.trim() : '';
-            const logs = document.getElementById('chat-logs');
-
-            if (!prompt || !logs) return;
-
-            logs.innerHTML += `<div class="chat-msg user">[VOCÊ]: ${prompt}</div>`;
-            if (input) input.value = '';
-
-            setTimeout(() => {
-                let response = `[**Gemini 3.1 Pro**]: Analisei sua solicitação ("${prompt}"). Sua média acumulada calculada é de **${(Object.keys(studentAnswers).length > 0 ? ((Object.values(studentAnswers).filter(a=>a.isCorrect).length / Object.keys(studentAnswers).length)*10).toFixed(1) : '0.0')} / 10.0**. Continue praticando no módulo de livros!`;
-
-                logs.innerHTML += `<div class="chat-msg ia">${response}</div>`;
-                logs.scrollTop = logs.scrollHeight;
-            }, 600);
-        }
-
-        /* ================= AULAS ON-LINE (WEBCAM / MIC) ================= */
-        let stream = null;
-        async function startCamera() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                const video = document.getElementById('live-video');
-                const status = document.getElementById('live-status');
-                if (video) video.srcObject = stream;
-                if (status) {
-                    status.textContent = "🟢 TRANSMISSÃO AO VIVO ATIVA";
-                    status.style.background = "rgba(22, 163, 74, 0.8)";
-                }
-            } catch (err) {
-                alert("Permissão para câmera/microfone negada ou dispositivo indisponível!");
-            }
-        }
-
-        function stopCamera() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                const video = document.getElementById('live-video');
-                const status = document.getElementById('live-status');
-                if (video) video.srcObject = null;
-                if (status) {
-                    status.textContent = "🔴 CÂMERA DESLIGADA";
-                    status.style.background = "rgba(0,0,0,0.6)";
-                }
-            }
-        }
-
-        /* ================= PESQUISA GOOGLE ================= */
-        function runGoogleSearch() {
-            const qEl = document.getElementById('google-query');
-            const q = qEl ? qEl.value.trim() : '';
-            const box = document.getElementById('google-results-box');
-
-            if (!q || !box) return;
-
-            box.innerHTML = `
-                <div style="margin-bottom: 10px;">
-                    <span style="font-size: 0.8rem; color: #5f6368;">https://www.google.com/search?q=${encodeURIComponent(q)}</span><br>
-                    <a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" style="color: #1a0dab; font-size: 1.1rem; text-decoration: none; font-weight: bold;">
-                        Clique aqui para ver os resultados da busca no Google por "${q}"
-                    </a>
+    <!-- ================= 3. TELA DE CARREGAMENTO ================= -->
+    <div id="screen-loading">
+        <svg class="spinner-cla" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <text x="10" y="45" font-family="'Open Sans', sans-serif" font-weight="800" font-size="38" fill="#FFC72C">cla</text>
+            <path d="M 20 52 Q 60 70 100 52" stroke="#FFC72C" stroke-width="4" stroke-linecap="round" fill="none"/>
+        </svg>
+        <p style="font-family: 'Orbitron', sans-serif; letter-spacing: 2px; font-size: 0.9rem;">CARREGANDO SEU ESPAÇO...</p>
+    </div>
+
+    <!-- ================= 4. DASHBOARD PRINCIPAL DO PORTAL ================= -->
+    <div id="screen-portal">
+        <!-- TOP HEADER BAR -->
+        <header class="portal-header">
+            <div class="header-school-info">
+                <i class="fas fa-graduation-cap" style="color: var(--purple-main); font-size: 1.4rem;"></i>
+                <div>
+                    <div class="school-title">Setor Pedro Ludovico</div>
+                    <div class="school-sub">Colégio Adventista</div>
                 </div>
-            `;
+            </div>
+
+            <div class="header-user-info">
+                <div class="user-details">
+                    <div class="user-name">Danilo de Oliveira Richter Barcelos Pires</div>
+                    <div class="user-code">EFUND06B</div>
+                </div>
+                <div class="user-avatar-img" style="background: var(--purple-main); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    D
+                </div>
+                <i class="fas fa-ellipsis-v" style="color: var(--text-muted); cursor: pointer;"></i>
+            </div>
+        </header>
+
+        <!-- LAYOUT DE 3 COLUNAS -->
+        <div class="portal-layout">
+            <!-- COLUNA 1: SIDEBAR -->
+            <aside class="portal-sidebar">
+                <div class="sidebar-brand">cla</div>
+
+                <a class="nav-btn active" onclick="switchNav('agenda', this)">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>Agenda</span>
+                </a>
+
+                <a class="nav-btn" onclick="switchNav('aluno', this)">
+                    <i class="far fa-user"></i>
+                    <span>Aluno</span>
+                </a>
+
+                <a class="nav-btn" onclick="switchNav('cpb', this)">
+                    <i class="fas fa-file-alt"></i>
+                    <span>CPB Prova</span>
+                </a>
+
+                <a class="nav-btn" onclick="switchNav('cursos', this)">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Cursos</span>
+                </a>
+            </aside>
+
+            <!-- COLUNA 2: MAIN CAIXA DE ENTRADA -->
+            <main class="portal-main">
+                <div class="card-panel">
+                    <div class="inbox-header">
+                        <div class="inbox-title"><i class="fas fa-inbox" style="color: var(--purple-main); margin-right: 8px;"></i> Caixa de entrada</div>
+                        <div style="display: flex; gap: 8px;">
+                            <select style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.8rem;">
+                                <option>Selecionar turma</option>
+                            </select>
+                            <select style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.8rem;">
+                                <option>Selecionar disciplina</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- FILTROS DE DATA -->
+                    <div class="filter-pills">
+                        <button class="pill-btn active">Recentes</button>
+                        <button class="pill-btn">+15 dias</button>
+                        <button class="pill-btn">+30 dias</button>
+                        <span style="font-size: 0.8rem; color: var(--text-muted); align-self: center; margin-left: auto;">01/09/2026 até 16/09/2026</span>
+                    </div>
+
+                    <!-- LINHA DO TEMPO / CRONOGRAMAS -->
+                    <div class="timeline-group">
+                        <div class="timeline-date-header">TERÇA-FEIRA, 15/SET</div>
+                        <div class="timeline-card">
+                            <div>
+                                <strong style="font-size: 0.9rem; color: var(--text-dark);">Cronograma quinzenal ed.física 02/10</strong>
+                                <span class="timeline-tag">Aula</span>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Educação Física • Cínthia Ribeiro Xavier</div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">15/09</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-group">
+                        <div class="timeline-date-header">SEGUNDA-FEIRA, 14/SET</div>
+                        <div class="timeline-card">
+                            <div>
+                                <strong style="font-size: 0.9rem; color: var(--text-dark);">Cronograma 14 a 18 de setembro</strong>
+                                <span class="timeline-tag">Aula</span>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">História • Gabriele Amancio Berlofa Venancio Brito</div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">14/09</span>
+                        </div>
+
+                        <div class="timeline-card">
+                            <div>
+                                <strong style="font-size: 0.9rem; color: var(--text-dark);">Cronograma semanal de Ciências de 14 a 18 de setembro</strong>
+                                <span class="timeline-tag">Aula</span>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Ciências • Jussara Ferreira dos Santos</div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">14/09</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-group">
+                        <div class="timeline-date-header">QUINTA-FEIRA, 10/SET</div>
+                        <div class="timeline-card" style="border-left: 4px solid var(--purple-main);">
+                            <div>
+                                <strong style="font-size: 0.9rem; color: var(--purple-main);">UCOB - SIMULADO02 - 7º ANO - 2º DIA - III BIMESTRE</strong>
+                                <span class="timeline-tag" style="background: var(--purple-light); color: var(--purple-main);">CPB Prova</span>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">01/09/2026 • 30 questões • Híbrido</div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">10/09</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- COLUNA 3: WIDGETS E ATALHOS -->
+            <aside class="portal-widgets">
+                <!-- PAINEL DE ATALHOS -->
+                <div class="card-panel">
+                    <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">Atalhos</div>
+                    <div class="shortcuts-grid">
+                        <a class="shortcut-item">
+                            <div class="shortcut-icon"><i class="fas fa-clipboard-check"></i></div>
+                            <div class="shortcut-label">Avaliações</div>
+                        </a>
+                        <a class="shortcut-item">
+                            <div class="shortcut-icon"><i class="fas fa-star"></i></div>
+                            <div class="shortcut-label">Notas</div>
+                        </a>
+                        <a class="shortcut-item">
+                            <div class="shortcut-icon"><i class="fas fa-clock"></i></div>
+                            <div class="shortcut-label">Horário</div>
+                        </a>
+                        <a class="shortcut-item">
+                            <div class="shortcut-icon"><i class="fas fa-play-circle"></i></div>
+                            <div class="shortcut-label">Replay</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- MINI CALENDÁRIO -->
+                <div class="card-panel calendar-widget">
+                    <div class="cal-header">
+                        <span>Setembro 2026</span>
+                        <div>
+                            <i class="fas fa-chevron-left" style="margin-right: 8px; cursor: pointer;"></i>
+                            <i class="fas fa-chevron-right" style="cursor: pointer;"></i>
+                        </div>
+                    </div>
+                    <div class="cal-grid">
+                        <div class="cal-day-name">Dom</div>
+                        <div class="cal-day-name">Seg</div>
+                        <div class="cal-day-name">Ter</div>
+                        <div class="cal-day-name">Qua</div>
+                        <div class="cal-day-name">Qui</div>
+                        <div class="cal-day-name">Sex</div>
+                        <div class="cal-day-name">Sáb</div>
+
+                        <div class="cal-day" style="color: #cbd5e1;">30</div>
+                        <div class="cal-day" style="color: #cbd5e1;">31</div>
+                        <div class="cal-day">1</div>
+                        <div class="cal-day">2</div>
+                        <div class="cal-day">3</div>
+                        <div class="cal-day">4</div>
+                        <div class="cal-day">5</div>
+                        <div class="cal-day">6</div>
+                        <div class="cal-day">7</div>
+                        <div class="cal-day">8</div>
+                        <div class="cal-day">9</div>
+                        <div class="cal-day">10</div>
+                        <div class="cal-day">11</div>
+                        <div class="cal-day">12</div>
+                        <div class="cal-day">13</div>
+                        <div class="cal-day">14</div>
+                        <div class="cal-day active">15</div>
+                        <div class="cal-day">16</div>
+                        <div class="cal-day">17</div>
+                        <div class="cal-day">18</div>
+                        <div class="cal-day">19</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- LÓGICA DE INTERAÇÃO -->
+    <script>
+        function openGoogleModal() {
+            document.getElementById('google-modal').style.display = 'flex';
         }
 
-        /* ================= MODO TELA CHEIA ================= */
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => console.log(err));
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
+        function closeGoogleModal() {
+            document.getElementById('google-modal').style.display = 'none';
         }
 
-        /* ================= LOUSA DIGITAL (CANVAS) ================= */
-        const canvas = document.getElementById('math-canvas');
-        const ctx = canvas ? canvas.getContext('2d') : null;
-        let isDrawing = false;
-        let currentColor = '#000000';
+        function startPortalLogin() {
+            closeGoogleModal();
+            document.getElementById('screen-login').style.display = 'none';
+            document.getElementById('screen-loading').style.display = 'flex';
 
-        function initCanvas() {
-            if (!canvas || !canvas.parentElement) return;
-            canvas.width = canvas.parentElement.clientWidth - 10;
-            canvas.height = 280;
-            if (ctx) {
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = 2;
-                ctx.lineCap = 'round';
-            }
+            // Simula o tempo de carregamento e autenticação do CLA
+            setTimeout(() => {
+                document.getElementById('screen-loading').style.display = 'none';
+                document.getElementById('screen-portal').style.display = 'flex';
+            }, 1800);
         }
 
-        function setCanvasColor(color) { currentColor = color; if (ctx) ctx.strokeStyle = color; }
-        function clearCanvas() { if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height); }
-
-        function startDraw(e) { isDrawing = true; draw(e); }
-        function stopDraw() { isDrawing = false; if (ctx) ctx.beginPath(); }
-        function draw(e) {
-            if (!isDrawing || !ctx || !canvas) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-            const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
-            ctx.lineTo(x, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y);
+        function switchNav(navId, el) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
         }
-
-        if (canvas) {
-            canvas.addEventListener('mousedown', startDraw);
-            canvas.addEventListener('mouseup', stopDraw);
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('touchstart', startDraw);
-            canvas.addEventListener('touchend', stopDraw);
-            canvas.addEventListener('touchmove', draw);
-        }
-
-        /* INICIALIZAÇÃO INCONDICIONAL QUANDO O DOM CARREGAR */
-        window.addEventListener('DOMContentLoaded', () => {
-            const btnSubmit = document.getElementById('btn-login-submit');
-            if (btnSubmit) {
-                btnSubmit.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    executeLogin();
-                });
-            }
-
-            // Verifica perfil salvo
-            if (!userProfile) {
-                const modal = document.getElementById('profile-modal');
-                if (modal) modal.style.setProperty('display', 'flex', 'important');
-            } else {
-                forceCloseModal();
-                updateProfileUI();
-            }
-        });
     </script>
 </body>
 </html>
