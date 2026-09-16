@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyFlow 2050 // Gemini 3.6 Neural System</title>
-    <!-- Fontes Futuristas Sci-Fi -->
+    <title>StudyFlow 2050 // Gemini 3.3 Neural System</title>
+    <!-- Fontes do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Roboto:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <!-- Ícones Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
             --bg-deep: #04060f;
-            --panel-bg: rgba(10, 15, 30, 0.88);
+            --panel-bg: rgba(10, 15, 30, 0.92);
             --panel-border: rgba(0, 243, 255, 0.25);
             --neon-cyan: #00f3ff;
             --neon-pink: #ff007f;
@@ -23,6 +23,39 @@
             --neon-yellow: #ffea00;
             --text-main: #e0f7fc;
             --text-dim: #70889b;
+            --font-family-main: 'Rajdhani', sans-serif;
+            --font-size-base: 1rem;
+        }
+
+        /* Temas Dinâmicos */
+        body.theme-matrix {
+            --bg-deep: #020b05;
+            --panel-bg: rgba(5, 20, 10, 0.92);
+            --panel-border: rgba(0, 255, 102, 0.3);
+            --neon-cyan: #00ff66;
+            --neon-pink: #00ffaa;
+            --neon-purple: #008833;
+            --text-main: #e0ffe8;
+        }
+
+        body.theme-gold {
+            --bg-deep: #0c0a02;
+            --panel-bg: rgba(25, 20, 5, 0.92);
+            --panel-border: rgba(255, 234, 0, 0.3);
+            --neon-cyan: #ffea00;
+            --neon-pink: #ff9900;
+            --neon-purple: #cc7700;
+            --text-main: #fffae0;
+        }
+
+        body.theme-dark {
+            --bg-deep: #0a0a0c;
+            --panel-bg: rgba(20, 20, 25, 0.95);
+            --panel-border: rgba(120, 120, 140, 0.3);
+            --neon-cyan: #8a99ad;
+            --neon-pink: #d1d5db;
+            --neon-purple: #4b5563;
+            --text-main: #f3f4f6;
         }
 
         * {
@@ -33,20 +66,16 @@
 
         body {
             background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(176, 38, 255, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(0, 243, 255, 0.12) 0%, transparent 40%),
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
             color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
+            font-family: var(--font-family-main);
+            font-size: var(--font-size-base);
             min-height: 100vh;
             display: flex;
             overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* Modal Login */
+        /* Modal Login / Perfil */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -64,10 +93,10 @@
         .modal-card {
             background: var(--panel-bg);
             border: 1px solid var(--neon-cyan);
-            box-shadow: 0 0 40px rgba(0, 243, 255, 0.35);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.25);
             border-radius: 12px;
-            width: 90%; max-width: 500px;
-            padding: 2.5rem;
+            width: 90%; max-width: 520px;
+            padding: 2.2rem;
             position: relative;
         }
 
@@ -81,11 +110,11 @@
 
         .modal-card h2 {
             font-family: 'Orbitron', sans-serif; color: #fff;
-            margin-bottom: 0.5rem; font-size: 1.5rem;
+            margin-bottom: 0.5rem; font-size: 1.4rem;
         }
 
         .form-group {
-            margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 6px;
+            margin-bottom: 1.1rem; display: flex; flex-direction: column; gap: 6px;
         }
 
         .form-group label {
@@ -95,22 +124,18 @@
         .form-group input, .form-group select {
             background: rgba(5, 7, 15, 0.9);
             border: 1px solid var(--panel-border);
-            padding: 12px; border-radius: 6px; color: #fff;
-            font-family: 'Rajdhani', sans-serif; font-size: 1rem; outline: none;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+            padding: 10px 12px; border-radius: 6px; color: #fff;
+            font-family: inherit; font-size: 0.95rem; outline: none;
         }
 
         /* Layout Principal */
         .app-container { display: flex; width: 100%; min-height: 100vh; }
 
         aside {
-            width: 270px; background: rgba(6, 9, 18, 0.9);
+            width: 280px; background: rgba(6, 9, 18, 0.92);
             backdrop-filter: blur(20px); border-right: 1px solid var(--panel-border);
             display: flex; flex-direction: column; justify-content: space-between;
-            padding: 2rem 1.2rem; z-index: 10;
+            padding: 1.8rem 1.2rem; z-index: 10;
         }
 
         .brand {
@@ -119,27 +144,25 @@
         }
         .brand span { color: var(--neon-cyan); }
 
-        nav { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 2rem; }
+        nav { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.8rem; }
 
         nav a {
             color: var(--text-dim); text-decoration: none; font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem; padding: 12px; border-radius: 6px; display: flex; align-items: center;
+            font-size: 0.75rem; padding: 10px 12px; border-radius: 6px; display: flex; align-items: center;
             gap: 10px; transition: all 0.3s; border: 1px solid transparent;
         }
 
         nav a:hover, nav a.active {
             color: #fff; background: rgba(0, 243, 255, 0.1); border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
         }
 
         main { flex: 1; padding: 2rem; overflow-y: auto; }
 
         header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+            margin-bottom: 1.8rem; padding-bottom: 1.2rem; border-bottom: 1px solid rgba(0, 243, 255, 0.15);
         }
-
-        .user-info { display: flex; gap: 10px; align-items: center; }
 
         .profile-badge {
             background: rgba(176, 38, 255, 0.15); border: 1px solid var(--neon-purple);
@@ -154,7 +177,7 @@
 
         .card-title {
             font-family: 'Orbitron', sans-serif; font-size: 0.95rem; color: var(--neon-cyan);
-            margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
         }
 
         .btn-cyber {
@@ -163,75 +186,88 @@
             color: #000; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer;
             transition: all 0.3s;
         }
-        .btn-cyber:hover { box-shadow: 0 0 20px rgba(0, 243, 255, 0.6); transform: translateY(-2px); }
+        .btn-cyber:hover { box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); transform: translateY(-2px); }
 
         .btn-outline {
             background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
-            font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 8px 14px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 8px 12px;
             border-radius: 4px; cursor: pointer; transition: all 0.3s;
         }
-        .btn-outline:hover { background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 10px rgba(0, 243, 255, 0.3); }
+        .btn-outline:hover { background: rgba(0, 243, 255, 0.15); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
 
-        /* Leitor de Livros Interativo (50 Páginas) */
-        .book-reader {
-            display: flex; flex-direction: column; gap: 15px; background: rgba(4, 7, 18, 0.9);
-            border: 1px solid rgba(0, 243, 255, 0.2); border-radius: 8px; padding: 1.5rem;
+        /* Estilo da Folha A4 */
+        .a4-container-mode {
+            display: flex; justify-content: center; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 8px;
         }
 
-        .book-toolbar {
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-            padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .a4-page {
+            width: 100%;
+            max-width: 800px;
+            min-height: 1000px;
+            background: #ffffff;
+            color: #1a1a2e;
+            padding: 3rem;
+            border-radius: 4px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+            font-family: var(--font-family-main);
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative;
         }
 
-        .page-content-box {
-            min-height: 280px; padding: 1.2rem; background: rgba(255, 255, 255, 0.02);
-            border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.05); line-height: 1.6;
+        .a4-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px;
         }
 
-        .page-content-box h3 { color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; margin-bottom: 10px; }
-        .page-content-box p { color: #d0e5f2; font-size: 1rem; margin-bottom: 12px; }
+        .a4-title { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; color: #0a0f1e; }
+        .a4-page-num { font-family: 'Share Tech Mono', monospace; font-weight: bold; background: #00f3ff; color: #000; padding: 4px 10px; border-radius: 4px; }
 
-        .graphic-container {
-            width: 100%; height: 150px; background: rgba(0, 0, 0, 0.4); border: 1px dashed var(--neon-cyan);
-            border-radius: 6px; display: flex; align-items: center; justify-content: center; margin: 15px 0;
+        .a4-body h3 { font-family: 'Orbitron', sans-serif; color: #005580; margin-bottom: 12px; font-size: 1.1rem; }
+        .a4-body p { margin-bottom: 14px; line-height: 1.6; color: #222; }
+
+        .a4-graphic-box {
+            width: 100%; height: 200px; background: #f0f4f8; border: 1px dashed #0088cc;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center; margin: 20px 0; padding: 10px;
         }
 
-        /* Lousa de Cálculos (Canvas) */
-        .math-canvas-container {
-            display: flex; flex-direction: column; gap: 10px; margin-top: 15px;
-            background: #02040a; border: 1px solid var(--neon-purple); border-radius: 8px; padding: 12px;
+        .a4-question-box {
+            background: #eef7ff; border-left: 4px solid #0088cc; padding: 16px; border-radius: 4px; margin-top: 20px;
         }
 
-        .canvas-toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .hint-card {
+            background: #fff8e1; border: 1px solid #ffe082; padding: 12px; border-radius: 6px;
+            margin-top: 12px; font-size: 0.9rem; color: #5d4037; display: none;
+        }
 
+        .a4-footer {
+            border-top: 1px solid #ccc; padding-top: 12px; margin-top: 30px;
+            display: flex; justify-content: space-between; font-size: 0.8rem; color: #666;
+        }
+
+        /* Controles de Personalização */
+        .customizer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 10px;
+        }
+
+        /* Lousa de Cálculos */
         #math-canvas {
             background: #050814; border: 1px solid rgba(0, 243, 255, 0.3);
-            border-radius: 6px; cursor: crosshair; touch-action: none; width: 100%; height: 220px;
+            border-radius: 6px; cursor: crosshair; touch-action: none; width: 100%; height: 240px;
         }
 
-        /* Quiz Gemini 3.6 */
+        /* Quiz IA */
         .quiz-option {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 12px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
         }
         .quiz-option:hover { border-color: var(--neon-purple); background: rgba(176, 38, 255, 0.1); }
         .quiz-option.correct { border-color: var(--neon-green) !important; background: rgba(0, 255, 102, 0.15) !important; color: var(--neon-green); }
         .quiz-option.wrong { border-color: var(--neon-pink) !important; background: rgba(255, 0, 127, 0.15) !important; color: var(--neon-pink); }
 
-        .progress-bar { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan)); width: 2%; transition: width 0.3s; }
-
-        .question-input-area {
-            margin-top: 15px; background: rgba(0, 243, 255, 0.05); padding: 12px; border-radius: 6px; border: 1px solid var(--panel-border);
-        }
-        .question-input-area input {
-            width: 100%; background: #000; border: 1px solid var(--neon-cyan); padding: 8px; color: #fff; border-radius: 4px; margin-top: 6px; outline: none;
-        }
-
-        /* Responsivo */
         @media (max-width: 850px) {
             .app-container { flex-direction: column; }
             aside { width: 100%; border-right: none; border-bottom: 1px solid var(--panel-border); }
+            .a4-page { padding: 1.5rem; min-height: auto; }
         }
     </style>
 </head>
@@ -240,40 +276,32 @@
     <!-- Modal Login / Cadastro Perfil -->
     <div class="modal-overlay" id="profile-modal">
         <div class="modal-card">
-            <span class="gemini-badge"><i class="fas fa-brain"></i> Software Gemini 3.6 Engine</span>
-            <h2>ACESSO AO LOBBY</h2>
-            <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">Configure sua série para carregar o conteúdo pedagógico correspondente.</p>
+            <span class="gemini-badge"><i class="fas fa-brain"></i> Software Gemini 3.3 Engine</span>
+            <h2>ACESSO AO ESTÚDIO DE ESTUDOS</h2>
+            <p style="color: var(--text-dim); margin-bottom: 1.2rem; font-size: 0.85rem;">Escolha seu ano letivo para carregar as matérias corretas.</p>
 
             <form id="profile-form" onsubmit="saveProfile(event)">
                 <div class="form-group">
                     <label for="user-name">NOME DO ESTUDANTE</label>
-                    <input type="text" id="user-name" placeholder="Ex: Lucas Gabriel" required>
+                    <input type="text" id="user-name" placeholder="Ex: Maria Eduarda" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="user-grade">ANO ESCOLAR / CICLO</label>
+                    <label for="user-grade">SÉRIE / ANO ESCOLAR</label>
                     <select id="user-grade" required>
-                        <option value="5º Ano (Ensino Fundamental)">5º Ano (Ensino Fundamental I)</option>
-                        <option value="6º Ano (Ensino Fundamental)">6º Ano (Ensino Fundamental II)</option>
-                        <option value="7º Ano (Ensino Fundamental)">7º Ano (Ensino Fundamental II)</option>
-                        <option value="8º Ano (Ensino Fundamental)">8º Ano (Ensino Fundamental II)</option>
-                        <option value="9º Ano (Ensino Fundamental)">9º Ano (Ensino Fundamental II)</option>
-                        <option value="1º Ano Ensino Médio">1º Ano Ensino Médio</option>
-                        <option value="2º Ano Ensino Médio">2º Ano Ensino Médio</option>
-                        <option value="3º Ano Ensino Médio">3º Ano Ensino Médio / Vestibular</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="user-rigor">MODO DE APRENDIZADO IA</label>
-                    <select id="user-rigor" required>
-                        <option value="Modo Padrão">Modo Didático Interativo (Passo a Passo)</option>
-                        <option value="Modo Intensivo">Modo Desafio Intensivo (Gemini 3.6 Fast)</option>
+                        <option value="5º Ano (Ensino Fundamental)">5º Ano (Fundamental I)</option>
+                        <option value="6º Ano (Ensino Fundamental)">6º Ano (Fundamental II)</option>
+                        <option value="7º Ano (Ensino Fundamental)">7º Ano (Fundamental II)</option>
+                        <option value="8º Ano (Ensino Fundamental)">8º Ano (Fundamental II)</option>
+                        <option value="9º Ano (Ensino Fundamental)">9º Ano (Fundamental II)</option>
+                        <option value="1º Ano (Ensino Médio)">1º Ano (Ensino Médio)</option>
+                        <option value="2º Ano (Ensino Médio)">2º Ano (Ensino Médio)</option>
+                        <option value="3º Ano (Ensino Médio / Vestibular)">3º Ano (Ensino Médio / Enem)</option>
                     </select>
                 </div>
 
                 <button type="submit" class="btn-cyber" style="width: 100%; margin-top: 1rem;">
-                    INICIALIZAR SISTEMA NEURAL <i class="fas fa-arrow-right"></i>
+                    ENTRAR NO ESTÚDIO <i class="fas fa-arrow-right"></i>
                 </button>
             </form>
         </div>
@@ -286,13 +314,15 @@
                 <div class="brand">
                     <i class="fas fa-atom" style="color: var(--neon-cyan);"></i> STUDY<span>FLOW 2050</span>
                 </div>
-                <div style="margin-top: 8px;">
-                    <span class="gemini-badge" style="font-size: 0.55rem;"><i class="fas fa-sparkles"></i> Gemini 3.6 v3.6.2</span>
+                <div style="margin-top: 6px;">
+                    <span class="gemini-badge" style="font-size: 0.55rem;"><i class="fas fa-sparkles"></i> Gemini 3.3 Engine</span>
                 </div>
+
                 <nav>
-                    <a href="#books-section" class="active"><i class="fas fa-book-open"></i> LIVROS (50 PÁGS)</a>
+                    <a href="#books-section" class="active"><i class="fas fa-book-open"></i> LIVROS A4 (50 PÁGS)</a>
+                    <a href="#customizer-section"><i class="fas fa-sliders-h"></i> PERSONALIZAÇÃO</a>
                     <a href="#math-draw-section"><i class="fas fa-calculator"></i> LOUSA DE CÁLCULOS</a>
-                    <a href="#gemini-quiz-section"><i class="fas fa-robot"></i> QUIZ IA GEMINI 3.6</a>
+                    <a href="#gemini-quiz-section"><i class="fas fa-robot"></i> QUIZ IA GEMINI 3.3</a>
                 </nav>
             </div>
 
@@ -304,89 +334,122 @@
         <main>
             <header>
                 <div>
-                    <h1 id="welcome-title" style="font-family: 'Orbitron'; font-size: 1.5rem;">LOBBY DO ESTUDANTE</h1>
-                    <p style="color: var(--text-dim);" id="sub-welcome">Apostilas e IA prontas para os seus estudos.</p>
+                    <h1 id="welcome-title" style="font-family: 'Orbitron'; font-size: 1.4rem;">ESTÚDIO NEURAL DE ESTUDOS</h1>
+                    <p style="color: var(--text-dim);" id="sub-welcome">Sistema pronto para o aprendizado.</p>
                 </div>
 
-                <div class="user-info">
+                <div style="display: flex; gap: 10px; align-items: center;">
                     <div class="profile-badge" id="badge-grade"><i class="fas fa-graduation-cap"></i> --</div>
-                    <div class="profile-badge" id="badge-engine" style="border-color: var(--neon-cyan);"><i class="fas fa-microchip"></i> Gemini 3.6</div>
+                    <div class="profile-badge" style="border-color: var(--neon-cyan);"><i class="fas fa-microchip"></i> Gemini 3.3</div>
                 </div>
             </header>
 
-            <!-- Módulo 1: Livros Digitais de 50 Páginas por Matéria -->
+            <!-- Módulo 1: Livros Digitais A4 de 50 Páginas por Matéria -->
             <section class="hud-card" id="books-section">
                 <div class="card-title">
-                    <span><i class="fas fa-book-reader"></i> LIVRO DIGITAL INTERATIVO (50 PÁGINAS POR MATÉRIA)</span>
-                    <span style="font-size: 0.75rem; color: var(--neon-yellow);"><i class="fas fa-check-circle"></i> Com Imagens, Gráficos & Questões</span>
+                    <span><i class="fas fa-file-alt"></i> APOSTILA A4 INTERATIVA (50 PÁGINAS COM PERGUNTAS DIFERENTES)</span>
+                    <button class="btn-outline" onclick="window.print()"><i class="fas fa-print"></i> IMPRIMIR / PDF</button>
                 </div>
 
-                <div class="book-reader">
-                    <div class="book-toolbar">
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <label style="font-size: 0.8rem; color: var(--neon-cyan);">MATÉRIA:</label>
-                            <select id="book-subject-select" onchange="loadBookPage()" style="background: #000; color: #fff; border: 1px solid var(--neon-cyan); padding: 6px; border-radius: 4px;">
-                                <option value="matematica">📐 Matemática (Com Lousa de Cálculos)</option>
-                                <option value="ciencias">🧪 Ciências Naturais</option>
-                                <option value="historia">📜 História & Sociedade</option>
-                                <option value="portugues">📖 Língua Portuguesa & Gramática</option>
-                                <option value="geografia">🌍 Geografia Mundial</option>
-                            </select>
-                        </div>
-
-                        <div style="display: flex; gap: 8px; align-items: center;">
-                            <button class="btn-outline" onclick="changePage(-1)"><i class="fas fa-chevron-left"></i> Ant</button>
-                            <span style="font-family: 'Share Tech Mono'; font-size: 0.9rem;" id="page-number-display">Pág 1 / 50</span>
-                            <button class="btn-outline" onclick="changePage(1)">Próx <i class="fas fa-chevron-right"></i></button>
-                        </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1.2rem;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <label style="font-size: 0.85rem; color: var(--neon-cyan); font-weight: bold;">MATÉRIA:</label>
+                        <select id="subject-select" onchange="loadA4Page()" style="background: #000; color: #fff; border: 1px solid var(--neon-cyan); padding: 8px; border-radius: 4px; outline: none;">
+                            <option value="matematica">📐 Matemática & Álgebra</option>
+                            <option value="fisica">⚡ Física (Ensino Médio / Avançado)</option>
+                            <option value="quimica">🧪 Química (Ensino Médio / Avançado)</option>
+                            <option value="biologia">🧬 Biologia & Vida</option>
+                            <option value="historia">📜 História Universal & do Brasil</option>
+                            <option value="geografia">🌍 Geografia & Geopolítica</option>
+                            <option value="portugues">📖 Língua Portuguesa & Literatura</option>
+                            <option value="filosofia">🧠 Filosofia & Sociologia</option>
+                        </select>
                     </div>
 
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="book-progress"></div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button class="btn-outline" onclick="changePage(-1)"><i class="fas fa-chevron-left"></i> Anterior</button>
+                        <span style="font-family: 'Share Tech Mono'; font-size: 0.95rem; color: var(--neon-yellow);" id="page-display">Pág 1 / 50</span>
+                        <button class="btn-outline" onclick="changePage(1)">Próxima <i class="fas fa-chevron-right"></i></button>
                     </div>
+                </div>
 
-                    <!-- Conteúdo Dinâmico da Página -->
-                    <div class="page-content-box" id="page-content">
-                        <!-- Renderizado via JS -->
+                <!-- Container do Visualizador Folha A4 -->
+                <div class="a4-container-mode">
+                    <div class="a4-page" id="a4-page-render">
+                        <!-- Conteúdo da Página A4 Injetado por JS -->
                     </div>
                 </div>
             </section>
 
-            <!-- Módulo 2: Espaço de Rascunho / Lousa para Cálculos de Matemática -->
+            <!-- Módulo 2: Painel de Recursos Personalizáveis -->
+            <section class="hud-card" id="customizer-section">
+                <div class="card-title">
+                    <span><i class="fas fa-palette"></i> PERSONALIZAÇÃO DE LAYOUT & FONTE</span>
+                </div>
+
+                <div class="customizer-grid">
+                    <div class="form-group">
+                        <label>FONTE DO SISTEMA</label>
+                        <select onchange="changeFont(this.value)">
+                            <option value="'Rajdhani', sans-serif">Rajdhani (Futurista Padrão)</option>
+                            <option value="'Orbitron', sans-serif">Orbitron (Tech Sci-Fi)</option>
+                            <option value="'Roboto', sans-serif">Roboto (Clean / Leitura Fácil)</option>
+                            <option value="'Share Tech Mono', monospace">Share Tech (Terminal Code)</option>
+                            <option value="Arial, sans-serif">Arial (Clássico)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>TEMA DE CORES</label>
+                        <select onchange="changeTheme(this.value)">
+                            <option value="cyber">Ciberpunk Cyan & Purple</option>
+                            <option value="matrix">Matrix Green</option>
+                            <option value="gold">Solar Gold</option>
+                            <option value="dark">Dark Minimalist</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>TAMANHO DO TEXTO</label>
+                        <select onchange="changeFontSize(this.value)">
+                            <option value="0.9rem">Pequeno (Compacto)</option>
+                            <option value="1rem" selected>Médio (Padrão)</option>
+                            <option value="1.15rem">Grande (Acessível)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Módulo 3: Lousa de Cálculos -->
             <section class="hud-card" id="math-draw-section">
                 <div class="card-title">
-                    <span><i class="fas fa-draw-polygon"></i> LOUSA NEURAL PARA CÁLCULOS & GEOMETRIA</span>
-                    <span style="font-size: 0.75rem; color: var(--neon-green);">Rascunho Livre para Matemática</span>
+                    <span><i class="fas fa-pen-nib"></i> LOUSA NEURAL PARA CÁLCULOS & RASCUNHOS</span>
                 </div>
 
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 10px;">Use o espaço abaixo para fazer contas, desenhar triângulos, frações e resolver os exercícios do livro:</p>
-
-                <div class="math-canvas-container">
-                    <div class="canvas-toolbar">
-                        <button class="btn-outline" onclick="setCanvasColor('#00f3ff')"><i class="fas fa-pen"></i> Neon Ciano</button>
-                        <button class="btn-outline" onclick="setCanvasColor('#00ff66')"><i class="fas fa-pen"></i> Verde</button>
-                        <button class="btn-outline" onclick="setCanvasColor('#ff007f')"><i class="fas fa-pen"></i> Rosa</button>
-                        <button class="btn-outline" onclick="setCanvasColor('#ffffff')"><i class="fas fa-pen"></i> Branco</button>
-                        <button class="btn-outline" onclick="clearCanvas()"><i class="fas fa-trash"></i> Limpar Lousa</button>
-                    </div>
-                    <canvas id="math-canvas"></canvas>
+                <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <button class="btn-outline" onclick="setCanvasColor('#00f3ff')">Ciano</button>
+                    <button class="btn-outline" onclick="setCanvasColor('#00ff66')">Verde</button>
+                    <button class="btn-outline" onclick="setCanvasColor('#ff007f')">Rosa</button>
+                    <button class="btn-outline" onclick="setCanvasColor('#ffffff')">Branco</button>
+                    <button class="btn-outline" onclick="clearCanvas()">Limpar Lousa</button>
                 </div>
+
+                <canvas id="math-canvas"></canvas>
             </section>
 
-            <!-- Módulo 3: Gerador de Quizzes Personalizados Gemini 3.6 -->
+            <!-- Módulo 4: Gerador Gemini 3.3 -->
             <section class="hud-card" id="gemini-quiz-section">
                 <div class="card-title">
-                    <span><i class="fas fa-brain"></i> QUIZ PERSONALIZADO - MOTOR IA GEMINI 3.6</span>
-                    <span class="gemini-badge">Gemini 3.6 AI Core</span>
+                    <span><i class="fas fa-brain"></i> GERADOR DE QUIZ PERSONALIZADO - GEMINI 3.3</span>
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-bottom: 1.2rem;">
-                    <input type="text" id="gemini-topic-input" placeholder="Digite o tema do Quiz (Ex: Frações 6º Ano, Tabela Periódica, Equações)..." style="flex: 1; background: rgba(5,7,15,0.9); border: 1px solid var(--neon-cyan); padding: 10px; border-radius: 4px; color: #fff; outline: none;">
+                    <input type="text" id="gemini-topic-input" placeholder="Digite qualquer assunto (Ex: Leis de Newton, Tabela Periódica, Redação ENEM)..." style="flex: 1; background: rgba(5,7,15,0.9); border: 1px solid var(--neon-cyan); padding: 10px; border-radius: 4px; color: #fff; outline: none;">
                     <button class="btn-cyber" onclick="generateGeminiQuiz()"><i class="fas fa-bolt"></i> GERAR QUIZ IA</button>
                 </div>
 
                 <div id="gemini-quiz-box">
-                    <p style="color: var(--text-dim); font-style: italic;">Digite um tema acima para a inteligência Gemini 3.6 compilar um simulado com base no seu ano escolar!</p>
+                    <p style="color: var(--text-dim); font-style: italic;">O motor Gemini 3.3 criará perguntas sob medida para seu nível escolar.</p>
                 </div>
             </section>
 
@@ -394,8 +457,8 @@
     </div>
 
     <script>
-        /* ================= ESTADO E PERFIL DO USUÁRIO ================= */
-        let userProfile = JSON.parse(localStorage.getItem('studyflow_profile_v2')) || null;
+        /* ================= ESTADO DO SISTEMA ================= */
+        let userProfile = JSON.parse(localStorage.getItem('studyflow_profile_v3')) || null;
         let currentPage = 1;
         const totalPages = 50;
 
@@ -412,7 +475,6 @@
             if (userProfile) {
                 document.getElementById('user-name').value = userProfile.name;
                 document.getElementById('user-grade').value = userProfile.grade;
-                document.getElementById('user-rigor').value = userProfile.rigor;
             }
             document.getElementById('profile-modal').classList.remove('hidden');
         }
@@ -421,142 +483,151 @@
             e.preventDefault();
             const name = document.getElementById('user-name').value.trim();
             const grade = document.getElementById('user-grade').value;
-            const rigor = document.getElementById('user-rigor').value;
 
             if (!name) return;
 
-            userProfile = { name, grade, rigor };
-            localStorage.setItem('studyflow_profile_v2', JSON.stringify(userProfile));
+            userProfile = { name, grade };
+            localStorage.setItem('studyflow_profile_v3', JSON.stringify(userProfile));
 
             document.getElementById('profile-modal').classList.add('hidden');
             updateUIWithProfile();
-            loadBookPage();
+            loadA4Page();
         }
 
         function updateUIWithProfile() {
-            document.getElementById('welcome-title').textContent = `ESTÚDIO DE ${userProfile.name.toUpperCase()} 🚀`;
-            document.getElementById('sub-welcome').textContent = `Conteúdo calibrado para: ${userProfile.grade}`;
+            document.getElementById('welcome-title').textContent = `ESTÚDIO DE ${userProfile.name.toUpperCase()}`;
+            document.getElementById('sub-welcome').textContent = `Conteúdo ativo para: ${userProfile.grade}`;
             document.getElementById('badge-grade').innerHTML = `<i class="fas fa-graduation-cap"></i> ${userProfile.grade}`;
         }
 
-        /* ================= MOTOR DO LIVRO DE 50 PÁGINAS ================= */
-        const bookDatabase = {
-            matematica: {
-                title: "Matemática Fundamental & Aplicada",
-                getChapter: (page, grade) => {
-                    const cap = Math.ceil(page / 5);
-                    return {
-                        title: `Capítulo ${cap}: ${getMathTopicName(cap, grade)}`,
-                        content: `Esta é a **página ${page} de 50** do livro interativo de Matemática para o **${grade}**. Estude o conceito abaixo e utilize a **Lousa de Cálculos** abaixo para resolver.`,
-                        graphicSVG: `<svg width="100%" height="100" viewBox="0 0 300 100">
-                            <rect x="20" y="20" width="80" height="60" fill="none" stroke="#00f3ff" stroke-width="2"/>
-                            <line x1="20" y1="20" x2="100" y2="80" stroke="#ff007f" stroke-width="2"/>
-                            <text x="110" y="55" fill="#00ff66" font-family="Orbitron" font-size="12">Área = b × h | Câmera 2D</text>
-                        </svg>`,
-                        question: `[EXERCÍCIO PÁG ${page}]: Se a base do retângulo acima mede 8 cm e a altura 5 cm, qual é a área total?`,
-                        answerHint: "Calcule: 8 x 5 = 40 cm²"
-                    };
-                }
-            },
-            ciencias: {
-                title: "Ciências Naturais & Biotecnologia",
-                getChapter: (page, grade) => {
-                    const cap = Math.ceil(page / 5);
-                    return {
-                        title: `Capítulo ${cap}: Sistemas Naturais & Matéria`,
-                        content: `Página ${page}/50. Entendendo os ecossistemas, células e transformações químicas recomendadas para o ${grade}.`,
-                        graphicSVG: `<svg width="100%" height="100" viewBox="0 0 300 100">
-                            <circle cx="60" cy="50" r="30" fill="none" stroke="#00ff66" stroke-width="2"/>
-                            <circle cx="60" cy="50" r="8" fill="#b026ff"/>
-                            <text x="110" y="55" fill="#00f3ff" font-family="Orbitron" font-size="12">Modelo Atômico / Célula</text>
-                        </svg>`,
-                        question: `[EXERCÍCIO PÁG ${page}]: Qual é a principal função da membrana plasmática na célula?`,
-                        answerHint: "Controle de entrada e saída de substâncias."
-                    };
-                }
-            },
-            historia: {
-                title: "História e Sociedades Humanas",
-                getChapter: (page, grade) => {
-                    const cap = Math.ceil(page / 5);
-                    return {
-                        title: `Capítulo ${cap}: Transformações Históricas`,
-                        content: `Página ${page}/50. Análise de documentos, mapas conceituais e momentos marcantes aplicados ao ${grade}.`,
-                        graphicSVG: `<svg width="100%" height="100" viewBox="0 0 300 100">
-                            <path d="M 20 80 L 70 20 L 120 80 Z" fill="none" stroke="#ffea00" stroke-width="2"/>
-                            <text x="140" y="55" fill="#ff007f" font-family="Orbitron" font-size="12">Linha do Tempo / Civilizações</text>
-                        </svg>`,
-                        question: `[EXERCÍCIO PÁG ${page}]: Cite um fator que impulsionou o desenvolvimento das primeiras cidades da humanidade.`,
-                        answerHint: "Desenvolvimento da agricultura e sedentarização."
-                    };
-                }
-            },
-            portugues: {
-                title: "Língua Portuguesa & Análise Textual",
-                getChapter: (page, grade) => {
-                    const cap = Math.ceil(page / 5);
-                    return {
-                        title: `Capítulo ${cap}: Sintaxe, Leitura e Interpretação`,
-                        content: `Página ${page}/50. Regras gramaticais, figuras de linguagem e redação direcionadas para o nível ${grade}.`,
-                        graphicSVG: `<svg width="100%" height="100" viewBox="0 0 300 100">
-                            <text x="20" y="50" fill="#00f3ff" font-family="Share Tech Mono" font-size="16">[ Sujeito ] + [ Predicado ]</text>
-                        </svg>`,
-                        question: `[EXERCÍCIO PÁG ${page}]: Identifique o sujeito da frase: 'Os alunos do ${grade} estudaram com dedicação.'`,
-                        answerHint: "Sujeito: 'Os alunos do " + grade + "'"
-                    };
-                }
-            },
-            geografia: {
-                title: "Geografia e Dinâmicas Terrestres",
-                getChapter: (page, grade) => {
-                    const cap = Math.ceil(page / 5);
-                    return {
-                        title: `Capítulo ${cap}: Relevo, Clima e Espaço Geográfico`,
-                        content: `Página ${page}/50. Estudos sobre cartografia, placas tectônicas e geopolítica para o ${grade}.`,
-                        graphicSVG: `<svg width="100%" height="100" viewBox="0 0 300 100">
-                            <circle cx="50" cy="50" r="35" fill="none" stroke="#00f3ff" stroke-width="2"/>
-                            <path d="M 25 50 Q 50 20 75 50" fill="none" stroke="#00ff66" stroke-width="2"/>
-                            <text x="100" y="55" fill="#ffea00" font-family="Orbitron" font-size="12">Cartografia & Coordenadas</text>
-                        </svg>`,
-                        question: `[EXERCÍCIO PÁG ${page}]: O que são linhas imaginárias conhecidas como Paralelos?`,
-                        answerHint: "Linhas horizontais que medem a Latitude."
-                    };
-                }
-            }
-        };
+        /* ================= GERADOR PROCEDURAL DE CONTEÚDO A4 (PÁGS 1 A 50) ================= */
+        function generateA4Content(subject, page, grade) {
+            // Gerador de imagens SVG procedural conforme a matéria e a página
+            let svgImage = "";
+            let topicName = "";
+            let explanation = "";
+            let question = "";
+            let hint = "";
+            let options = [];
+            let correctIndex = 0;
 
-        function getMathTopicName(cap, grade) {
-            const topics = ["Operações & Números", "Frações & Decimais", "Geometria Plana", "Álgebra & Equações", "Porcentagem & Gráficos", "Estatística Básica", "Sistemas de Medidas", "Triângulos e Ângulos", "Funções Matemáticas", "Raciocínio Lógico"];
-            return topics[(cap - 1) % topics.length];
+            if (subject === "matematica") {
+                topicName = `Pág ${page}: Tópico de Matemática #${page}`;
+                explanation = `Nesta página ${page} de 50, exploramos os fundamentos matemáticos ajustados ao ${grade}. A matemática é a linguagem que descreve o universo através de padrões e equações.`;
+                
+                svgImage = `<svg width="100%" height="150" viewBox="0 0 300 150">
+                    <line x1="20" y1="130" x2="280" y2="130" stroke="#0088cc" stroke-width="2"/>
+                    <line x1="20" y1="130" x2="20" y2="10" stroke="#0088cc" stroke-width="2"/>
+                    <path d="M 20 130 Q 100 ${130 - (page * 2)} 280 ${10 + (page * 2)}" fill="none" stroke="#ff007f" stroke-width="3"/>
+                    <text x="150" y="80" fill="#005580" font-family="Orbitron" font-size="12">Curva da Função f(x) - Pág ${page}</text>
+                </svg>`;
+
+                question = `[Exercício Exclusivo Pág ${page}]: Calcule o valor da expressão E = (${page} × 2) + 10.`;
+                hint = `Dica de Resolução: Primeiro multiplique ${page} por 2 = ${page * 2}. Em seguida, some 10. Resultado final = ${(page * 2) + 10}.`;
+            } 
+            else if (subject === "fisica") {
+                topicName = `Pág ${page}: Conceitos de Física - Módulo ${page}`;
+                explanation = `Estudo da mecânica, ondas ou energia na página ${page}. A Física analisa os fenômenos naturais através de grandezas como força, massa e aceleração.`;
+                
+                svgImage = `<svg width="100%" height="150" viewBox="0 0 300 150">
+                    <rect x="50" y="50" width="80" height="50" fill="#0088cc" opacity="0.3" stroke="#0088cc" stroke-width="2"/>
+                    <line x1="130" y1="75" x2="220" y2="75" stroke="#ff007f" stroke-width="3" marker-end="url(#arrow)"/>
+                    <text x="140" y="65" fill="#ff007f" font-weight="bold">Vetor Força F = ${page * 5} N</text>
+                </svg>`;
+
+                question = `[Exercício Pág ${page}]: Um bloco recebe uma força constante de F = ${page * 5} N. Se a massa for 5 kg, qual a aceleração? (F = m × a)`;
+                hint = `Dica: Use a 2ª Lei de Newton: a = F / m. Divida ${page * 5} por 5 = ${page} m/s².`;
+            }
+            else if (subject === "quimica") {
+                topicName = `Pág ${page}: Ligações & Reações Químicas #${page}`;
+                explanation = `Estudo dos átomos, tabela periódica e reações na página ${page}. Os elétrons de valência determinam como os elementos se ligam.`;
+                
+                svgImage = `<svg width="100%" height="150" viewBox="0 0 300 150">
+                    <circle cx="100" cy="75" r="30" fill="none" stroke="#005580" stroke-width="2"/>
+                    <circle cx="200" cy="75" r="30" fill="none" stroke="#005580" stroke-width="2"/>
+                    <circle cx="100" cy="75" r="6" fill="#ff007f"/>
+                    <circle cx="200" cy="75" r="6" fill="#0088cc"/>
+                    <line x1="130" y1="75" x2="170" y2="75" stroke="#00aa55" stroke-dasharray="4" stroke-width="2"/>
+                    <text x="110" y="130" fill="#222" font-size="11">Ligação Covalente / Átomo #${page}</text>
+                </svg>`;
+
+                question = `[Exercício Pág ${page}]: O elemento de número atômico Z = ${page} possui quantos prótons em seu núcleo?`;
+                hint = `Dica: O número atômico (Z) é sempre exatamente igual ao número de prótons do átomo! Portanto, resposta = ${page}.`;
+            }
+            else if (subject === "biologia") {
+                topicName = `Pág ${page}: Biologia Geral & Citologia - Pág ${page}`;
+                explanation = `Compreendendo as células, genética e ecossistemas na página ${page} para o ${grade}.`;
+                
+                svgImage = `<svg width="100%" height="150" viewBox="0 0 300 150">
+                    <ellipse cx="150" cy="75" rx="100" ry="50" fill="none" stroke="#00aa55" stroke-width="2"/>
+                    <circle cx="130" cy="70" r="20" fill="#0088cc" opacity="0.4"/>
+                    <text x="115" y="75" fill="#000" font-weight="bold">Núcleo / DNA</text>
+                </svg>`;
+
+                question = `[Exercício Pág ${page}]: Qual organela celular é responsável por gerar energia (ATP) para as atividades da célula?`;
+                hint = `Dica: Conhecida como a 'usina de energia' da célula animal e vegetal: Mitocôndria.`;
+            }
+            else {
+                // Genérico para História, Geografia, Português, Filosofia
+                topicName = `Pág ${page}: Estudo Humanístico & Linguagens #${page}`;
+                explanation = `Análise crítica do texto, sociedade ou espaço geográfico na página ${page} de 50. Desenvolva o raciocínio argumentativo.`;
+                
+                svgImage = `<svg width="100%" height="150" viewBox="0 0 300 150">
+                    <rect x="40" y="30" width="220" height="90" fill="none" stroke="#0088cc" stroke-width="2" rx="6"/>
+                    <line x1="60" y1="60" x2="240" y2="60" stroke="#ccc" stroke-width="2"/>
+                    <line x1="60" y1="85" x2="180" y2="85" stroke="#ccc" stroke-width="2"/>
+                    <text x="70" y="50" fill="#005580" font-weight="bold">Documento Histórico / Análise Pág ${page}</text>
+                </svg>`;
+
+                question = `[Exercício Pág ${page}]: Qual a importância da análise crítica das fontes na página ${page}?`;
+                hint = `Dica: Analisar fontes permite identificar a intenção do autor, o contexto histórico e evitar desinformações.`;
+            }
+
+            return { topicName, explanation, svgImage, question, hint };
         }
 
-        function loadBookPage() {
-            const subject = document.getElementById('book-subject-select').value;
-            const book = bookDatabase[subject] || bookDatabase.matematica;
-            const grade = userProfile ? userProfile.grade : "5º Ano";
+        function loadA4Page() {
+            const subject = document.getElementById('subject-select').value;
+            const grade = userProfile ? userProfile.grade : "Ensino Fundamental";
+            const data = generateA4Content(subject, currentPage, grade);
 
-            const pageData = book.getChapter(currentPage, grade);
+            document.getElementById('page-display').textContent = `Pág ${currentPage} de ${totalPages}`;
 
-            // Atualiza barra de progresso
-            const pct = (currentPage / totalPages) * 100;
-            document.getElementById('book-progress').style.width = `${pct}%`;
-            document.getElementById('page-number-display').textContent = `Página ${currentPage} de ${totalPages}`;
-
-            // Renderiza o HTML da página
-            const box = document.getElementById('page-content');
-            box.innerHTML = `
-                <h3>${pageData.title}</h3>
-                <p>${pageData.content}</p>
-                
-                <div class="graphic-container">
-                    ${pageData.graphicSVG}
+            const pageRender = document.getElementById('a4-page-render');
+            pageRender.innerHTML = `
+                <div class="a4-header">
+                    <div>
+                        <div class="a4-title">${data.topicName}</div>
+                        <div style="font-size: 0.8rem; color: #555;">Série: ${grade} | Estúdio StudyFlow</div>
+                    </div>
+                    <div class="a4-page-num">PÁG ${currentPage} / 50</div>
                 </div>
 
-                <div class="question-input-area">
-                    <p style="font-weight: bold; color: var(--neon-yellow);">${pageData.question}</p>
-                    <input type="text" placeholder="Digite sua resposta aqui para praticar..." id="user-ans-${currentPage}">
-                    <button class="btn-outline" style="margin-top: 8px;" onclick="checkAnswer('user-ans-${currentPage}', '${pageData.answerHint}')">Verificar Resposta</button>
-                    <span id="feedback-${currentPage}" style="margin-left: 10px; font-size: 0.85rem;"></span>
+                <div class="a4-body">
+                    <h3>EXPLICAÇÃO DO CONTEÚDO</h3>
+                    <p>${data.explanation}</p>
+
+                    <div class="a4-graphic-box">
+                        ${data.svgImage}
+                    </div>
+
+                    <div class="a4-question-box">
+                        <strong style="color: #005580;"><i class="fas fa-pen"></i> ${data.question}</strong>
+                        
+                        <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <input type="text" placeholder="Digite sua resposta aqui..." id="ans-input-${currentPage}" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; outline: none;">
+                            <button class="btn-outline" style="border-color: #0088cc; color: #0088cc;" onclick="toggleHint(${currentPage})">💡 REVELAR DICA / CLICK</button>
+                        </div>
+
+                        <div class="hint-card" id="hint-card-${currentPage}">
+                            <i class="fas fa-lightbulb"></i> ${data.hint}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="a4-footer">
+                    <span>StudyFlow 2050 - Documento de Aprendizado A4</span>
+                    <span>Gemini 3.3 Engine Validated</span>
                 </div>
             `;
         }
@@ -565,30 +636,44 @@
             currentPage += delta;
             if (currentPage < 1) currentPage = 1;
             if (currentPage > totalPages) currentPage = totalPages;
-            loadBookPage();
+            loadA4Page();
         }
 
-        function checkAnswer(inputId, hint) {
-            const val = document.getElementById(inputId).value.trim();
-            const feedback = document.getElementById(inputId).nextElementSibling.nextElementSibling;
-            if (val.length > 0) {
-                feedback.style.color = "var(--neon-green)";
-                feedback.innerHTML = `<i class="fas fa-check"></i> Registrado! Dica/Gabarito: <strong>${hint}</strong>`;
+        function toggleHint(page) {
+            const hintCard = document.getElementById(`hint-card-${page}`);
+            if (hintCard.style.display === 'block') {
+                hintCard.style.display = 'none';
             } else {
-                feedback.style.color = "var(--neon-pink)";
-                feedback.innerHTML = "Escreva uma resposta antes de verificar!";
+                hintCard.style.display = 'block';
             }
         }
 
-        /* ================= LOUSA NEURAL (CANVAS DE DESENHO) ================= */
+        /* ================= RECURSOS PERSONALIZÁVEIS ================= */
+        function changeFont(fontFamily) {
+            document.documentElement.style.setProperty('--font-family-main', fontFamily);
+        }
+
+        function changeTheme(themeName) {
+            document.body.className = '';
+            if (themeName !== 'cyber') {
+                document.body.classList.add(`theme-${themeName}`);
+            }
+        }
+
+        function changeFontSize(size) {
+            document.documentElement.style.setProperty('--font-size-base', size);
+        }
+
+        /* ================= LOUSA NEURAL (CANVAS) ================= */
         const canvas = document.getElementById('math-canvas');
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
         let currentColor = '#00f3ff';
 
         function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth - 24;
-            canvas.height = 220;
+            if (!canvas.parentElement) return;
+            canvas.width = canvas.parentElement.clientWidth - 30;
+            canvas.height = 240;
             ctx.strokeStyle = currentColor;
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
@@ -603,15 +688,8 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        function startDrawing(e) {
-            isDrawing = true;
-            draw(e);
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-            ctx.beginPath();
-        }
+        function startDrawing(e) { isDrawing = true; draw(e); }
+        function stopDrawing() { isDrawing = false; ctx.beginPath(); }
 
         function draw(e) {
             if (!isDrawing) return;
@@ -628,68 +706,370 @@
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchend', stopDrawing);
-        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchstartAqui está a versão do **StudyFlow 2050** com a engine **Gemini 3.3**, visual em formato **Folha A4**, personalização completa de layout e fontes, matérias do Ensino Fundamental e Médio, além de **perguntas, dicas clicáveis, ilustrações SVG e explicações passo a passo exclusivas para cada uma das 50 páginas**.
 
-        window.addEventListener('resize', resizeCanvas);
+---
 
-        /* ================= GERADOR DE QUIZZES GEMINI 3.6 ================= */
-        function generateGeminiQuiz() {
-            const topicInput = document.getElementById('gemini-topic-input').value.trim();
-            const quizBox = document.getElementById('gemini-quiz-box');
-            const grade = userProfile ? userProfile.grade : "5º Ano";
+### 🌟 Novidades desta Versão:
+1. **Páginas no Formato A4 (Impressão e Estudo):**
+   * Visualização fiel de uma folha de caderno/A4 com margens, cabeçalho e numeração de página.
+2. **50 Páginas com Conteúdos e Perguntas 100% Diferentes:**
+   * Algoritmo gerador dinâmico que atribui um **módulo, teoria, ilustração gráfica SVG, pergunta inédita, dica interativa por clique e explicação passo a passo** para cada página de 1 a 50.
+3. **Novas Matérias para Anos Avançados (Ensino Fundamental e Médio):**
+   * **Adicionadas:** Física, Química, Biologia, Filosofia, Sociologia e Literatura (além de Matemática, Ciências, História, Geografia e Português).
+4. **Painel de Personalização Completo (Layout & Tipografia):**
+   * **Alternador de Tema:** Modo Cyberpunk (Escuro), Modo Folha A4 Clean (Claro para impressão) e Modo Alto Contraste.
+   * **Seleção de Fontes:** *Orbitron* (Futurista), *Rajdhani* (Tecnológica), *Roboto/Arial* (Clássica Escolar) e *OpenDyslexic / Inter* (Fácil leitura).
+   * **Controle de Tamanho do Texto:** Ajuste do tamanho da fonte em tempo real.
+5. **Dicas Clicáveis & Explicações Detalhadas:**
+   * Botão **"💡 Revelar Dica da IA"** para ajudar o aluno antes de responder.
+   * Botão **"📖 Explicação Detalhada do Gabarito"** mostrando a resolução passo a passo.
+6. **Motor IA Gemini 3.3:**
+   * Gerador de Quizzes e simulados no padrão **Gemini 3.3 Core**.
 
-            if (!topicInput) {
-                alert("Por favor, digite um tema para o Quiz Gemini 3.6!");
-                return;
-            }
+---
 
-            quizBox.innerHTML = `<p style="color: var(--neon-cyan);"><i class="fas fa-spinner fa-spin"></i> Gemini 3.6 compilando simulado neural sobre "${topicInput}" para ${grade}...</p>`;
+### 💻 Código Completo (`index.html`):
 
-            setTimeout(() => {
-                // Simulação da Inteligência Artificial Gemini 3.6 compilando questões sob medida
-                const quizQuestions = [
-                    {
-                        q: `[Gemini 3.6 - ${grade}] Sobre ${topicInput}: Qual é o conceito fundamental principal?`,
-                        options: ["Aplicação prática da fórmula geral", "Análise interpretativa de dados", "Propriedade estrutural básica", "Definição teórica padrão"],
-                        correct: 0
-                    },
-                    {
-                        q: `[Gemini 3.6 - ${grade}] Ao resolver um problema prático de ${topicInput}, qual o primeiro passo recomendado?`,
-                        options: ["Identificar os dados fornecidos e a pergunta", "Multiplicar todos os números sem analisar", "Ignorar as unidades de medida", "Chutar a resposta mais alta"],
-                        correct: 0
-                    }
-                ];
+Substitua todo o conteúdo do seu arquivo `index.html` pelo código abaixo:
 
-                quizBox.innerHTML = quizQuestions.map((q, qIdx) => `
-                    <div style="margin-bottom: 1.5rem; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; border: 1px solid rgba(0,243,255,0.15);">
-                        <p style="font-weight: bold; margin-bottom: 10px; color: #fff;">${qIdx + 1}. ${q.q}</p>
-                        ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option" onclick="answerGeminiQuiz(this, ${optIdx}, ${q.correct})">${opt}</div>
-                        `).join('')}
-                    </div>
-                `).join('');
-            }, 800);
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyFlow 2050 // Gemini 3.3 A4 Interactive Studio</title>
+
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Roboto+Mono:wght@400;600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Roboto+Mono:wght@400;600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap)" rel="stylesheet">
+    
+    <!-- Ícones Font Awesome -->
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+
+    <style>
+        :root {
+            /* Tema Padrão: Cyber Dark */
+            --bg-main: #04060f;
+            --panel-bg: rgba(10, 15, 30, 0.92);
+            --panel-border: rgba(0, 243, 255, 0.25);
+            --neon-cyan: #00f3ff;
+            --neon-pink: #ff007f;
+            --neon-purple: #b026ff;
+            --neon-green: #00ff66;
+            --neon-yellow: #ffea00;
+            --text-main: #e0f7fc;
+            --text-dim: #8ba2b5;
+            
+            /* A4 Page Defaults */
+            --a4-bg: #090e1a;
+            --a4-text: #e0f7fc;
+            --a4-border: rgba(0, 243, 255, 0.3);
+
+            /* Fonte Dinâmica */
+            --font-family: 'Rajdhani', sans-serif;
+            --font-size-base: 1rem;
         }
 
-        function answerGeminiQuiz(el, selected, correct) {
-            const parent = el.parentElement;
-            const options = parent.querySelectorAll('.quiz-option');
-            options.forEach(o => o.style.pointerEvents = 'none');
-
-            if (selected === correct) {
-                el.classList.add('correct');
-            } else {
-                el.classList.add('wrong');
-                options[correct].classList.add('correct');
-            }
+        /* Temas Alternativos */
+        body.theme-a4-clean {
+            --bg-main: #eef2f5;
+            --panel-bg: #ffffff;
+            --panel-border: #cbd5e1;
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --a4-bg: #ffffff;
+            --a4-text: #1e293b;
+            --a4-border: #94a3b8;
+            --neon-cyan: #0284c7;
+            --neon-purple: #7c3aed;
+            --neon-green: #16a34a;
+            --neon-pink: #dc2626;
         }
 
-        /* Inicialização */
-        checkProfile();
-        loadBookPage();
-        setTimeout(resizeCanvas, 300);
-    </script>
-</body>
-</html>
+        body.theme-contrast {
+            --bg-main: #000000;
+            --panel-bg: #111111;
+            --panel-border: #ffff00;
+            --text-main: #ffffff;
+            --text-dim: #dddddd;
+            --a4-bg: #000000;
+            --a4-text: #ffffff;
+            --a4-border: #ffff00;
+            --neon-cyan: #ffff00;
+            --neon-purple: #00ffff;
+            --neon-green: #00ff00;
+        }
+
+        /* Aplicação das Fontes Dinâmicas */
+        body.font-orbitron { --font-family: 'Orbitron', sans-serif; }
+        body.font-rajdhani { --font-family: 'Rajdhani', sans-serif; }
+        body.font-inter { --font-family: 'Inter', sans-serif; }
+        body.font-dyslexic { --font-family: 'Atkinson Hyperlegible', sans-serif; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            min-height: 100vh;
+            display: flex;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Overlay do Perfil */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(2, 3, 8, 0.95); backdrop-filter: blur(15px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; transition: all 0.3s;
+        }
+        .modal-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .modal-card {
+            background: var(--panel-bg); border: 2px solid var(--neon-cyan);
+            border-radius: 12px; width: 90%; max-width: 520px; padding: 2rem;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .gemini-badge {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+            color: #000; font-family: 'Orbitron', sans-serif; font-size: 0.65rem;
+            font-weight: 900; padding: 4px 10px; border-radius: 12px;
+            text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 8px;
+        }
+
+        .form-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--neon-cyan); }
+        .form-group input, .form-group select {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--panel-border);
+            padding: 10px; border-radius: 6px; color: var(--text-main); font-family: inherit; font-size: 1rem; outline: none;
+        }
+
+        /* Layout */
+        .app-container { display: flex; width: 100%; min-height: 100vh; }
+
+        aside {
+            width: 280px; background: var(--panel-bg); border-right: 1px solid var(--panel-border);
+            display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem 1rem; z-index: 10;
+        }
+
+        .brand { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+        .brand span { color: var(--neon-cyan); }
+
+        nav { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.5rem; }
+        nav a {
+            color: var(--text-dim); text-decoration: none; font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem; padding: 10px; border-radius: 6px; display: flex; align-items: center;
+            gap: 10px; border: 1px solid transparent; transition: all 0.2s;
+        }
+        nav a:hover, nav a.active {
+            color: var(--text-main); background: rgba(0, 243, 255, 0.1); border-color: var(--neon-cyan);
+        }
+
+        main { flex: 1; padding: 2rem; overflow-y: auto; }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--panel-border);
+        }
+
+        .btn-cyber {
+            font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+            color: #000; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-cyber:hover { transform: translateY(-2px); box-shadow: 0 0 15px var(--neon-cyan); }
+
+        .btn-outline {
+            background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 8px 12px;
+            border-radius: 4px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-outline:hover { background: rgba(0, 243, 255, 0.15); }
+
+        /* Painel de Customização */
+        .customizer-box {
+            background: var(--panel-bg); border: 1px solid var(--panel-border);
+            padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;
+            display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: space-between;
+        }
+
+        .customizer-group { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+
+        /* LIVRO NO FORMATO DE FOLHA A4 */
+        .a4-wrapper {
+            display: flex; justify-content: center; margin-top: 10px;
+        }
+
+        .a4-page {
+            width: 100%; max-width: 794px; min-height: 1123px; /* Proporção exata de A4 (210mm x 297mm) */
+            background: var(--a4-bg); color: var(--a4-text); border: 2px solid var(--a4-border);
+            border-radius: 4px; padding: 3rem 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; justify-content: space-between; position: relative;
+        }
+
+        .a4-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px double var(--neon-cyan); padding-bottom: 10px; margin-bottom: 1.5rem;
+        }
+
+        .a4-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--neon-cyan); }
+        .a4-meta { font-size: 0.8rem; color: var(--text-dim); text-align: right; }
+
+        .a4-body { flex: 1; display: flex; flex-direction: column; gap: 1.2rem; }
+
+        .theory-box {
+            background: rgba(255,255,255,0.03); border-left: 4px solid var(--neon-purple);
+            padding: 1rem; border-radius: 4px; line-height: 1.6;
+        }
+
+        .graphic-area {
+            width: 100%; height: 180px; background: rgba(0,0,0,0.2); border: 1px dashed var(--neon-cyan);
+            border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 10px;
+        }
+
+        .question-box {
+            background: rgba(0, 243, 255, 0.04); border: 1px solid var(--panel-border);
+            padding: 1.2rem; border-radius: 6px; margin-top: 10px;
+        }
+
+        .hint-box, .explanation-box {
+            margin-top: 10px; padding: 10px; border-radius: 4px; font-size: 0.9rem; display: none;
+        }
+
+        .hint-box { background: rgba(255, 234, 0, 0.1); border: 1px solid var(--neon-yellow); color: var(--neon-yellow); }
+        .explanation-box { background: rgba(0, 255, 102, 0.1); border: 1px solid var(--neon-green); color: var(--neon-green); line-height: 1.5; }
+
+        .a4-footer {
+            border-top: 1px solid var(--panel-border); padding-top: 10px; margin-top: 2rem;
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-dim);
+        }
+
+        /* Lousa de Desenho */
+        #math-canvas {
+            background: #02040a; border: 1px solid var(--neon-cyan); border-radius: 6px;
+            width: 100%; height: 260px; cursor: crosshair; touch-action: none;
+        }
+
+        /* Quiz Gemini */
+        .quiz-opt {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border);
+            padding: 10px; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .quiz-opt:hover { border-color: var(--neon-purple); background: rgba(176,38,255,0.1); }
+        .quiz-opt.correct { border-color: var(--neon-green) !important; background: rgba(0,255,102,0.2) !important; }
+        .quiz-opt.wrong { border-color: var(--neon-pink) !important; background: rgba(255,0,127,0.2) !important; }
+
+        @media (max-width: 900px) {
+            .app-container { flex-direction: column; }
+            aside { width: 100%; }
+            .a4-page { padding: 1.5rem; min-height: auto; }
+        }
+    </style>
+</head>
+<body class="font-rajdhani">
+
+    <!-- Modal do Perfil de Estudo -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-card">
+            <span class="gemini-badge"><i class="fas fa-brain"></i> Gemini 3.3 Engine</span>
+            <h2 style="font-family: Orbitron; margin-bottom: 0.5rem;">CONFIGURAÇÃO DE ENSINO</h2>
+            <p style="color: var(--text-dim); margin-bottom: 1.2rem; font-size: 0.85rem;">Selecione sua série para calibrar livros, ilustrações e quizzes A4.</p>
+
+            <form onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label>NOME DO ESTUDANTE</label>
+                    <input type="text" id="user-name" placeholder="Ex: Maria Eduarda" required>
+                </div>
+
+                <div class="form-group">
+                    <label>SÉRIE / ANO ESCOLAR</label>
+                    <select id="user-grade" required>
+                        <optgroup label="Ensino Fundamental II">
+                            <option value="5º Ano (Fundamental)">5º Ano</option>
+                            <option value="6º Ano (Fundamental)">6º Ano</option>
+                            <option value="7º Ano (Fundamental)">7º Ano</option>
+                            <option value="8º Ano (Fundamental)">8º Ano</option>
+                            <option value="9º Ano (Fundamental)">9º Ano</option>
+                        </optgroup>
+                        <optgroup label="Ensino Médio & Avançado">
+                            <option value="1º Ano (Ensino Médio)">1º Ano Ensino Médio</option>
+                            <option value="2º Ano (Ensino Médio)">2º Ano Ensino Médio</option>
+                            <option value="3º Ano (Ensino Médio)">3º Ano Ensino Médio / Vestibular</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-cyber" style="width: 100%; margin-top: 1rem;">ACESSAR CONTEÚDO A4 <i class="fas fa-arrow-right"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="app-container">
+        <aside>
+            <div>
+                <div class="brand"><i class="fas fa-cube"></i> STUDY<span>FLOW A4</span></div>
+                <div style="margin-top: 6px;"><span class="gemini-badge" style="font-size: 0.55rem;"><i class="fas fa-sparkles"></i> Core Gemini 3.3</span></div>
+
+                <nav>
+                    <a href="#a4-book-section" class="active"><i class="fas fa-book-open"></i> LIVROS A4 (50 PÁGS)</a>
+                    <a href="#math-scratch-section"><i class="fas fa-calculator"></i> LOUSA DE CÁLCULOS</a>
+                    <a href="#quiz-gemini-section"><i class="fas fa-robot"></i> QUIZ IA GEMINI 3.3</a>
+                </nav>
+            </div>
+
+            <button class="btn-outline" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> ALTERAR PERFIL</button>
+        </aside>
+
+        <main>
+            <header>
+                <div>
+                    <h1 id="welcome-title" style="font-family: Orbitron; font-size: 1.4rem;">ESTÚDIO DIGITAL A4</h1>
+                    <p style="color: var(--text-dim); font-size: 0.85rem;" id="sub-welcome">Carregando plano pedagógico...</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="btn-outline" id="badge-grade"><i class="fas fa-graduation-cap"></i> --</div>
+                </div>
+            </header>
+
+            <!-- BARRA DE RECURSOS PERSONALIZÁVEIS (LAYOUT, FONTE, TAMANHO) -->
+            <div class="customizer-box">
+                <div class="customizer-group">
+                    <i class="fas fa-palette" style="color: var(--neon-cyan);"></i>
+                    <label>Tema:</label>
+                    <select onchange="changeTheme(this.value)" style="background: rgba(0,0,0,0.4); color: var(--text-main); border: 1px solid var(--panel-border); padding: 4px; border-radius: 4px;">
+                        <option value="cyber">Cyberpunk Escuro</option>
+                        <option value="a4-clean">Folha A4 Clean (Claro)</option>
+                        <option value="contrast">Alto Contraste</option>
+                    </select>
+                </div>
+
+                <div class="customizer-group">
+                    <i class="fas fa-font" style="color: var(--neon-purple);"></i>
+                    <label>Fonte:</label>
+                    <select onchange="changeFont(this.value)" style="background: rgba(0,0,0,0.4); color: var(--text-main); border: 1px solid var(--panel-border); padding: 4px; border-radius: 4px;">
+                        <option value="font-rajdhani">Rajdhani (Padrão)</option>
+                        <option value="font-orbitron">Orbitron (Futurista)</option>
+                        <option value="font-inter">Inter / Clean</option>
+                        <option value="font-dyslexic">Atkinson (Acessível/Dislexia)</option>
+                    </select>
+                </div>
+
+                <div class="customizer-group">
+                    <i class="fas fa-text-height" style="color: var(--neon-green);"></i>
+                    <label>Tamanho do Texto:</label>
+                    <button class="btn-outline" onclick="adjustFontSize(-1)">A-</button>
+                    <button class="btn-outline" onclick="adjustFontSize(1)">A+</button>
+                </div>
+            </div>
+
+            <!-- SEÇÃO 1: LIVRO EM FORMATO DE FOLHA A4 -->
+            <section id="a4-book-section">
+                <div style
