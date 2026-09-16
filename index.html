@@ -148,13 +148,38 @@
         .a4-body { flex: 1; display: flex; flex-direction: column; gap: 1.2rem; }
 
         .graphic-area {
-            width: 100%; height: 200px; background: #f8fafc; border: 1px dashed var(--primary);
+            width: 100%; height: 210px; background: #f8fafc; border: 1px dashed var(--primary);
             border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 10px;
         }
 
-        .question-box {
-            background: #f0f9ff; border-left: 4px solid var(--primary); padding: 1.2rem; border-radius: 4px; margin-top: 10px;
+        /* QUESTÃO INTERATIVA AUTÓNOMA */
+        .standalone-question-box {
+            background: #f0f9ff; border: 1px solid #bae6fd; padding: 1.5rem; border-radius: 8px; margin-top: 10px;
         }
+
+        .quiz-opt-btn {
+            display: block; width: 100%; text-align: left; padding: 12px 14px;
+            margin-top: 8px; background: #ffffff; border: 1px solid var(--border-color);
+            border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 500;
+            transition: all 0.2s;
+        }
+        .quiz-opt-btn:hover { border-color: var(--primary); background: #eff6ff; }
+        .quiz-opt-btn.correct-choice { background: #dcfce7 !important; border-color: var(--green) !important; color: #15803d; font-weight: bold; }
+        .quiz-opt-btn.wrong-choice { background: #fee2e2 !important; border-color: var(--red) !important; color: #b91c1c; font-weight: bold; }
+
+        .explanation-card {
+            margin-top: 15px; padding: 14px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5; display: none;
+        }
+        .explanation-card.correct { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+        .explanation-card.wrong { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+
+        /* PAINEL DE NOTAS DA IA MONITORADORA */
+        .grade-badge-card {
+            display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+            border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: bold;
+        }
+        .grade-pass { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+        .grade-fail { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
 
         /* CHAT IA & PROVAS */
         .chat-box {
@@ -193,11 +218,11 @@
         <div class="modal-card">
             <span class="gemini-badge"><i class="fas fa-microchip"></i> Gemini 3.1 Pro Engine</span>
             <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem;">ACESSO AO ESTÚDIO 2050</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">Preencha seus dados para acessar turmas, livros A4 e assistente IA.</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">Preencha seus dados para acessar turmas, livros A4 e monitoramento de notas.</p>
 
             <form onsubmit="saveProfile(event)">
                 <div class="form-group">
-                    <label>NOME COMPLETO</label>
+                    <label>NOME COMPLETO DO ESTUDANTE OU PROFESSOR</label>
                     <input type="text" id="user-name" placeholder="Ex: Lucas Silva" required>
                 </div>
 
@@ -246,7 +271,7 @@
                     <a href="#" class="active" onclick="switchTab('lobby', this)"><i class="fas fa-th-large"></i> LOBBY PRINCIPAL</a>
                     <a href="#" onclick="switchTab('books', this)"><i class="fas fa-book"></i> LIVROS A4 (60-70 PÁGS)</a>
                     <a href="#" onclick="switchTab('ia', this)"><i class="fas fa-robot"></i> IA GEMINI 3.1 PRO</a>
-                    <a href="#" onclick="switchTab('classes', this)"><i class="fas fa-chalkboard-teacher"></i> PROVAS & TURMAS</a>
+                    <a href="#" onclick="switchTab('classes', this)"><i class="fas fa-chalkboard-teacher"></i> MONITOR DA IA / TURMAS</a>
                     <a href="#" onclick="switchTab('live', this)"><i class="fas fa-video"></i> AULAS ON-LINE</a>
                     <a href="#" onclick="switchTab('google', this)"><i class="fab fa-google"></i> PESQUISA GOOGLE</a>
                     <a href="#" onclick="switchTab('scratch', this)"><i class="fas fa-pen-line"></i> LOUSA DE CÁLCULOS</a>
@@ -265,6 +290,9 @@
                 </div>
 
                 <div style="display: flex; gap: 10px; align-items: center;">
+                    <div id="student-grade-header-badge" class="grade-badge-card grade-pass">
+                        <i class="fas fa-chart-line"></i> <span id="header-grade-val">Média: -- / 10.0</span>
+                    </div>
                     <button class="btn-outline" onclick="toggleFullScreen()"><i class="fas fa-expand"></i> Tela Cheia</button>
                     <span class="gemini-badge" id="badge-role" style="margin: 0;">--</span>
                 </div>
@@ -279,7 +307,7 @@
                     <div class="lobby-card" onclick="switchTab('books')">
                         <i class="fas fa-book-open"></i>
                         <h3>Livros Digitais A4</h3>
-                        <p>Apostilas de 60 a 70 páginas por bimestre com capas, leituras e exercícios exclusivos por série.</p>
+                        <p>Questões autônomas com imagem e justificativa explicativa imediata de certo/errado.</p>
                     </div>
 
                     <div class="lobby-card" onclick="switchTab('ia')">
@@ -289,9 +317,9 @@
                     </div>
 
                     <div class="lobby-card" onclick="switchTab('classes')">
-                        <i class="fas fa-users-class"></i>
-                        <h3>Turmas e Provas</h3>
-                        <p>Professor cria salas e provas. Aluno responde e a IA corrige automaticamente se liberado.</p>
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Monitoria da IA & Turmas</h3>
+                        <p>Cálculo em tempo real da média acumulada do aluno (Min: 6.0 | Max: 10.0).</p>
                     </div>
 
                     <div class="lobby-card" onclick="switchTab('live')">
@@ -360,7 +388,7 @@
 
                 <div class="chat-box" id="chat-logs">
                     <div class="chat-msg ia">
-                        Olá! Sou o **Gemini 3.1 Pro**. Posso gerar textos, criar códigos de programação, simular gráficos/imagens e ajudar a corrigir provas. Como posso te ajudar hoje?
+                        Olá! Sou o **Gemini 3.1 Pro**. Posso gerar textos, criar códigos de programação, simular gráficos/imagens e ajudar a monitorar seu desempenho escolar. Como posso te ajudar hoje?
                     </div>
                 </div>
 
@@ -370,51 +398,37 @@
                 </div>
             </section>
 
-            <!-- ABA 4: TURMAS E PROVAS -->
+            <!-- ABA 4: TURMAS E MONITORIA DA IA DA NOTA -->
             <section id="tab-classes" class="hidden">
-                <div id="teacher-panel" class="hidden">
-                    <h3><i class="fas fa-user-tie"></i> Painel do Professor</h3>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Gerencie suas turmas, alunos e crie provas com correção via IA.</p>
+                <h3><i class="fas fa-chart-pie" style="color: var(--purple);"></i> Monitoramento e Correção por IA (Gemini 3.1 Pro)</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Cálculo automático de notas, progresso das questões e relatório acadêmico.</p>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                        <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px;">
-                            <h4 style="margin-bottom: 10px;">Criar Nova Prova</h4>
-                            <div class="form-group">
-                                <label>Título da Prova</label>
-                                <input type="text" id="exam-title" placeholder="Ex: Prova de Geografia - 1º Bimestre">
-                            </div>
-                            <div class="form-group">
-                                <label>Pergunta / Questão</label>
-                                <textarea id="exam-question" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; width: 100%; height: 80px;"></textarea>
-                            </div>
-                            <div class="form-group" style="flex-direction: row; align-items: center; gap: 8px;">
-                                <input type="checkbox" id="exam-auto-grade" checked style="width: auto;">
-                                <label for="exam-auto-grade" style="margin: 0; cursor: pointer;">Permitir Correção Automática pela IA Gemini 3.1 Pro</label>
-                            </div>
-                            <button class="btn-main" onclick="createExam()"><i class="fas fa-plus-circle"></i> Publicar Prova</button>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+                    <!-- CARD DA MÉDIA DO ALUNO -->
+                    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px;"><i class="fas fa-user-graduate"></i> Desempenho do Aluno</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Média Atual Calculada pela IA:</span>
+                            <div style="font-size: 2.2rem; font-family: 'Orbitron', sans-serif; font-weight: 900; color: var(--primary);" id="dashboard-grade-display">0.0 / 10.0</div>
                         </div>
 
-                        <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px;">
-                            <h4 style="margin-bottom: 10px;">Alunos & Notas da Turma</h4>
-                            <div id="student-list-container">
-                                <p style="font-size: 0.85rem; color: var(--text-muted);">Selecione um aluno para lançar ou revisar notas:</p>
-                                <ul style="list-style: none; margin-top: 10px;" id="student-list">
-                                    <li style="padding: 8px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                                        <span>Lucas Silva (7º Ano)</span>
-                                        <button class="btn-outline" onclick="alert('Nota lançada: 9.5')">Lançar Nota</button>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div id="status-grade-box" class="grade-badge-card grade-fail" style="margin-bottom: 1rem;">
+                            <i class="fas fa-info-circle"></i> Status: EM RECUPERAÇÃO (Mínimo: 6.0)
                         </div>
+
+                        <ul style="list-style: none; font-size: 0.88rem; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+                            <li><strong>Total de Questões Respondidas:</strong> <span id="stat-total">0</span></li>
+                            <li style="color: var(--green);"><strong>Questões Corretas:</strong> <span id="stat-correct">0</span></li>
+                            <li style="color: var(--red);"><strong>Questões Incorretas:</strong> <span id="stat-wrong">0</span></li>
+                        </ul>
                     </div>
-                </div>
 
-                <div id="student-panel" class="hidden">
-                    <h3><i class="fas fa-user-graduate"></i> Painel de Provas do Aluno</h3>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Responda às provas enviadas pelo seu professor:</p>
-
-                    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px;" id="student-exam-box">
-                        <!-- Renderizado por JS -->
+                    <!-- RELATÓRIO DO PROFESSOR -->
+                    <div style="background: #ffffff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px;"><i class="fas fa-microchip"></i> Relatório da IA Monitoradora para o Professor</h4>
+                        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; font-size: 0.88rem; line-height: 1.5;" id="ai-teacher-report">
+                            Sincronizando dados das resoluções do aluno para emitir o parecer pedagógico...
+                        </div>
                     </div>
                 </div>
             </section>
@@ -484,15 +498,13 @@
         </main>
     </div>
 
-    <!-- LÓGICA JAVASCRIPT CORRIGIDA -->
+    <!-- LÓGICA JAVASCRIPT PRINCIPAL -->
     <script>
-        /* ================= ESTADO E LOGIN ================= */
-        let userProfile = JSON.parse(localStorage.getItem('studyflow_v4_data')) || null;
-        let currentPage = 0; // 0 = Capa, 1 a 70 = Páginas
+        /* ================= ESTADO, SALVAMENTO E NOTAS ================= */
+        let userProfile = JSON.parse(localStorage.getItem('studyflow_v5_profile')) || null;
+        let studentAnswers = JSON.parse(localStorage.getItem('studyflow_student_answers')) || {};
+        let currentPage = 0; // 0 = Capa, 1 a 65 = Páginas
         const totalPages = 65;
-        let activeExams = JSON.parse(localStorage.getItem('studyflow_exams')) || [
-            { id: 1, title: "Prova de Geografia 1º Bimestre", question: "Quais são os principais fatores que definem a regionalização do Brasil pelo IBGE?", autoGrade: true }
-        ];
 
         function checkProfile() {
             const modal = document.getElementById('profile-modal');
@@ -529,9 +541,8 @@
             if (!name) return;
 
             userProfile = { name, role, grade, classroom };
-            localStorage.setItem('studyflow_v4_data', JSON.stringify(userProfile));
+            localStorage.setItem('studyflow_v5_profile', JSON.stringify(userProfile));
 
-            // FORÇA O FECHAMENTO DO MODAL IMEDIATAMENTE
             const modal = document.getElementById('profile-modal');
             modal.classList.add('hidden');
             modal.style.display = 'none !important';
@@ -548,16 +559,7 @@
             document.getElementById('badge-role').textContent = userProfile.role.toUpperCase();
             document.getElementById('user-display-name').textContent = userProfile.name;
 
-            // Alterna painel de Professor / Aluno
-            if (userProfile.role === 'professor') {
-                document.getElementById('teacher-panel').classList.remove('hidden');
-                document.getElementById('student-panel').classList.add('hidden');
-            } else {
-                document.getElementById('teacher-panel').classList.add('hidden');
-                document.getElementById('student-panel').classList.remove('hidden');
-                renderStudentExams();
-            }
-
+            calculateGradeAndStats();
             loadBookPage();
         }
 
@@ -571,65 +573,182 @@
             }
         }
 
-        /* ================= NAVEGAÇÃO ENTRE ABAS ================= */
-        function switchTab(tabId, el) {
-            const tabs = ['lobby', 'books', 'ia', 'classes', 'live', 'google', 'scratch'];
-            tabs.forEach(t => {
-                const section = document.getElementById(`tab-${t}`);
-                if (section) section.classList.add('hidden');
+        /* ================= CÁLCULO DA MÉDIA PELA IA MONITORADORA ================= */
+        function calculateGradeAndStats() {
+            const keys = Object.keys(studentAnswers);
+            const total = keys.length;
+            let correct = 0;
+
+            keys.forEach(k => {
+                if (studentAnswers[k].isCorrect) correct++;
             });
 
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const wrong = total - correct;
+            let grade = 0.0;
 
-            if (el) {
-                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-                el.classList.add('active');
+            if (total > 0) {
+                grade = parseFloat(((correct / total) * 10).toFixed(1));
             }
 
-            if (tabId === 'scratch') setTimeout(initCanvas, 200);
+            // Atualiza Interface de Notas
+            const headerBadgeVal = document.getElementById('header-grade-val');
+            const dashDisplay = document.getElementById('dashboard-grade-display');
+            const statusBox = document.getElementById('status-grade-box');
+
+            if (headerBadgeVal) headerBadgeVal.textContent = `Média: ${grade.toFixed(1)} / 10.0`;
+            if (dashDisplay) dashDisplay.textContent = `${grade.toFixed(1)} / 10.0`;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-correct').textContent = correct;
+            document.getElementById('stat-wrong').textContent = wrong;
+
+            const isPassed = grade >= 6.0;
+
+            if (statusBox) {
+                if (total === 0) {
+                    statusBox.className = "grade-badge-card grade-fail";
+                    statusBox.innerHTML = `<i class="fas fa-info-circle"></i> Status: PENDENTE (Nenhuma questão resolvida)`;
+                } else if (isPassed) {
+                    statusBox.className = "grade-badge-card grade-pass";
+                    statusBox.innerHTML = `<i class="fas fa-check-circle"></i> Status: APROVADO (Média >= 6.0)`;
+                } else {
+                    statusBox.className = "grade-badge-card grade-fail";
+                    statusBox.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Status: EM RECUPERAÇÃO (Média < 6.0)`;
+                }
+            }
+
+            // Relatório de Monitoramento do Professor emitido pela IA
+            const report = document.getElementById('ai-teacher-report');
+            if (report) {
+                if (total === 0) {
+                    report.innerHTML = `[**IA Gemini 3.1 Pro**]: O aluno **${userProfile ? userProfile.name : 'Estudante'}** ainda não iniciou a resolução das questões A4. Aguardando dados.`;
+                } else {
+                    report.innerHTML = `
+                        [**IA Gemini 3.1 Pro Monitoring**]:<br>
+                        - **Aluno:** ${userProfile ? userProfile.name : 'Estudante'} (${userProfile ? userProfile.grade : ''})<br>
+                        - **Média Geral:** <strong>${grade.toFixed(1)}</strong> / 10.0 (Mínimo para aprovação: 6.0)<br>
+                        - **Aproveitamento:** ${((correct/total)*100).toFixed(0)}% de acertos em ${total} questões.<br>
+                        - **Parecer da IA:** ${isPassed ? 'O estudante apresenta excelente domínio dos conceitos e encontra-se APROVADO.' : 'O estudante necessita de reforço nos tópicos com erro para atingir a média mínima de 6.0.'}
+                    `;
+                }
+            }
         }
 
-        /* ================= LIVROS A4 (60-70 PÁGS E CAPAS) ================= */
-        function generateSVGForSubject(subject, page) {
+        /* ================= GENERATOR DE QUESTÕES AUTÓNOMAS COM IMAGEM ================= */
+        function generateStandaloneQuestion(subject, page, bimestre, grade) {
+            const qKey = `${subject}_b${bimestre}_p${page}_${grade}`;
+
+            // Banco de Questões Autônomas com Imagens e Enunciados Completos
+            let qData = {
+                key: qKey,
+                title: `Questão Autônoma #${page} - ${subject.toUpperCase()}`,
+                enunciado: `[Questão ${page}]: Analise a representação gráfica abaixo e identifique a afirmação correta referente aos estudos de ${subject.toUpperCase()} do ${bimestre}º Bimestre:`,
+                imageSVG: `<svg width="100%" height="160" viewBox="0 0 300 160">
+                    <rect x="20" y="20" width="260" height="120" fill="#f1f5f9" stroke="#2563eb" stroke-width="2" rx="6"/>
+                    <circle cx="90" cy="80" r="35" fill="#3b82f6" opacity="0.3"/>
+                    <circle cx="210" cy="80" r="35" fill="#10b981" opacity="0.3"/>
+                    <text x="70" y="85" fill="#1e3a8a" font-weight="bold" font-size="12">Zona A</text>
+                    <text x="190" y="85" fill="#064e3b" font-weight="bold" font-size="12">Zona B</text>
+                </svg>`,
+                options: [
+                    "A interação demonstrada na figura reflete o equilíbrio direto entre os componentes.",
+                    "A Zona A é totalmente isolada da Zona B sem qualquer influência estrutural.",
+                    "Não há possibilidade de aplicar o conceito em situações práticas do cotidiano.",
+                    "O gráfico representa exclusivamente valores nulos e sem relevância científica."
+                ],
+                correctIndex: 0,
+                expRight: "Exato! A interação ilustrada na figura demonstra o equilíbrio funcional entre as duas zonas representadas.",
+                expWrong: "Incorreto! A opção escolhida não condiz com a representação gráfica. A alternativa correta é a 'A', pois ilustra a interação e o equilíbrio direto."
+            };
+
+            // Customizações por Matéria
             if (subject === 'geografia') {
-                return `<svg width="100%" height="150" viewBox="0 0 300 150">
-                    <circle cx="150" cy="75" r="50" fill="none" stroke="#2563eb" stroke-width="3"/>
-                    <ellipse cx="150" cy="75" rx="50" ry="20" fill="none" stroke="#16a34a" stroke-width="2"/>
-                    <line x1="150" y1="25" x2="150" y2="125" stroke="#2563eb" stroke-width="2" stroke-dasharray="4"/>
-                    <text x="80" y="145" fill="#0f172a" font-size="11" font-weight="bold">Globo / Mapeamento Territorial Pág ${page}</text>
+                qData.enunciado = `[Geografia - Questão ${page}]: A imagem abaixo ilustra a divisão regional do Brasil segundo o IBGE. Qual região destaca-se por possuir o maior número de estados federativos?`;
+                qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
+                    <rect x="10" y="10" width="280" height="140" fill="#eff6ff" stroke="#2563eb" stroke-width="2" rx="6"/>
+                    <path d="M 50 40 Q 150 20 220 50 Q 250 110 180 140 Q 80 130 50 40 Z" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+                    <text x="110" y="85" fill="#15803d" font-weight="bold" font-size="14">Região Nordeste (9 Estados)</text>
                 </svg>`;
-            } else if (subject === 'historia') {
-                return `<svg width="100%" height="150" viewBox="0 0 300 150">
-                    <rect x="50" y="30" width="200" height="90" fill="#f8fafc" stroke="#7c3aed" stroke-width="2" rx="4"/>
-                    <line x1="70" y1="60" x2="230" y2="60" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="70" y1="85" x2="190" y2="85" stroke="#cbd5e1" stroke-width="2"/>
-                    <text x="80" y="50" fill="#7c3aed" font-size="11" font-weight="bold">Documento / Linha do Tempo Pág ${page}</text>
+                qData.options = [
+                    "Região Norte",
+                    "Região Nordeste",
+                    "Região Sudeste",
+                    "Região Sul"
+                ];
+                qData.correctIndex = 1;
+                qData.expRight = "Correto! A região Nordeste conta com 9 estados (AL, BA, CE, MA, PB, PE, PI, RN, SE), sendo a região com a maior quantidade de unidades federativas do Brasil.";
+                qData.expWrong = "Incorreto! A resposta correta é a opção 'Região Nordeste', que possui 9 estados no total.";
+            } else if (subject === 'matematica') {
+                const valA = page * 3;
+                const valB = 10;
+                const totalArea = valA * valB;
+                qData.enunciado = `[Matemática - Questão ${page}]: O retângulo representado abaixo possui base de ${valA} cm e altura de ${valB} cm. Qual é a área total desta figura geométrica?`;
+                qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
+                    <rect x="60" y="40" width="180" height="80" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+                    <text x="120" y="30" fill="#b45309" font-weight="bold">Base = ${valA} cm</text>
+                    <text x="18" y="85" fill="#b45309" font-weight="bold">Altura = ${valB} cm</text>
                 </svg>`;
-            } else {
-                return `<svg width="100%" height="150" viewBox="0 0 300 150">
-                    <line x1="30" y1="120" x2="270" y2="120" stroke="#0f172a" stroke-width="2"/>
-                    <path d="M 30 120 Q 150 ${120 - (page * 1.2)} 270 30" fill="none" stroke="#2563eb" stroke-width="3"/>
-                    <text x="80" y="140" fill="#2563eb" font-size="11" font-weight="bold">Gráfico Ilustrativo do Conteúdo Pág ${page}</text>
-                </svg>`;
+                qData.options = [
+                    `${valA + valB} cm²`,
+                    `${totalArea} cm²`,
+                    `${totalArea * 2} cm²`,
+                    `${valA * 2} cm²`
+                ];
+                qData.correctIndex = 1;
+                qData.expRight = `Correto! A área de um retângulo é dada pela multiplicação da base pela altura: ${valA} cm × ${valB} cm = ${totalArea} cm².`;
+                qData.expWrong = `Incorreto! Para calcular a área do retângulo, multiplica-se a base pela altura (${valA} × ${valB} = ${totalArea} cm²).`;
             }
+
+            return qData;
         }
 
-        function getGradeBookTitle(subject, bimestre, grade) {
-            if (subject === 'geografia') {
-                if (grade.includes("6º")) return ["Globo Terrestre Político & Cartografia", "Coordenadas Geográficas e Fusos Horários", "Litosfera e Relevo Terrestre", "Hidrosfera e Climas do Globo"][bimestre - 1];
-                if (grade.includes("7º")) return ["Formação Territorial do Brasil & IBGE", "Região Norte e Nordeste", "Região Centro-Oeste e Sudeste", "Região Sul e Domínios Morfoclimáticos"][bimestre - 1];
-                return [`Geografia Geral - Módulo ${bimestre}`, `Geopolítica Mundial - Módulo ${bimestre}`, `Análise Socioambiental - Módulo ${bimestre}`, `Estudos Globais - Módulo ${bimestre}`][bimestre - 1];
+        /* ================= SALVAMENTO DE RESPOSTAS DO ALUNO ================= */
+        function selectAnswer(qKey, chosenIdx, correctIdx, expRight, expWrong) {
+            const isCorrect = (chosenIdx === correctIdx);
+
+            // Salva instantaneamente no localStorage
+            studentAnswers[qKey] = {
+                chosenIdx,
+                correctIdx,
+                isCorrect,
+                timestamp: Date.now()
+            };
+
+            localStorage.setItem('studyflow_student_answers', JSON.stringify(studentAnswers));
+
+            // Atualiza UI da questão
+            const qBox = document.getElementById(`qbox-${qKey}`);
+            if (qBox) {
+                const btns = qBox.querySelectorAll('.quiz-opt-btn');
+                btns.forEach((btn, idx) => {
+                    btn.disabled = true;
+                    if (idx === correctIdx) btn.classList.add('correct-choice');
+                    if (idx === chosenIdx && !isCorrect) btn.classList.add('wrong-choice');
+                });
+
+                const expCard = document.getElementById(`exp-${qKey}`);
+                if (expCard) {
+                    expCard.style.display = 'block';
+                    if (isCorrect) {
+                        expCard.className = "explanation-card correct";
+                        expCard.innerHTML = `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${expRight}`;
+                    } else {
+                        expCard.className = "explanation-card wrong";
+                        expCard.innerHTML = `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${expWrong}`;
+                    }
+                }
             }
-            return `${subject.toUpperCase()} - MÓDULO ${bimestre}º BIMESTRE (${grade})`;
+
+            // Recalcula média instantaneamente
+            calculateGradeAndStats();
         }
 
+        /* ================= RENDERIZAÇÃO DO LIVRO A4 ================= */
         function loadBookPage() {
             const subject = document.getElementById('book-subject').value;
             const bimestre = document.getElementById('book-bimestre').value;
             const grade = userProfile ? userProfile.grade : "7º Ano";
             const container = document.getElementById('a4-render');
-
-            const bookTitle = getGradeBookTitle(subject, bimestre, grade);
 
             if (currentPage === 0) {
                 // RENDERIZA A CAPA DO LIVRO
@@ -639,11 +758,14 @@
                         <div>
                             <span class="gemini-badge">Apostila Oficial A4</span>
                             <h1 style="font-family: 'Orbitron'; font-size: 2.2rem; color: var(--primary); margin-top: 1rem;">${subject.toUpperCase()}</h1>
-                            <h2 style="font-size: 1.2rem; color: var(--text-muted); margin-top: 0.5rem;">${bookTitle}</h2>
+                            <h2 style="font-size: 1.2rem; color: var(--text-muted); margin-top: 0.5rem;">${subject.toUpperCase()} - ${bimestre}º BIMESTRE</h2>
                         </div>
 
                         <div>
-                            ${generateSVGForSubject(subject, 1)}
+                            <svg width="100%" height="160" viewBox="0 0 300 160">
+                                <circle cx="150" cy="80" r="50" fill="none" stroke="#2563eb" stroke-width="4"/>
+                                <text x="100" y="85" fill="#2563eb" font-weight="bold">${subject.toUpperCase()}</text>
+                            </svg>
                             <div style="margin-top: 1.5rem; padding: 1rem; background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px;">
                                 <strong>SÉRIE: ${grade.toUpperCase()}</strong><br>
                                 <span style="color: var(--text-muted); font-size: 0.9rem;">EDIÇÃO DE 65 PÁGINAS // ${bimestre}º BIMESTRE</span>
@@ -656,45 +778,51 @@
                     </div>
                 `;
             } else {
-                // RENDERIZA PÁGINAS DO LIVRO (1 A 65)
+                // RENDERIZA QUESTÃO AUTÓNOMA DA PÁGINA A4
                 document.getElementById('page-display').textContent = `Página ${currentPage} de ${totalPages}`;
                 
-                const isReadingOnly = currentPage % 3 === 1;
-                const isMixed = currentPage % 3 === 2;
+                const qData = generateStandaloneQuestion(subject, currentPage, bimestre, grade);
+                const savedAns = studentAnswers[qData.key];
 
                 container.innerHTML = `
                     <div class="a4-header">
                         <div>
-                            <div style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--primary);">${subject.toUpperCase()} // ${bookTitle}</div>
+                            <div style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--primary);">${subject.toUpperCase()} // QUESTÃO AUTÓNOMA</div>
                             <div style="font-size: 0.8rem; color: var(--text-muted);">Módulo do ${bimestre}º Bimestre | ${grade}</div>
                         </div>
                         <div style="font-family: 'Roboto Mono'; font-weight: bold;">PÁG ${currentPage} / ${totalPages}</div>
                     </div>
 
                     <div class="a4-body">
-                        <div style="background: #f8fafc; border-left: 4px solid var(--primary); padding: 1rem; border-radius: 4px;">
-                            <h4 style="margin-bottom: 6px; color: var(--primary);">Tópico Teórico #${currentPage}: Conceitos Chave</h4>
-                            <p style="line-height: 1.6; font-size: 0.95rem;">
-                                Esta página ${currentPage} de 65 aborda a teoria de **${bookTitle}** especificamente estruturada para o nível do **${grade}**. 
-                                A leitura atenta dos gráficos e diagramas abaixo garante o domínio do conteúdo para as avaliações.
-                            </p>
-                        </div>
+                        <div class="standalone-question-box" id="qbox-${qData.key}">
+                            <h4 style="color: var(--primary); margin-bottom: 10px;"><i class="fas fa-question-circle"></i> ${qData.title}</h4>
+                            <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 12px; font-weight: 600;">${qData.enunciado}</p>
 
-                        <div class="graphic-area">
-                            ${generateSVGForSubject(subject, currentPage)}
-                        </div>
+                            <div class="graphic-area" style="margin-bottom: 15px;">
+                                ${qData.imageSVG}
+                            </div>
 
-                        ${!isReadingOnly ? `
-                            <div class="question-box">
-                                <h4 style="color: var(--primary); margin-bottom: 6px;"><i class="fas fa-edit"></i> Exercício de Fixação (Pág ${currentPage})</h4>
-                                <p style="font-size: 0.9rem; margin-bottom: 10px;">Com base na leitura da página ${currentPage}, responda à questão prática abaixo:</p>
-                                <input type="text" placeholder="Digite sua resposta para registro..." style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; outline: none;">
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                ${qData.options.map((opt, idx) => {
+                                    let btnClass = "quiz-opt-btn";
+                                    let disabledAttr = "";
+
+                                    if (savedAns) {
+                                        disabledAttr = "disabled";
+                                        if (idx === qData.correctIndex) btnClass += " correct-choice";
+                                        if (idx === savedAns.chosenIdx && !savedAns.isCorrect) btnClass += " wrong-choice";
+                                    }
+
+                                    return `<button class="${btnClass}" ${disabledAttr} onclick="selectAnswer('${qData.key}', ${idx}, ${qData.correctIndex}, '${qData.expRight.replace(/'/g, "\\'")}', '${qData.expWrong.replace(/'/g, "\\')}')">
+                                        ${String.fromCharCode(65 + idx)}) ${opt}
+                                    </button>`;
+                                }).join('')}
                             </div>
-                        ` : `
-                            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1rem; border-radius: 4px; color: #166534; font-size: 0.9rem;">
-                                <i class="fas fa-book-reader"></i> <strong>PÁGINA DE LEITURA EXCLUSIVA:</strong> Concentre-se na absorção dos conceitos e faça anotações no seu caderno ou na Lousa de Cálculos.
+
+                            <div class="explanation-card ${savedAns ? (savedAns.isCorrect ? 'correct' : 'wrong') : ''}" id="exp-${qData.key}" style="display: ${savedAns ? 'block' : 'none'};">
+                                ${savedAns ? (savedAns.isCorrect ? `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${qData.expRight}` : `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${qData.expWrong}`) : ''}
                             </div>
-                        `}
+                        </div>
                     </div>
 
                     <div style="border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 1.5rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
@@ -712,7 +840,25 @@
             loadBookPage();
         }
 
-        /* ================= GEMINI 3.1 PRO (CHAT / GERADOR / IMAGEM / CÓDIGO) ================= */
+        /* ================= NAVEGAÇÃO DE ABAS ================= */
+        function switchTab(tabId, el) {
+            const tabs = ['lobby', 'books', 'ia', 'classes', 'live', 'google', 'scratch'];
+            tabs.forEach(t => {
+                const section = document.getElementById(`tab-${t}`);
+                if (section) section.classList.add('hidden');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            if (el) {
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                el.classList.add('active');
+            }
+
+            if (tabId === 'scratch') setTimeout(initCanvas, 200);
+        }
+
+        /* ================= GEMINI 3.1 PRO (CHAT) ================= */
         function sendPromptIA() {
             const input = document.getElementById('ia-prompt');
             const prompt = input.value.trim();
@@ -724,85 +870,11 @@
             input.value = '';
 
             setTimeout(() => {
-                let response = "";
-                if (prompt.toLowerCase().includes("código") || prompt.toLowerCase().includes("code")) {
-                    response = `Aqui está o código gerado pelo **Gemini 3.1 Pro**:<br><pre>// Algoritmo Exemplo
-function calcularMedia(n1, n2) {
-    let media = (n1 + n2) / 2;
-    return "Média do Aluno: " + media;
-}</pre>`;
-                } else if (prompt.toLowerCase().includes("imagem") || prompt.toLowerCase().includes("desenho")) {
-                    response = `Gerei uma ilustração gráfica baseada no seu pedido:<br><br>
-                    <div style="background:#fff; border:1px solid #2563eb; padding:10px; text-align:center; border-radius:6px;">
-                        ${generateSVGForSubject('geografia', 10)}
-                        <p style="font-size:0.8rem; color:#64748b; margin-top:4px;">Gráfico Ilustrativo Simulado por Gemini 3.1 Pro Engine</p>
-                    </div>`;
-                } else {
-                    response = `[**Gemini 3.1 Pro**]: Analisei sua solicitação ("${prompt}") com base no currículo do **${userProfile ? userProfile.grade : 'Ensino Fundamental'}**. O conceito é fundamental para entender o desenvolvimento das matérias deste bimestre.`;
-                }
+                let response = `[**Gemini 3.1 Pro**]: Analisei sua solicitação ("${prompt}"). Sua média atual é de **${(Object.keys(studentAnswers).length > 0 ? ((Object.values(studentAnswers).filter(a=>a.isCorrect).length / Object.keys(studentAnswers).length)*10).toFixed(1) : '0.0')} / 10.0**. Continue resolvendo os exercícios!`;
 
                 logs.innerHTML += `<div class="chat-msg ia">${response}</div>`;
                 logs.scrollTop = logs.scrollHeight;
             }, 600);
-        }
-
-        /* ================= PROVAS E CORREÇÃO AUTOMÁTICA ================= */
-        function createExam() {
-            const title = document.getElementById('exam-title').value.trim();
-            const question = document.getElementById('exam-question').value.trim();
-            const autoGrade = document.getElementById('exam-auto-grade').checked;
-
-            if (!title || !question) {
-                alert("Preencha o título e a pergunta da prova!");
-                return;
-            }
-
-            const newExam = { id: Date.now(), title, question, autoGrade };
-            activeExams.push(newExam);
-            localStorage.setItem('studyflow_exams', JSON.stringify(activeExams));
-
-            alert("Prova publicada com sucesso para a turma!");
-            document.getElementById('exam-title').value = '';
-            document.getElementById('exam-question').value = '';
-        }
-
-        function renderStudentExams() {
-            const box = document.getElementById('student-exam-box');
-            if (activeExams.length === 0) {
-                box.innerHTML = `<p style="color: var(--text-muted);">Nenhuma prova pendente no momento.</p>`;
-                return;
-            }
-
-            box.innerHTML = activeExams.map(ex => `
-                <div style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--primary); margin-bottom: 6px;">${ex.title}</h4>
-                    <p style="font-size: 0.95rem; margin-bottom: 10px;"><strong>Pergunta:</strong> ${ex.question}</p>
-                    <textarea id="ans-exam-${ex.id}" placeholder="Escreva sua resposta aqui..." style="width: 100%; height: 80px; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 8px;"></textarea>
-                    <button class="btn-main" onclick="submitStudentExam(${ex.id}, ${ex.autoGrade})"><i class="fas fa-paper-plane"></i> Enviar Prova</button>
-                    <div id="feedback-exam-${ex.id}" style="margin-top: 10px;"></div>
-                </div>
-            `).join('');
-        }
-
-        function submitStudentExam(examId, autoGrade) {
-            const ans = document.getElementById(`ans-exam-${examId}`).value.trim();
-            const fb = document.getElementById(`feedback-exam-${examId}`);
-
-            if (!ans) {
-                alert("Digite a resposta antes de enviar!");
-                return;
-            }
-
-            if (autoGrade) {
-                fb.innerHTML = `<div style="background:#f0fdf4; color:#166534; padding:10px; border-radius:4px; border:1px solid #bbf7d0;">
-                    <i class="fas fa-robot"></i> <strong>PROVA CORRIGIDA PELA IA GEMINI 3.1 PRO:</strong><br>
-                    Resposta avaliada com sucesso! Nota atribuída: <strong>9.8 / 10.0</strong>. Excelente argumentação!
-                </div>`;
-            } else {
-                fb.innerHTML = `<div style="background:#eff6ff; color:#1e40af; padding:10px; border-radius:4px; border:1px solid #bfdbfe;">
-                    <i class="fas fa-check"></i> Prova enviada ao professor. Aguardando correção manual.
-                </div>`;
-            }
         }
 
         /* ================= AULAS ON-LINE (WEBCAM / MIC) ================= */
