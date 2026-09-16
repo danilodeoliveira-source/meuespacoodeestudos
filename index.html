@@ -2,40 +2,71 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Espaço de Estudos</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale5.0">
+    <title>StudyFlow 2026 - Seu Painel de Estudos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Ícones modernos (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="container">
-        <!-- Cabeçalho personalizável -->
-        <header>
-            <h1 id="titulo-usuario">Meu Espaço de Estudos</h1>
-            <p>Organize sua rotina e personalize seu ambiente.</p>
-        </header>
-
-        <!-- Seção de Personalização -->
-        <section class="card">
-            <h2>Personalize seu Painel</h2>
-            <div class="input-group">
-                <label for="input-nome">Seu Nome / Título:</label>
-                <input type="text" id="input-nome" placeholder="Digite seu nome...">
+    <div class="app-container">
+        <!-- BARRA LATERAL / MENU -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>StudyFlow</span>
             </div>
-            
-            <div class="input-group">
-                <label for="input-cor">Cor de Fundo do Painel:</label>
-                <input type="color" id="input-cor" value="#ffffff">
+            <nav>
+                <a href="#" class="active"><i class="fa-solid fa-house"></i> Início</a>
+                <a href="#tarefas"><i class="fa-solid fa-list-check"></i> Tarefas</a>
+                <a href="#pomodoro"><i class="fa-solid fa-clock"></i> Pomodoro</a>
+            </nav>
+            <div class="theme-toggle">
+                <button id="btn-tema"><i class="fa-solid fa-moon"></i> Modo Escuro</button>
             </div>
-            
-            <button id="btn-salvar">Salvar Personalização</button>
-        </section>
+        </aside>
 
-        <!-- Bloco de Notas / Tarefas Rápidas -->
-        <section class="card">
-            <h2>O que estudar hoje?</h2>
-            <textarea id="bloco-notas" placeholder="Escreva suas tarefas de hoje aqui... Ela fica salva automaticamente!"></textarea>
-        </section>
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1 id="titulo-usuario">Olá, Estudante! 🚀</h1>
+                    <p>Pronto para dominar os estudos hoje?</p>
+                </div>
+                <div class="user-config">
+                    <input type="text" id="input-nome" placeholder="Seu nome...">
+                    <button id="btn-salvar-nome"><i class="fa-solid fa-check"></i></button>
+                </div>
+            </header>
+
+            <div class="grid-dashboard">
+                <!-- BLOCO DE TAREFAS -->
+                <section class="card" id="tarefas">
+                    <h2><i class="fa-solid fa-list-check"></i> O que estudar hoje?</h2>
+                    <div class="task-input-group">
+                        <input type="text" id="nova-tarefa" placeholder="Adicionar nova tarefa...">
+                        <button id="btn-add-tarefa"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <ul id="lista-tarefas">
+                        <!-- As tarefas entram aqui sozinhas -->
+                    </ul>
+                </section>
+
+                <!-- BLOCO POMODORO / CRONÔMETRO -->
+                <section class="card" id="pomodoro">
+                    <h2><i class="fa-solid fa-clock"></i> Foco (Pomodoro)</h2>
+                    <div class="timer-display">
+                        <span id="minutos">25</span>:<span id="segundos">00</span>
+                    </div>
+                    <div class="timer-buttons">
+                        <button id="btn-iniciar" class="btn-timer"><i class="fa-solid fa-play"></i> Iniciar</button>
+                        <button id="btn-pausar" class="btn-timer"><i class="fa-solid fa-pause"></i> Pausar</button>
+                        <button id="btn-resetar" class="btn-timer"><i class="fa-solid fa-rotate-right"></i> Resetar</button>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
 
     <script src="script.js"></script>
