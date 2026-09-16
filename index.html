@@ -3,537 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyFlow 2050 // Matriz Cognitiva Neural</title>
-    <!-- Fontes Futuristas -->
+    <title>StudyFlow 2050 // Sistema Neural de Aprendizado</title>
+    <!-- Fontes Futuristas Sci-Fi -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Ícones Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
             --bg-deep: #05070f;
             --panel-bg: rgba(12, 18, 34, 0.85);
-            --panel-border: rgba(0, 243, 255, 0.25);
-            --neon-cyan: #00f3ff;
-            --neon-pink: #ff007f;
-            --neon-purple: #b026ff;
-            --text-main: #e0f7fc;
-            --text-dim: #70889b;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(176, 38, 255, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(0, 243, 255, 0.12) 0%, transparent 40%),
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-            color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            overflow-x: hidden;
-        }
-
-        /* Modal de Identification / Login */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 5, 12, 0.9);
-            backdrop-filter: blur(15px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--neon-cyan);
-            border-radius: 12px;
-            padding: 2.5rem;
-            width: 90%;
-            max-width: 480px;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
-            position: relative;
-        }
-
-        .modal-card h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-cyan);
-            margin-bottom: 1.5rem;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-bottom: 6px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            background: rgba(5, 7, 15, 0.9);
-            border: 1px solid var(--panel-border);
-            padding: 12px;
-            border-radius: 6px;
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-        }
-
-        /* Container Principal */
-        .app-container { display: flex; width: 100%; min-height: 100vh; }
-
-        /* Sidebar */
-        aside {
-            width: 260px;
-            background: rgba(8, 11, 22, 0.85);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--panel-border);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 2rem 1.5rem;
-            z-index: 10;
-        }
-
-        .brand {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 2px;
-        }
-
-        .brand span { color: var(--neon-cyan); }
-
-        nav { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 2rem; }
-
-        nav a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            padding: 12px 16px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        nav a:hover, nav a.active {
-            color: #fff;
-            background: rgba(0, 243, 255, 0.1);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
-        }
-
-        /* Header e Cards */
-        main { flex: 1; padding: 2.5rem; overflow-y: auto; }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0, 243, 255, 0.15);
-        }
-
-        .header-title h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            background: linear-gradient(90deg, #fff, var(--neon-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 992px) { .dashboard-grid { grid-template-columns: 1fr; } }
-
-        .hud-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 1.8rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .card-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--neon-cyan);
-        }
-
-        .btn-cyber {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
-            color: #000;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-        }
-
-        .btn-cyber:hover { box-shadow: 0 0 15px rgba(0, 243, 255, 0.6); }
-
-        /* Módulo IA */
-        .ai-chat-box {
-            background: rgba(5, 7, 15, 0.6);
-            border: 1px solid rgba(0, 243, 255, 0.15);
-            border-radius: 8px;
-            padding: 1rem;
-            height: 150px;
-            overflow-y: auto;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: var(--neon-cyan);
-        }
-
-        /* Módulo Quiz */
-        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 1rem; }
-        .quiz-opt-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--panel-border);
-            color: #fff;
-            padding: 10px 15px;
-            text-align: left;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .quiz-opt-btn:hover {
-            border-color: var(--neon-cyan);
-            background: rgba(0, 243, 255, 0.1);
-        }
-
-        /* Módulo Tarefas */
-        .task-input-group { display: flex; gap: 10px; margin-bottom: 1rem; }
-        .task-input-group input {
-            flex: 1; background: rgba(5, 7, 15, 0.8);
-            border: 1px solid var(--panel-border); padding: 10px;
-            border-radius: 6px; color: #fff; outline: none;
-        }
-        .task-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-        .task-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 10px; border-radius: 6px;
-            display: flex; justify-content: space-between;
-        }
-
-        .user-hud-info {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-        }
-
-        .btn-settings {
-            background: transparent;
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Modal de Identificação -->
-    <div class="modal-overlay" id="login-modal">
-        <div class="modal-card">
-            <h2><i class="fas fa-id-card"></i> ACESSO NEURAL</h2>
-            <form id="login-form" onsubmit="saveProfile(event)">
-                <div class="form-group">
-                    <label>NOME DO OPERADOR(A):</label>
-                    <input type="text" id="user-name" required placeholder="Ex: Danilo">
-                </div>
-                <div class="form-group">
-                    <label>SÉRIE / CICLO ESCOLAR:</label>
-                    <select id="user-grade">
-                        <option value="Ensino Fundamental">Ensino Fundamental</option>
-                        <option value="1º Ano Ensino Médio">1º Ano Ensino Médio</option>
-                        <option value="2º Ano Ensino Médio">2º Ano Ensino Médio</option>
-                        <option value="3º Ano / Pre-Vestibular">3º Ano / Pré-Vestibular</option>
-                        <option value="Ensino Superior">Ensino Superior</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>NÍVEL DE COBRANÇA DE ESTUDO:</label>
-                    <select id="user-rigor">
-                        <option value="Suave (Modo Aprendiz)">Suave (Ritmo Leve)</option>
-                        <option value="Equilibrado (Modo Padronizado)">Equilibrado (Foco Diário)</option>
-                        <option value="Hardcore Cyberpunk (Modo Implacável)">Hardcore Cyberpunk (Máximo Desempenho)</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-cyber">INICIALIZAR MATRIZ</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside>
-            <div>
-                <div class="brand"><i class="fas fa-atom"></i> STUDY<span>FLOW</span></div>
-                <nav>
-                    <a href="#" class="active"><i class="fas fa-chart-pie"></i> PAINEL IA</a>
-                    <a href="#ia-section"><i class="fas fa-robot"></i> ORGANIZADOR IA</a>
-                    <a href="#quiz-section"><i class="fas fa-brain"></i> QUIZZES</a>
-                    <a href="#tarefas-section"><i class="fas fa-tasks"></i> TAREFAS</a>
-                </nav>
-            </div>
-            <button class="btn-settings" onclick="openProfileModal()"><i class="fas fa-cog"></i> AJUSTAR PERFIL</button>
-        </aside>
-
-        <!-- Conteúdo Principal -->
-        <main>
-            <header>
-                <div class="header-title">
-                    <h1 id="welcome-msg">Olá, Operador(a) 🚀</h1>
-                    <p id="user-status-msg">Sincronizando ambiente de aprendizado...</p>
-                </div>
-                <div class="user-hud-info">
-                    <span id="hud-grade" style="color: var(--neon-cyan);">--</span> | 
-                    <span id="hud-rigor" style="color: var(--neon-pink);">--</span>
-                </div>
-            </header>
-
-            <div class="dashboard-grid">
-                <!-- Seção IA Organizadora -->
-                <section class="hud-card" id="ia-section">
-                    <div class="card-title"><i class="fas fa-robot"></i> ASSISTENTE IA CYBER-ORGANIZADORA</div>
-                    <div class="ai-chat-box" id="ai-logs">
-                        > IA StudyFlow 2050 Pronta.<br>
-                        > Forneça uma meta de estudos para eu organizar seu cronograma automaticamente...
-                    </div>
-                    <div class="task-input-group">
-                        <input type="text" id="ai-prompt" placeholder="Ex: Organizar prova de matemática amanhã">
-                        <button class="btn-cyber" style="width: auto;" onclick="runAIOrganizer()">GERAR</button>
-                    </div>
-                </section>
-
-                <!-- Seção Quiz -->
-                <section class="hud-card" id="quiz-section">
-                    <div class="card-title"><i class="fas fa-brain"></i> QUIZ HOLOGRÁFICO</div>
-                    <div class="form-group">
-                        <select id="quiz-subject" onchange="loadQuiz()">
-                            <option value="matematica">Matemática & Lógica</option>
-                            <option value="fisica">Física Quântica</option>
-                            <option value="tecnologia">Inteligência Artificial & Tech</option>
-                        </select>
-                    </div>
-                    <div id="quiz-container">
-                        <p id="quiz-question" style="font-size: 1.1rem; font-weight: 600;"></p>
-                        <div class="quiz-options" id="quiz-options"></div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Seção Lista de Tarefas -->
-            <section class="hud-card" id="tarefas-section">
-                <div class="card-title"><i class="fas fa-list-check"></i> MATRIZ DE TAREFAS SINCRO-IA</div>
-                <div class="task-input-group">
-                    <input type="text" id="task-input" placeholder="Nova diretriz de estudo...">
-                    <button class="btn-cyber" style="width: auto;" onclick="addTask()">+ ADICIONAR</button>
-                </div>
-                <ul class="task-list" id="task-list"></ul>
-            </section>
-        </main>
-    </div>
-
-    <script>
-        /* Base de Dados dos Quizzes */
-        const quizData = {
-            matematica: [
-                { q: "Qual o resultado de 2^5 na base binária?", opts: ["32", "16", "64", "128"], correct: 0 },
-                { q: "Em uma progressão aritmética (2, 5, 8...), qual o 5º termo?", opts: ["11", "14", "17", "12"], correct: 1 }
-            ],
-            fisica: [
-                { q: "Qual partícula é associada ao transporte de força eletromagnética?", opts: ["Quark", "Fóton", "Nêutron", "Gluon"], correct: 1 },
-                { q: "O princípio da incerteza foi formulado por quem?", opts: ["Einstein", "Heisenberg", "Bohr", "Tesla"], correct: 1 }
-            ],
-            tecnologia: [
-                { q: "Qual a principal estrutura usada no aprendizado profundo (Deep Learning)?", opts: ["Árvores Estáticas", "Redes Neurais Artificiais", "Matrizes Fictícias", "Algoritmos Lineares"], correct: 1 }
-            ]
-        };
-
-        let tasks = JSON.parse(localStorage.getItem('studyflow_tasks')) || [];
-        let profile = JSON.parse(localStorage.getItem('studyflow_profile')) || null;
-
-        /* Inicialização do Perfil */
-        function checkProfile() {
-            if (!profile) {
-                document.getElementById('login-modal').style.display = 'flex';
-            } else {
-                document.getElementById('login-modal').style.display = 'none';
-                document.getElementById('welcome-msg').textContent = `Olá, ${profile.name} 🚀`;
-                document.getElementById('user-status-msg').textContent = `Meta Ativa: ${profile.rigor}`;
-                document.getElementById('hud-grade').textContent = profile.grade;
-                document.getElementById('hud-rigor').textContent = profile.rigor;
-            }
-        }
-
-        function saveProfile(e) {
-            e.preventDefault();
-            profile = {
-                name: document.getElementById('user-name').value,
-                grade: document.getElementById('user-grade').value,
-                rigor: document.getElementById('user-rigor').value
-            };
-            localStorage.setItem('studyflow_profile', JSON.stringify(profile));
-            checkProfile();
-        }
-
-        function openProfileModal() {
-            if(profile) {
-                document.getElementById('user-name').value = profile.name;
-                document.getElementById('user-grade').value = profile.grade;
-                document.getElementById('user-rigor').value = profile.rigor;
-            }
-            document.getElementById('login-modal').style.display = 'flex';
-        }
-
-        /* Lógica da IA Organizadora */
-        function runAIOrganizer() {
-            const prompt = document.getElementById('ai-prompt').value.trim();
-            const logs = document.getElementById('ai-logs');
-            if(!prompt) return;
-
-            logs.innerHTML += `<br><span style="color:#fff;">> Usuário: ${prompt}</span>`;
-            logs.innerHTML += `<br><span style="color:var(--neon-pink);">> IA Analisando perfil (${profile ? profile.rigor : 'Padrão'})...</span>`;
-            
-            setTimeout(() => {
-                let generatedTask = `[IA] Estudo Focado: ${prompt}`;
-                tasks.push({ text: generatedTask, completed: false });
-                saveTasks();
-                renderTasks();
-                logs.innerHTML += `<br>> Cronograma ajustado! Tarefa automática inserida na Matriz.`;
-                logs.scrollTop = logs.scrollHeight;
-            }, 800);
-
-            document.getElementById('ai-prompt').value = '';
-        }
-
-        /* Lógica do Quiz */
-        let currentQuizIndex = 0;
-        function loadQuiz() {
-            const subject = document.getElementById('quiz-subject').value;
-            const currentQuestions = quizData[subject];
-            const q = currentQuestions[currentQuizIndex % currentQuestions.length];
-
-            document.getElementById('quiz-question').textContent = q.q;
-            const optsContainer = document.getElementById('quiz-options');
-            optsContainer.innerHTML = '';
-
-            q.opts.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-opt-btn';
-                btn.textContent = `${idx + 1}. ${opt}`;
-                btn.onclick = () => {
-                    if(idx === q.correct) {
-                        alert(" RESPOSTA CORRETA! +100 Pontos de Experiência Neural.");
-                    } else {
-                        alert(" RESPOSTA INCORRETA! Revise o módulo.");
-                    }
-                    currentQuizIndex++;
-                    loadQuiz();
-                };
-                optsContainer.appendChild(btn);
-            });
-        }
-
-        /* Lógica de Tarefas */
-        function renderTasks() {
-            const list = document.getElementById('task-list');
-            list.innerHTML = '';
-            tasks.forEach((task, index) => {
-                const li = document.createElement('li');
-                li.className = 'task-item';
-                li.innerHTML = `
-                    <span style="${task.completed ? 'text-decoration: line-through; opacity: 0.5;' : ''}">${task.text}</span>
-                    <div>
-                        <button style="background:none; border:none; color:var(--neon-cyan); cursor:pointer;" onclick="toggleTask(${index})"><i class="fas fa-check"></i></button>
-                        <button style="background:none; border:none; color:var(--neon-pink); cursor:pointer; margin-left: 8px;" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-                list.appendChild(li);
-            });
-        }
-
-        function addTask() {
-            const input = document.getElementById('task-input');
-            if(input.value.trim()) {
-                tasks.push({ text: input.value.trim(), completed: false });
-                input.value = '';
-                saveTasks();
-                renderTasks();
-            }
-        }
-
-        function toggleTask(i) { tasks[i].completed = !tasks[i].completed; saveTasks(); renderTasks(); }
-        function deleteTask(i) { tasks.splice(i, 1); saveTasks(); renderTasks();```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyFlow 2050 // Sistema Neural de Aprendizado</title>
-    <!-- Fontes Futuristas -->
-    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-    <link href="[https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap](https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap)" rel="stylesheet">
-    <!-- Ícones Font Awesome -->
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
-
-    <style>
-        :root {
-            --bg-deep: #05070f;
-            --panel-bg: rgba(12, 18, 34, 0.8);
             --panel-border: rgba(0, 243, 255, 0.25);
             --neon-cyan: #00f3ff;
             --neon-pink: #ff007f;
@@ -571,26 +52,27 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(3, 4, 10, 0.92);
-            backdrop-filter: blur(15px);
+            background: rgba(3, 5, 12, 0.95);
+            backdrop-filter: blur(20px);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 999;
+            z-index: 1000;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
             opacity: 1;
-            transition: opacity 0.3s ease;
+            visibility: visible;
         }
 
         .modal-overlay.hidden {
-            display: none;
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
         .modal-card {
             background: var(--panel-bg);
             border: 1px solid var(--neon-cyan);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 35px rgba(0, 243, 255, 0.35);
             border-radius: 12px;
             width: 90%;
             max-width: 480px;
@@ -604,6 +86,7 @@
             margin-bottom: 0.5rem;
             text-shadow: 0 0 10px var(--neon-cyan);
             font-size: 1.5rem;
+            letter-spacing: 1px;
         }
 
         .modal-card p {
@@ -621,7 +104,7 @@
 
         .form-group label {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-main);
             letter-spacing: 1px;
         }
@@ -635,6 +118,7 @@
             font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
             outline: none;
+            transition: border-color 0.3s;
         }
 
         .form-group input:focus, .form-group select:focus {
@@ -642,7 +126,7 @@
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
 
-        /* App Layout */
+        /* Estrutura do App (Lobby / Dashboard) */
         .app-container {
             display: flex;
             width: 100%;
@@ -719,7 +203,7 @@
 
         .user-info {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
         }
 
@@ -732,7 +216,7 @@
             font-size: 0.8rem;
         }
 
-        /* Grid Layout */
+        /* Grid do Dashboard */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -747,11 +231,16 @@
             padding: 1.5rem;
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s ease;
+        }
+
+        .hud-card:hover {
+            border-color: var(--neon-cyan);
         }
 
         .card-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--neon-cyan);
             margin-bottom: 1.2rem;
             display: flex;
@@ -767,7 +256,7 @@
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
             color: #000;
             border: none;
-            padding: 10px 18px;
+            padding: 12px 18px;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
@@ -775,7 +264,7 @@
         }
 
         .btn-cyber:hover {
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
             transform: translateY(-2px);
         }
 
@@ -793,9 +282,10 @@
 
         .btn-outline:hover {
             background: rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
 
-        /* Módulo de IA */
+        /* Módulo IA Chat */
         .ai-chat-box {
             background: rgba(5, 7, 15, 0.8);
             border: 1px solid rgba(0, 243, 255, 0.15);
@@ -833,13 +323,15 @@
         }
 
         .quiz-option.correct {
-            border-color: var(--neon-green);
-            background: rgba(0, 255, 102, 0.15);
+            border-color: var(--neon-green) !important;
+            background: rgba(0, 255, 102, 0.15) !important;
+            color: var(--neon-green);
         }
 
         .quiz-option.wrong {
-            border-color: var(--neon-pink);
-            background: rgba(255, 0, 127, 0.15);
+            border-color: var(--neon-pink) !important;
+            background: rgba(255, 0, 127, 0.15) !important;
+            color: var(--neon-pink);
         }
 
         /* Tasks & Pomodoro */
@@ -852,7 +344,10 @@
             border-radius: 4px;
             color: #fff;
             outline: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
         }
+
         .task-list { list-style: none; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; }
         .task-item {
             background: rgba(255, 255, 255, 0.03);
@@ -866,7 +361,7 @@
 
         .timer-display {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             text-align: center;
             color: #fff;
             text-shadow: 0 0 15px var(--neon-cyan);
@@ -876,21 +371,375 @@
 </head>
 <body>
 
-    <!-- Modal de Configuração de Perfil / Login -->
+    <!-- Modal de Identificação (Login) -->
     <div class="modal-overlay" id="profile-modal">
         <div class="modal-card">
-            <h2><i class="fas fa-id-card"></i> IDENTIFICAÇÃO NEURAL</h2>
-            <p>Configure seus parâmetros de estudante de 2050 para personalizar a experiência.</p>
+            <h2><i class="fas fa-id-card"></i> ACESSO NEURAL 2050</h2>
+            <p>Insira seus dados para personalizar seu assistente e desbloquear o Lobby.</p>
 
             <form id="profile-form" onsubmit="saveProfile(event)">
                 <div class="form-group">
                     <label for="user-name">NOME DO ESTUDANTE</label>
-                    <input type="text" id="user-name" placeholder="Ex: Alex Rivera" required>
+                    <input type="text" id="user-name" placeholder="Ex: Danilo" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="user-grade">SÉRIE / ANO ACADÊMICO</label>
+                    <label for="user-grade">SÉRIE / CICLO ESCOLAR</label>
                     <select id="user-grade" required>
                         <option value="1º Ano Ensino Médio">1º Ano Ensino Médio</option>
                         <option value="2º Ano Ensino Médio">2º Ano Ensino Médio</option>
-                        <option
+                        <option value="3º Ano Ensino Médio">3º Ano Ensino Médio / Pré-Vestibular</option>
+                        <option value="Ensino Superior">Ensino Superior / Faculdade</option>
+                        <option value="Autodidata Cyberpunk">Autodidata / Especialização</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-rigor">NÍVEL DE COBRANÇA (RITMO)</label>
+                    <select id="user-rigor" required>
+                        <option value="Suave">Suave (Ritmo Leve e Pausas Extensas)</option>
+                        <option value="Moderado">Moderado (Foco Equilibrado Diário)</option>
+                        <option value="Hardcore Cyberpunk">Hardcore Cyberpunk (Desempenho Máximo)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-cyber" style="margin-top: 1rem;">
+                    INICIALIZAR INTERFACE <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lobby / Dashboard Principal -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside>
+            <div>
+                <div class="brand">
+                    <i class="fas fa-atom"></i> STUDY<span>FLOW</span>
+                </div>
+                <nav>
+                    <a href="#" class="active"><i class="fas fa-th-large"></i> LOBBY PRINCIPAL</a>
+                    <a href="#ai-section"><i class="fas fa-robot"></i> IA ORGANIZADORA</a>
+                    <a href="#quiz-section"><i class="fas fa-brain"></i> QUIZZES</a>
+                    <a href="#tasks-section"><i class="fas fa-list-check"></i> MATRIZ TAREFAS</a>
+                </nav>
+            </div>
+
+            <button class="btn-outline" onclick="openProfileModal()">
+                <i class="fas fa-cog"></i> AJUSTAR PERFIL
+            </button>
+        </aside>
+
+        <!-- Conteúdo do Lobby -->
+        <main>
+            <header>
+                <div>
+                    <h1 id="welcome-title" style="font-family: 'Orbitron'; font-size: 1.6rem; color: #fff;">BEM-VINDO AO LOBBY</h1>
+                    <p style="color: var(--text-dim);" id="sub-welcome">Sincronizando parâmetros cognitivos...</p>
+                </div>
+
+                <div class="user-info">
+                    <div class="profile-badge" id="badge-grade"><i class="fas fa-graduation-cap"></i> --</div>
+                    <div class="profile-badge" id="badge-rigor" style="border-color: var(--neon-cyan);"><i class="fas fa-tachometer-alt"></i> --</div>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                
+                <!-- Módulo 1: IA Organizadora -->
+                <section class="hud-card" id="ai-section">
+                    <div class="card-title">
+                        <i class="fas fa-robot"></i> ASSISTENTE IA ORG-2050
+                    </div>
+                    <div class="ai-chat-box" id="ai-chat">
+                        <div class="ai-msg bot">[SISTEMA]: Conectado à matriz. Clique no botão para organizar suas tarefas com base no seu perfil!</div>
+                    </div>
+                    <div class="task-input-group">
+                        <input type="text" id="ai-custom-prompt" placeholder="Sua meta (Ex: Prova de Biologia amanhã)...">
+                        <button class="btn-outline" onclick="sendCustomPromptAI()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <button class="btn-cyber" onclick="runAIOrganizer()">
+                        <i class="fas fa-wand-magic-sparkles"></i> AUTO-ORGANIZAR ESTUDOS
+                    </button>
+                </section>
+
+                <!-- Módulo 2: Quizzes -->
+                <section class="hud-card" id="quiz-section">
+                    <div class="card-title">
+                        <i class="fas fa-vial"></i> QUIZ HOLOGRÁFICO (SIMULADOR)
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 0.8rem;">
+                        <select id="quiz-subject-select" onchange="loadQuiz()">
+                            <option value="fisica">Física Quântica & Relatividade</option>
+                            <option value="bio">Biotecnologia & Genética</option>
+                            <option value="tech">Inteligência Artificial & Algoritmos</option>
+                            <option value="matematica">Matemática Discreta</option>
+                        </select>
+                    </div>
+
+                    <div id="quiz-container">
+                        <!-- Renderizado via JS -->
+                    </div>
+                </section>
+
+                <!-- Módulo 3: Matriz de Tarefas -->
+                <section class="hud-card" id="tasks-section">
+                    <div class="card-title">
+                        <i class="fas fa-tasks"></i> MATRIZ DE CONTEÚDOS
+                    </div>
+                    <div class="task-input-group">
+                        <input type="text" id="task-input" placeholder="Novo tópico de estudo...">
+                        <button class="btn-outline" onclick="addTask()">+</button>
+                    </div>
+                    <ul class="task-list" id="task-list"></ul>
+                </section>
+
+                <!-- Módulo 4: Timer Pomodoro -->
+                <section class="hud-card">
+                    <div class="card-title">
+                        <i class="fas fa-clock"></i> TIMER POMODORO 2050
+                    </div>
+                    <div class="timer-display" id="timer-display">25:00</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-cyber" id="start-btn" onclick="toggleTimer()">INICIAR</button>
+                        <button class="btn-outline" onclick="resetTimer()">RESET</button>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Lógica JavaScript Corrigida -->
+    <script>
+        /* ================= GERENCIAMENTO DE PERFIL / LOBBY ================= */
+        let userProfile = JSON.parse(localStorage.getItem('studyflow_profile')) || null;
+
+        function checkProfile() {
+            if (!userProfile) {
+                // Se não tem perfil, abre o modal de login
+                openProfileModal();
+            } else {
+                // Se já tem perfil, esconde o modal e entra direto no Lobby
+                document.getElementById('profile-modal').classList.add('hidden');
+                updateUIWithProfile();
+            }
+        }
+
+        function openProfileModal() {
+            if (userProfile) {
+                document.getElementById('user-name').value = userProfile.name;
+                document.getElementById('user-grade').value = userProfile.grade;
+                document.getElementById('user-rigor').value = userProfile.rigor;
+            }
+            document.getElementById('profile-modal').classList.remove('hidden');
+        }
+
+        function saveProfile(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('user-name').value.trim();
+            const grade = document.getElementById('user-grade').value;
+            const rigor = document.getElementById('user-rigor').value;
+
+            if (!name) return;
+
+            userProfile = { name, grade, rigor };
+            localStorage.setItem('studyflow_profile', JSON.stringify(userProfile));
+
+            // Transição para o Lobby: Esconde a tela de login
+            document.getElementById('profile-modal').classList.add('hidden');
+            updateUIWithProfile();
+        }
+
+        function updateUIWithProfile() {
+            document.getElementById('welcome-title').textContent = `LOBBY DE ${userProfile.name.toUpperCase()} 🚀`;
+            document.getElementById('sub-welcome').textContent = `Ambiente configurado para: ${userProfile.grade}`;
+            document.getElementById('badge-grade').innerHTML = `<i class="fas fa-graduation-cap"></i> ${userProfile.grade}`;
+            document.getElementById('badge-rigor').innerHTML = `<i class="fas fa-bolt"></i> Modo: ${userProfile.rigor}`;
+        }
+
+        /* ================= IA ORGANIZADORA ================= */
+        function runAIOrganizer() {
+            if (!userProfile) return;
+            
+            const chat = document.getElementById('ai-chat');
+            chat.innerHTML += `<div class="ai-msg">[VOCÊ]: Solicitando organização de cronograma...</div>`;
+
+            setTimeout(() => {
+                let response = "";
+                let newTasks = [];
+
+                if (userProfile.rigor.includes("Hardcore")) {
+                    response = `[IA ORG-2050]: Modo HARDCORE ativado. Adicionei 3 blocos intensos de exatas e simulado neural na sua matriz.`;
+                    newTasks = ["Revisão Quântica Avançada", "Simulado Hardcore de Física", "Exercícios de Algoritmos Completo"];
+                } else if (userProfile.rigor.includes("Suave")) {
+                    response = `[IA ORG-2050]: Modo SUAVE ativo. Montei um cronograma leve com intervalos longos de descanso.`;
+                    newTasks = ["Leitura Guiada de Conceitos", "Quiz Prático Curto"];
+                } else {
+                    response = `[IA ORG-2050]: Modo MODERADO. Organizei blocos equilibrados de 25min com revisões ativas.`;
+                    newTasks = ["Revisão Geral de Conteúdo", "Resolução de 10 Questões"];
+                }
+
+                chat.innerHTML += `<div class="ai-msg bot">${response}</div>`;
+                chat.scrollTop = chat.scrollHeight;
+
+                // Inserir tarefas geradas pela IA
+                tasks = [...tasks, ...newTasks];
+                renderTasks();
+            }, 600);
+        }
+
+        function sendCustomPromptAI() {
+            const input = document.getElementById('ai-custom-prompt');
+            const prompt = input.value.trim();
+            if (!prompt) return;
+
+            const chat = document.getElementById('ai-chat');
+            chat.innerHTML += `<div class="ai-msg">[VOCÊ]: Meta: "${prompt}"</div>`;
+            input.value = '';
+
+            setTimeout(() => {
+                chat.innerHTML += `<div class="ai-msg bot">[IA ORG-2050]: Meta analisada! Adicionei o tópico "${prompt}" à sua Matriz de Conteúdos.</div>`;
+                chat.scrollTop = chat.scrollHeight;
+                tasks.push(prompt);
+                renderTasks();
+            }, 500);
+        }
+
+        /* ================= QUIZZES POR MATÉRIA ================= */
+        const quizData = {
+            fisica: [
+                {
+                    q: "Qual fenômeno quântico descreve duas partículas conectadas instantaneamente independente da distância?",
+                    options: ["Efeito Fotoelétrico", "Emaranhamento Quântico", "Relatividade Restrita", "Radiação Hawking"],
+                    correct: 1
+                }
+            ],
+            bio: [
+                {
+                    q: "Qual ferramenta molecular permitiu a edição precisa de genomas no século XXI?",
+                    options: ["PCR em Tempo Real", "CRISPR-Cas9", "Sequenciador Sanger", "Eletroforese"],
+                    correct: 1
+                }
+            ],
+            tech: [
+                {
+                    q: "O que caracteriza uma Rede Neural Artificial do tipo Transformer?",
+                    options: ["Mecanismos de Atenção", "Estrutura Sequencial Estreita", "Leitura Analógica", "Compilação Manual"],
+                    correct: 0
+                }
+            ],
+            matematica: [
+                {
+                    q: "Em Lógica Matemática, a proposição 'P e Q' só é verdadeira quando:",
+                    options: ["Apenas P é verdadeiro", "Apenas Q é verdadeiro", "Tanto P quanto Q são verdadeiros", "Nenhum é verdadeiro"],
+                    correct: 2
+                }
+            ]
+        };
+
+        function loadQuiz() {
+            const subject = document.getElementById('quiz-subject-select').value;
+            const qData = quizData[subject][0];
+            const container = document.getElementById('quiz-container');
+
+            container.innerHTML = `
+                <p style="margin-bottom: 1rem; font-weight: 600; font-size: 0.95rem;">${qData.q}</p>
+                ${qData.options.map((opt, idx) => `
+                    <div class="quiz-option" onclick="answerQuiz(this, ${idx}, ${qData.correct})">${opt}</div>
+                `).join('')}
+            `;
+        }
+
+        function answerQuiz(element, selected, correct) {
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if (selected === correct) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('wrong');
+                options[correct].classList.add('correct');
+            }
+        }
+
+        /* ================= MATRIZ DE TAREFAS ================= */
+        let tasks = JSON.parse(localStorage.getItem('studyflow_tasks')) || ["Sincronizar Módulo Neural", "Revisão Geral do Dia"];
+
+        function renderTasks() {
+            const list = document.getElementById('task-list');
+            list.innerHTML = tasks.map((t, i) => `
+                <li class="task-item">
+                    <span>${t}</span>
+                    <i class="fas fa-trash" style="cursor:pointer; color: var(--neon-pink);" onclick="removeTask(${i})"></i>
+                </li>
+            `).join('');
+            localStorage.setItem('studyflow_tasks', JSON.stringify(tasks));
+        }
+
+        function addTask() {
+            const input = document.getElementById('task-input');
+            if (input.value.trim()) {
+                tasks.push(input.value.trim());
+                input.value = '';
+                renderTasks();
+            }
+        }
+
+        function removeTask(index) {
+            tasks.splice(index, 1);
+            renderTasks();
+        }
+
+        /* ================= POMODORO TIMER ================= */
+        let timeLeft = 25 * 60;
+        let timerInterval = null;
+        let isRunning = false;
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').textContent = `${m}:${s}`;
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('start-btn');
+            if (isRunning) {
+                clearInterval(timerInterval);
+                btn.textContent = "CONTINUAR";
+                isRunning = false;
+            } else {
+                timerInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        alert("Sessão Pomodoro concluída com sucesso!");
+                        resetTimer();
+                    }
+                }, 1000);
+                btn.textContent = "PAUSAR";
+                isRunning = true;
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeLeft = 25 * 60;
+            document.getElementById('start-btn').textContent = "INICIAR";
+            updateTimerDisplay();
+        }
+
+        /* Inicialização ao Carregar a Página */
+        checkProfile();
+        loadQuiz();
+        renderTasks();
+        updateTimerDisplay();
+    </script>
+</body>
+</html>
