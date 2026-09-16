@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Educação Adventista // CLA</title>
-    
+    <title>Portal Educacional // Colégio Adventista - CLA</title>
+
     <!-- Fontes Google e Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,205 +13,67 @@
 
     <style>
         :root {
-            --purple-main: #6c3082;
-            --purple-dark: #522165;
-            --purple-light: #f3eef7;
-            --bg-app: #f2f4f8;
-            --card-bg: #ffffff;
-            --text-dark: #333333;
-            --text-muted: #777777;
-            --border-color: #e2e8f0;
-            --blue-accent: #0284c7;
-            --green-accent: #16a34a;
+            --purple-main: #582885;
+            --purple-dark: #3f1a63;
+            --purple-light: #f3ebfa;
+            --bg-gray: #f4f6fa;
+            --card-border: #e2e8f0;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --green-status: #16a34a;
+            --yellow-status: #d97706;
+            --blue-link: #0284c7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
 
         body {
-            background-color: var(--purple-main);
+            background-color: var(--bg-gray);
             color: var(--text-dark);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* ================= 1. TELA DE LOGIN / ENTRY ================= */
-        #screen-login {
+            height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            background: var(--purple-main);
-        }
-
-        .login-card {
-            background: #ffffff;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 440px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .cla-logo-img {
-            width: 120px;
-            margin-bottom: 1.5rem;
-        }
-
-        .login-card p.subtitle {
-            color: #555;
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            line-height: 1.4;
-        }
-
-        .btn-acessar {
-            background: linear-gradient(135deg, var(--purple-main), #8b3fa6);
-            color: #ffffff;
-            border: none;
-            width: 100%;
-            padding: 14px;
-            border-radius: 25px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(108, 48, 130, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-acessar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(108, 48, 130, 0.4);
-        }
-
-        .tip-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px;
-            margin-top: 2rem;
-            text-align: left;
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
-        .tip-box strong { color: var(--purple-main); }
-
-        .login-footer {
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        /* ================= 2. MODAL GOOGLE OAUTH ================= */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .google-modal {
-            background: #ffffff;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 480px;
-            padding: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .account-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin: 1rem 0;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .account-item:hover { background: #f1f5f9; }
-
-        .account-avatar {
-            width: 36px; height: 36px;
-            background: var(--purple-main);
-            color: white;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 0.9rem;
-        }
-
-        /* ================= 3. TELA DE CARREGAMENTO (LOADING) ================= */
-        #screen-loading {
-            display: none;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: var(--purple-main);
-            color: #ffffff;
+            overflow: hidden;
         }
 
-        .spinner-cla {
-            width: 80px;
-            height: 80px;
-            animation: spin 1.5s linear infinite;
-            margin-bottom: 1.5rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* ================= 4. DASHBOARD DO PORTAL ================= */
-        #screen-portal {
-            display: none;
-            min-height: 100vh;
-            background-color: var(--bg-app);
-            flex-direction: column;
-        }
-
-        /* TOP NAVBAR */
-        header.portal-header {
+        /* 1. TOP HEADER */
+        header.top-header {
             background: #ffffff;
-            height: 60px;
-            border-bottom: 1px solid var(--border-color);
+            height: 58px;
+            border-bottom: 1px solid var(--card-border);
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 0 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 50;
+            padding: 0 1.2rem;
+            z-index: 100;
         }
 
-        .header-school-info {
+        .header-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .school-title {
-            font-size: 0.95rem;
+        .cla-logo-badge {
+            width: 38px;
+            height: 38px;
+            background: var(--purple-main);
+            color: #ffc72c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+        .school-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .school-name {
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--purple-main);
         }
@@ -221,539 +83,923 @@
             color: var(--text-muted);
         }
 
-        .header-user-info {
+        .header-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .user-details {
+        .header-tools {
+            display: flex;
+            gap: 18px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .header-tool-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .header-tool-item i { font-size: 1.1rem; color: var(--blue-link); margin-bottom: 2px; }
+
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-align: right;
-            font-size: 0.8rem;
         }
 
-        .user-name { font-weight: 700; color: var(--text-dark); }
-        .user-code { color: var(--text-muted); font-size: 0.75rem; }
+        .user-name { font-size: 0.8rem; font-weight: 700; color: var(--text-dark); }
+        .user-code { font-size: 0.7rem; color: var(--text-muted); }
 
-        .user-avatar-img {
-            width: 38px; height: 38px;
+        .user-avatar {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: #e2e8f0;
-            object-fit: cover;
+            background: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #475569;
         }
 
-        /* LAYOUT PRINCIPAL (3 COLUNAS) */
-        .portal-layout {
-            display: flex;
+        /* 2. ESTRUTURA PRINCIPAL */
+        .portal-body {
             flex: 1;
-            padding: 1rem;
-            gap: 1rem;
+            display: flex;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* COLUNA 1: SIDEBAR / NAVEGAÇÃO */
-        aside.portal-sidebar {
-            width: 80px;
+        /* ICON SIDEBAR */
+        nav.icon-sidebar {
+            width: 64px;
             background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
+            border-right: 1px solid var(--card-border);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 1rem 0;
-            gap: 1rem;
-            transition: width 0.3s;
+            padding-top: 10px;
+            z-index: 90;
         }
 
-        .sidebar-brand {
-            width: 45px;
-            height: 45px;
-            background: var(--purple-main);
-            color: #fff;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .nav-btn {
+        .sidebar-icon-btn {
             width: 100%;
+            padding: 12px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 0;
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 600;
-            border-left: 3px solid transparent;
             cursor: pointer;
+            border-left: 4px solid transparent;
             transition: all 0.2s;
         }
 
-        .nav-btn i { font-size: 1.2rem; margin-bottom: 4px; }
+        .sidebar-icon-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
 
-        .nav-btn:hover, .nav-btn.active {
+        .sidebar-icon-btn:hover, .sidebar-icon-btn.active {
             color: var(--purple-main);
             border-left-color: var(--purple-main);
             background: var(--purple-light);
         }
 
-        /* COLUNA 2: CONTEÚDO CENTRO (CAIXA DE ENTRADA) */
-        main.portal-main {
-            flex: 1;
+        .sidebar-bottom-logo {
+            margin-top: auto;
+            margin-bottom: 15px;
+            width: 36px;
+            height: 36px;
+            background: var(--purple-main);
+            color: #ffffff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        /* SUBMENU DRAWER */
+        .submenu-drawer {
+            width: 220px;
+            background: #ffffff;
+            border-right: 1px solid var(--card-border);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            padding: 1rem 0.5rem;
+            z-index: 80;
+            overflow-y: auto;
         }
 
-        .card-panel {
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 1.25rem;
+        .drawer-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--purple-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 10px 8px 10px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #edf2f7;
         }
 
-        .inbox-header {
+        .drawer-item {
+            padding: 9px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #4a5568;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            margin-bottom: 2px;
+            transition: background 0.15s;
+        }
+
+        .drawer-item:hover, .drawer-item.active {
+            background: var(--purple-light);
+            color: var(--purple-main);
+        }
+
+        /* MINI CALENDÁRIO */
+        .sidebar-mini-calendar {
+            margin-top: auto;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            font-size: 0.75rem;
+        }
+
+        .cal-head {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            font-weight: bold;
+            margin-bottom: 6px;
         }
 
-        .inbox-title {
-            font-size: 1.1rem;
+        .cal-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+        }
+
+        .cal-day-header { font-weight: bold; color: #a0aec0; font-size: 0.65rem; }
+        .cal-day-cell { padding: 3px 0; border-radius: 3px; cursor: pointer; }
+        .cal-day-cell.active { background: var(--purple-main); color: #fff; font-weight: bold; }
+
+        /* AREA DE CONTEÚDO PRINCIPAL */
+        .content-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .view-container {
+            flex: 1;
+            padding: 1.25rem;
+            overflow-y: auto;
+        }
+
+        /* WIDGETS À DIREITA */
+        aside.widgets-panel {
+            width: 290px;
+            background: #ffffff;
+            border-left: 1px solid var(--card-border);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            overflow-y: auto;
+        }
+
+        .widget-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
             font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .shortcut-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 8px 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shortcut-btn:hover {
+            border-color: var(--purple-main);
+            background: var(--purple-light);
+            transform: translateY(-2px);
+        }
+
+        .shortcut-btn i {
+            font-size: 1rem;
+            color: var(--blue-link);
+            margin-bottom: 4px;
+        }
+
+        .shortcut-btn span {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        /* ESTILOS DAS PÁGINAS DO CONTEÚDO */
+        .page-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
             color: var(--text-dark);
         }
 
-        .filter-pills {
+        .filter-bar {
             display: flex;
-            gap: 8px;
-            margin-bottom: 1rem;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+            align-items: center;
             flex-wrap: wrap;
         }
 
-        .pill-btn {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 6px 14px;
+        .btn-pill {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-            color: #475569;
+            color: #4a5568;
             cursor: pointer;
         }
 
-        .pill-btn.active {
-            background: #e0f2fe;
-            border-color: #0284c7;
-            color: #0369a1;
+        .btn-pill.active {
+            background: #0284c7;
+            color: #ffffff;
         }
 
-        /* TIMELINE DA CAIXA DE ENTRADA */
-        .timeline-group { margin-bottom: 1.5rem; }
-        .timeline-date-header {
+        .timeline-section { margin-bottom: 1.2rem; }
+        .timeline-date {
             font-size: 0.75rem;
-            font-weight: 700;
-            color: #64748b;
+            font-weight: 800;
+            color: #718096;
+            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-            padding-bottom: 4px;
-            border-bottom: 1px solid #f1f5f9;
         }
 
-        .timeline-card {
+        .item-card {
             background: #ffffff;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--card-border);
             border-radius: 8px;
             padding: 12px 16px;
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: border 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        .timeline-card:hover { border-color: var(--purple-main); }
-
-        .timeline-tag {
-            font-size: 0.65rem;
+        .item-tag {
+            font-size: 0.68rem;
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 12px;
-            background: #f1f5f9;
-            color: #475569;
-            display: inline-block;
+            background: #edf2f7;
+            color: #4a5568;
             margin-left: 8px;
         }
 
-        /* COLUNA 3: ATALHOS & PAINEL DIREITO */
-        aside.portal-widgets {
-            width: 320px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
         }
 
-        .shortcuts-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+        .custom-table th, .custom-table td {
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 0.82rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .custom-table th {
+            background: #f8fafc;
+            font-weight: 700;
+            color: #4a5568;
+        }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .status-pending { background: #fef3c7; color: #b45309; }
+        .status-done { background: #dcfce7; color: #15803d; }
+
+        .bottom-nav-btns {
+            display: flex;
+            justify-content: center;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 1.5rem;
         }
 
-        .shortcut-item {
+        .btn-bottom-tab {
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* CARDS REPLAY CURSOS */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .course-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .course-card:hover { transform: translateY(-3px); }
+
+        .course-thumb {
+            height: 120px;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px 4px;
-            cursor: pointer;
-            text-decoration: none;
-            color: var(--text-dark);
-            transition: all 0.2s;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 10px;
         }
 
-        .shortcut-item:hover {
-            transform: translateY(-2px);
-            border-color: var(--purple-main);
-            background: var(--purple-light);
-        }
+        .course-body { padding: 12px; }
+        .course-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
+        .course-sub { font-size: 0.72rem; color: var(--text-muted); }
 
-        .shortcut-icon {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            background: #e0f2fe;
-            color: #0284c7;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem;
-            margin-bottom: 6px;
-        }
+        .hidden { display: none !important; }
 
-        .shortcut-label { font-size: 0.7rem; font-weight: 600; text-align: center; }
-
-        /* CALENDÁRIO MINI */
-        .calendar-widget {
-            font-size: 0.8rem;
-        }
-        .cal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            font-weight: 700; margin-bottom: 10px;
-        }
-        .cal-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr);
-            gap: 4px; text-align: center;
-        }
-        .cal-day-name { font-weight: 700; color: #94a3b8; font-size: 0.7rem; }
-        .cal-day { padding: 6px 0; border-radius: 4px; cursor: pointer; }
-        .cal-day.active { background: var(--purple-main); color: #fff; font-weight: bold; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        @media (max-width: 1024px) {
-            .portal-layout { flex-direction: column; }
-            aside.portal-sidebar { width: 100%; flex-direction: row; justify-content: space-around; }
-            aside.portal-widgets { width: 100%; }
+        /* LOADING SPINNER MODULO ACADEMICO */
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--purple-main); color: white;
+            display: none; justify-content: center; align-items: center;
+            flex-direction: column; z-index: 9999;
         }
     </style>
 </head>
 <body>
 
-    <!-- ================= 1. TELA DE LOGIN INICIAL ================= -->
-    <div id="screen-login">
-        <div class="login-card">
-            <!-- LOGO CLA -->
-            <svg class="cla-logo-img" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <text x="10" y="45" font-family="'Open Sans', sans-serif" font-weight="800" font-size="38" fill="#FFC72C">cla</text>
-                <path d="M 20 52 Q 60 70 100 52" stroke="#FFC72C" stroke-width="4" stroke-linecap="round" fill="none"/>
-            </svg>
+    <!-- OVERLAY CARREGANDO -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div style="font-size: 2.5rem; font-weight: 800; color: #ffc72c; margin-bottom: 1rem;">cla</div>
+        <p style="font-size: 0.9rem; font-weight: 600;">Carregando Módulo Acadêmico...</p>
+    </div>
 
-            <p class="subtitle">Clique no botão abaixo para acessar os serviços digitais do Portal.</p>
-
-            <button class="btn-acessar" onclick="openGoogleModal()">
-                ACESSAR <i class="fas fa-chevron-right"></i>
-            </button>
-
-            <div class="tip-box">
-                <strong>Dica 3:</strong> Busca inteligente<br>
-                <span>Muitos resultados na tela? Refine sua busca utilizando as opções de filtro.</span>
-            </div>
-
-            <div class="login-footer">
-                <i class="fas fa-church"></i>
-                <span>Educação Adventista ©2026 Portal e-ea.org.br</span>
+    <!-- 1. TOP HEADER -->
+    <header class="top-header">
+        <div class="header-left">
+            <div class="cla-logo-badge">cla</div>
+            <div class="school-info">
+                <span class="school-name">Setor Pedro Ludovico</span>
+                <span class="school-sub">Colégio Adventista</span>
             </div>
         </div>
-    </div>
 
-    <!-- ================= 2. MODAL GOOGLE OAUTH ================= -->
-    <div class="modal-overlay" id="google-modal">
-        <div class="google-modal">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
-                <i class="fab fa-google" style="color: #4285F4; font-size: 1.2rem;"></i>
-                <span style="font-size: 0.85rem; color: #5f6368; font-weight: 600;">Fazer login com o Google</span>
+        <div class="header-right">
+            <div class="header-tools">
+                <div class="header-tool-item"><i class="fas fa-flag"></i><span>Banners</span></div>
+                <div class="header-tool-item"><i class="fas fa-th"></i><span>Serviços</span></div>
+                <div class="header-tool-item"><i class="fas fa-school"></i><span>Escole</span></div>
             </div>
 
-            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 4px;">Escolha uma conta do eaportal.org</h3>
-            <p style="font-size: 0.85rem; color: #5f6368; margin-bottom: 1rem;">Prosseguir para <strong>Educação Adventista</strong></p>
-
-            <div class="account-item" onclick="startPortalLogin()">
-                <div class="account-avatar">D</div>
+            <div class="user-profile-box">
                 <div>
-                    <div style="font-size: 0.9rem; font-weight: 700;" id="modal-user-email">danilodeoliveira@eaportal.org</div>
-                    <div style="font-size: 0.75rem; color: #5f6368;">Sessão ativa</div>
-                </div>
-            </div>
-
-            <div style="padding: 10px 0; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #1a73e8; font-weight: 600; cursor: pointer;">
-                <i class="fas fa-user-plus" style="margin-right: 6px;"></i> Usar outra conta
-            </div>
-
-            <div style="margin-top: 1.5rem; background: #f8fafc; padding: 12px; border-radius: 8px; font-size: 0.75rem; color: #64748b;">
-                O app <strong>Educação Adventista</strong> receberá seu nome, endereço de e-mail e foto do perfil ao continuar.
-            </div>
-
-            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem;">
-                <button onclick="closeGoogleModal()" style="background: transparent; border: none; padding: 8px 16px; font-weight: 600; color: #5f6368; cursor: pointer;">Cancelar</button>
-                <button onclick="startPortalLogin()" style="background: #1a73e8; color: #fff; border: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; cursor: pointer;">Continuar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= 3. TELA DE CARREGAMENTO ================= -->
-    <div id="screen-loading">
-        <svg class="spinner-cla" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <text x="10" y="45" font-family="'Open Sans', sans-serif" font-weight="800" font-size="38" fill="#FFC72C">cla</text>
-            <path d="M 20 52 Q 60 70 100 52" stroke="#FFC72C" stroke-width="4" stroke-linecap="round" fill="none"/>
-        </svg>
-        <p style="font-family: 'Orbitron', sans-serif; letter-spacing: 2px; font-size: 0.9rem;">CARREGANDO SEU ESPAÇO...</p>
-    </div>
-
-    <!-- ================= 4. DASHBOARD PRINCIPAL DO PORTAL ================= -->
-    <div id="screen-portal">
-        <!-- TOP HEADER BAR -->
-        <header class="portal-header">
-            <div class="header-school-info">
-                <i class="fas fa-graduation-cap" style="color: var(--purple-main); font-size: 1.4rem;"></i>
-                <div>
-                    <div class="school-title">Setor Pedro Ludovico</div>
-                    <div class="school-sub">Colégio Adventista</div>
-                </div>
-            </div>
-
-            <div class="header-user-info">
-                <div class="user-details">
                     <div class="user-name">Danilo de Oliveira Richter Barcelos Pires</div>
                     <div class="user-code">EFUND06B</div>
                 </div>
-                <div class="user-avatar-img" style="background: var(--purple-main); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                    D
-                </div>
-                <i class="fas fa-ellipsis-v" style="color: var(--text-muted); cursor: pointer;"></i>
+                <div class="user-avatar">D</div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- LAYOUT DE 3 COLUNAS -->
-        <div class="portal-layout">
-            <!-- COLUNA 1: SIDEBAR -->
-            <aside class="portal-sidebar">
-                <div class="sidebar-brand">cla</div>
+    <!-- 2. BODY DA APLICAÇÃO -->
+    <div class="portal-body">
+        <!-- ICON SIDEBAR -->
+        <nav class="icon-sidebar">
+            <a class="sidebar-icon-btn active" id="tab-btn-agenda" onclick="selectTopNav('agenda')">
+                <i class="far fa-calendar-alt"></i>
+                <span>Agenda</span>
+            </a>
+            <a class="sidebar-icon-btn" id="tab-btn-aluno" onclick="selectTopNav('aluno')">
+                <i class="far fa-user"></i>
+                <span>Aluno</span>
+            </a>
+            <a class="sidebar-icon-btn" id="tab-btn-cpb" onclick="selectTopNav('cpb')">
+                <i class="fas fa-file-alt"></i>
+                <span>CPB Prova</span>
+            </a>
+            <a class="sidebar-icon-btn" id="tab-btn-cursos" onclick="selectTopNav('cursos')">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Cursos</span>
+            </a>
 
-                <a class="nav-btn active" onclick="switchNav('agenda', this)">
-                    <i class="far fa-calendar-alt"></i>
-                    <span>Agenda</span>
-                </a>
+            <div class="sidebar-bottom-logo">A</div>
+        </nav>
 
-                <a class="nav-btn" onclick="switchNav('aluno', this)">
-                    <i class="far fa-user"></i>
-                    <span>Aluno</span>
-                </a>
+        <!-- DRAWER DE SUBMENUS -->
+        <div class="submenu-drawer" id="submenu-drawer">
+            <!-- RENDERIZADO VIA JS DEPENDENDO DO MENU ATIVO -->
+        </div>
 
-                <a class="nav-btn" onclick="switchNav('cpb', this)">
-                    <i class="fas fa-file-alt"></i>
-                    <span>CPB Prova</span>
-                </a>
+        <!-- CONTEÚDO DAS PÁGINAS -->
+        <div class="content-area">
+            <div class="view-container">
 
-                <a class="nav-btn" onclick="switchNav('cursos', this)">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Cursos</span>
-                </a>
-            </aside>
+                <!-- VIEW 1: CAIXA DE ENTRADA -->
+                <div id="view-caixa-entrada">
+                    <h2 class="page-title"><i class="fas fa-inbox" style="color: var(--purple-main); margin-right: 8px;"></i> Caixa de entrada</h2>
+                    <div class="filter-bar">
+                        <button class="btn-pill active">Recentes</button>
+                        <button class="btn-pill">+15 dias</button>
+                        <button class="btn-pill">+30 dias</button>
+                        <span style="font-size: 0.78rem; color: var(--text-muted); margin-left: auto;">01/09/2026 até 16/09/2026</span>
+                    </div>
 
-            <!-- COLUNA 2: MAIN CAIXA DE ENTRADA -->
-            <main class="portal-main">
-                <div class="card-panel">
-                    <div class="inbox-header">
-                        <div class="inbox-title"><i class="fas fa-inbox" style="color: var(--purple-main); margin-right: 8px;"></i> Caixa de entrada</div>
-                        <div style="display: flex; gap: 8px;">
-                            <select style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.8rem;">
-                                <option>Selecionar turma</option>
-                            </select>
-                            <select style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.8rem;">
-                                <option>Selecionar disciplina</option>
-                            </select>
+                    <div class="timeline-section">
+                        <div class="timeline-date">HOJE - QUARTA-FEIRA, 16/SET</div>
+                        <div class="item-card" style="justify-content: center; color: var(--text-muted); font-size: 0.82rem;">
+                            NENHUM DADO ENCONTRADO
                         </div>
                     </div>
 
-                    <!-- FILTROS DE DATA -->
-                    <div class="filter-pills">
-                        <button class="pill-btn active">Recentes</button>
-                        <button class="pill-btn">+15 dias</button>
-                        <button class="pill-btn">+30 dias</button>
-                        <span style="font-size: 0.8rem; color: var(--text-muted); align-self: center; margin-left: auto;">01/09/2026 até 16/09/2026</span>
-                    </div>
-
-                    <!-- LINHA DO TEMPO / CRONOGRAMAS -->
-                    <div class="timeline-group">
-                        <div class="timeline-date-header">TERÇA-FEIRA, 15/SET</div>
-                        <div class="timeline-card">
+                    <div class="timeline-section">
+                        <div class="timeline-date">TERÇA-FEIRA, 15/SET</div>
+                        <div class="item-card">
                             <div>
-                                <strong style="font-size: 0.9rem; color: var(--text-dark);">Cronograma quinzenal ed.física 02/10</strong>
-                                <span class="timeline-tag">Aula</span>
+                                <strong style="font-size: 0.88rem;">Cronograma quinzenal ed.física 02/10</strong>
+                                <span class="item-tag">Aula</span>
                                 <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Educação Física • Cínthia Ribeiro Xavier</div>
                             </div>
                             <span style="font-size: 0.75rem; color: var(--text-muted);">15/09</span>
                         </div>
                     </div>
 
-                    <div class="timeline-group">
-                        <div class="timeline-date-header">SEGUNDA-FEIRA, 14/SET</div>
-                        <div class="timeline-card">
+                    <div class="timeline-section">
+                        <div class="timeline-date">SEGUNDA-FEIRA, 14/SET</div>
+                        <div class="item-card">
                             <div>
-                                <strong style="font-size: 0.9rem; color: var(--text-dark);">Cronograma 14 a 18 de setembro</strong>
-                                <span class="timeline-tag">Aula</span>
+                                <strong style="font-size: 0.88rem;">Cronograma 14 a 18 de setembro</strong>
+                                <span class="item-tag">Aula</span>
                                 <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">História • Gabriele Amancio Berlofa Venancio Brito</div>
                             </div>
                             <span style="font-size: 0.75rem; color: var(--text-muted);">14/09</span>
                         </div>
-
-                        <div class="timeline-card">
+                        <div class="item-card">
                             <div>
-                                <strong style="font-size: 0.9rem; color: var(--text-dark);">Cronograma semanal de Ciências de 14 a 18 de setembro</strong>
-                                <span class="timeline-tag">Aula</span>
+                                <strong style="font-size: 0.88rem;">Cronograma semanal de Ciências de 14 a 18 de setembro</strong>
+                                <span class="item-tag">Aula</span>
                                 <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Ciências • Jussara Ferreira dos Santos</div>
                             </div>
                             <span style="font-size: 0.75rem; color: var(--text-muted);">14/09</span>
                         </div>
                     </div>
-
-                    <div class="timeline-group">
-                        <div class="timeline-date-header">QUINTA-FEIRA, 10/SET</div>
-                        <div class="timeline-card" style="border-left: 4px solid var(--purple-main);">
-                            <div>
-                                <strong style="font-size: 0.9rem; color: var(--purple-main);">UCOB - SIMULADO02 - 7º ANO - 2º DIA - III BIMESTRE</strong>
-                                <span class="timeline-tag" style="background: var(--purple-light); color: var(--purple-main);">CPB Prova</span>
-                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">01/09/2026 • 30 questões • Híbrido</div>
-                            </div>
-                            <span style="font-size: 0.75rem; color: var(--text-muted);">10/09</span>
-                        </div>
-                    </div>
                 </div>
-            </main>
 
-            <!-- COLUNA 3: WIDGETS E ATALHOS -->
-            <aside class="portal-widgets">
-                <!-- PAINEL DE ATALHOS -->
-                <div class="card-panel">
-                    <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">Atalhos</div>
-                    <div class="shortcuts-grid">
-                        <a class="shortcut-item">
-                            <div class="shortcut-icon"><i class="fas fa-clipboard-check"></i></div>
-                            <div class="shortcut-label">Avaliações</div>
-                        </a>
-                        <a class="shortcut-item">
-                            <div class="shortcut-icon"><i class="fas fa-star"></i></div>
-                            <div class="shortcut-label">Notas</div>
-                        </a>
-                        <a class="shortcut-item">
-                            <div class="shortcut-icon"><i class="fas fa-clock"></i></div>
-                            <div class="shortcut-label">Horário</div>
-                        </a>
-                        <a class="shortcut-item">
-                            <div class="shortcut-icon"><i class="fas fa-play-circle"></i></div>
-                            <div class="shortcut-label">Replay</div>
-                        </a>
+                <!-- VIEW 2: HORÁRIO DE AULA -->
+                <div id="view-horario-aula" class="hidden">
+                    <h2 class="page-title">Horário de Aula</h2>
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Segunda-feira</th>
+                                <th>Terça-feira</th>
+                                <th>Quarta-feira</th>
+                                <th>Quinta-feira</th>
+                                <th>Sexta-feira</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>Geografia</td><td>Geografia</td><td>Ciências</td><td>História</td><td>Educação Física</td></tr>
+                            <tr><td>2</td><td>L.E.M. - Inglês</td><td>História</td><td>Matemática</td><td>Redação</td><td>Ensino Religioso</td></tr>
+                            <tr><td>3</td><td>Educação Física</td><td>Língua Portuguesa</td><td>Matemática</td><td>Arte</td><td>Ensino Religioso</td></tr>
+                            <tr><td>4</td><td>Ciências</td><td>Redação</td><td>L.E.M. - Inglês</td><td>Ciências</td><td>Matemática</td></tr>
+                            <tr><td>5</td><td>Matemática</td><td>Redação</td><td>Língua Portuguesa</td><td>Língua Portuguesa</td><td>Língua Portuguesa</td></tr>
+                            <tr><td>6</td><td>Matemática</td><td>História</td><td>Língua Portuguesa</td><td>Geografia</td><td>Lng.Est.Mod - Espanhol</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="bottom-nav-btns">
+                        <button class="btn-bottom-tab" onclick="switchView('avaliacoes')">Avaliações</button>
+                        <button class="btn-bottom-tab" onclick="switchView('notas-faltas')">Notas e Faltas</button>
+                        <button class="btn-bottom-tab" onclick="switchView('apontamentos')">Apontamentos do Aluno</button>
                     </div>
                 </div>
 
-                <!-- MINI CALENDÁRIO -->
-                <div class="card-panel calendar-widget">
-                    <div class="cal-header">
-                        <span>Setembro 2026</span>
+                <!-- VIEW 3: NOTAS E FALTAS -->
+                <div id="view-notas-faltas" class="hidden">
+                    <h2 class="page-title">Notas e Faltas</h2>
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>DISCIPLINA</th>
+                                <th>1º BIMESTRE (NOTA / FALTAS)</th>
+                                <th>2º BIMESTRE (NOTA / FALTAS)</th>
+                                <th>3º BIMESTRE</th>
+                                <th>4º BIMESTRE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Arte</td><td><strong>7,8</strong> (0)</td><td><strong>9,8</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>Ciências</td><td><strong>7,8</strong> (0)</td><td><strong>9,8</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>Educação Física</td><td><strong>0,0</strong> (0)</td><td><strong>9,8</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>Ensino Religioso</td><td><strong>9,5</strong> (0)</td><td><strong>9,5</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>Geografia</td><td><strong>8,7</strong> (0)</td><td><strong>6,8</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>História</td><td><strong>9,7</strong> (0)</td><td><strong>9,8</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>L.E.M. - Inglês</td><td><strong>7,8</strong> (0)</td><td><strong>9,6</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>Língua Portuguesa</td><td><strong>9,0</strong> (0)</td><td><strong>6,9</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>Matemática</td><td><strong>7,8</strong> (0)</td><td><strong>9,8</strong> (0)</td><td>-</td><td>-</td></tr>
+                            <tr><td>Redação</td><td><strong>7,8</strong> (0)</td><td><strong>9,8</strong> (0)</td><td>-</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="bottom-nav-btns">
+                        <button class="btn-bottom-tab" onclick="switchView('horario-aula')">Horário de Aula</button>
+                        <button class="btn-bottom-tab" onclick="switchView('avaliacoes')">Avaliações</button>
+                        <button class="btn-bottom-tab" onclick="switchView('apontamentos')">Apontamentos do Aluno</button>
+                    </div>
+                </div>
+
+                <!-- VIEW 4: AVALIAÇÕES (CPB PROVA) -->
+                <div id="view-avaliacoes" class="hidden">
+                    <h2 class="page-title">Avaliações (CPB Prova)</h2>
+                    <div class="filter-bar">
+                        <input type="date" value="2026-09-01" style="padding: 6px; border-radius: 6px; border: 1px solid var(--card-border);">
+                        <input type="date" value="2026-09-30" style="padding: 6px; border-radius: 6px; border: 1px solid var(--card-border);">
+                        <button class="btn-pill active"><i class="fas fa-search"></i> Pesquisar</button>
+                    </div>
+
+                    <div class="item-card" style="border-left: 4px solid var(--yellow-status);">
                         <div>
-                            <i class="fas fa-chevron-left" style="margin-right: 8px; cursor: pointer;"></i>
-                            <i class="fas fa-chevron-right" style="cursor: pointer;"></i>
+                            <strong style="font-size: 0.88rem; color: var(--purple-main);">AV2 3º Bimestre - História - 7º ano A e MB - Gabriele</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">História • Prof. Gabriele Amancio Berlofa Venancio Brito</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="status-badge status-pending">Pendente</span>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">21/09/2026 00:00</div>
                         </div>
                     </div>
-                    <div class="cal-grid">
-                        <div class="cal-day-name">Dom</div>
-                        <div class="cal-day-name">Seg</div>
-                        <div class="cal-day-name">Ter</div>
-                        <div class="cal-day-name">Qua</div>
-                        <div class="cal-day-name">Qui</div>
-                        <div class="cal-day-name">Sex</div>
-                        <div class="cal-day-name">Sáb</div>
 
-                        <div class="cal-day" style="color: #cbd5e1;">30</div>
-                        <div class="cal-day" style="color: #cbd5e1;">31</div>
-                        <div class="cal-day">1</div>
-                        <div class="cal-day">2</div>
-                        <div class="cal-day">3</div>
-                        <div class="cal-day">4</div>
-                        <div class="cal-day">5</div>
-                        <div class="cal-day">6</div>
-                        <div class="cal-day">7</div>
-                        <div class="cal-day">8</div>
-                        <div class="cal-day">9</div>
-                        <div class="cal-day">10</div>
-                        <div class="cal-day">11</div>
-                        <div class="cal-day">12</div>
-                        <div class="cal-day">13</div>
-                        <div class="cal-day">14</div>
-                        <div class="cal-day active">15</div>
-                        <div class="cal-day">16</div>
-                        <div class="cal-day">17</div>
-                        <div class="cal-day">18</div>
-                        <div class="cal-day">19</div>
+                    <div class="item-card" style="border-left: 4px solid var(--yellow-status);">
+                        <div>
+                            <strong style="font-size: 0.88rem; color: var(--purple-main);">2ª Chamada AV2 3º Bimestre - História - 7º ano A e MB</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">História • Prof. Gabriele Amancio Berlofa Venancio Brito</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="status-badge status-pending">Pendente</span>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">28/09/2026 00:00</div>
+                        </div>
+                    </div>
+
+                    <div class="item-card" style="border-left: 4px solid var(--green-status);">
+                        <div>
+                            <strong style="font-size: 0.88rem;">Lista ESPANHOL 7º ANO - 3º Bimestre - 2026</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Língua Espanhola • Prof. Cristiane Guidi da Cunha Rodrigues</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="status-badge status-done">Concluído</span>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">13/09/2026</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: CONTEÚDO PROGRAMÁTICO -->
+                <div id="view-conteudo-programatico" class="hidden">
+                    <h2 class="page-title">Conteúdo Programático</h2>
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>DATA</th>
+                                <th>DISCIPLINA / PROFESSOR</th>
+                                <th>CONTEÚDO MINISTRADO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>22/02/2026</td><td><strong>Arte</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">Jeanne Sousa Martins</span></td><td>Acolhida dos alunos, apresentação do professor, dinâmica "poética do artista".</td></tr>
+                            <tr><td>29/02/2026</td><td>Arte</td><td>Arte no período medieval: arte românica.</td></tr>
+                            <tr><td>05/02/2026</td><td>Arte</td><td>Escultura gótica e funções da música.</td></tr>
+                            <tr><td>12/02/2026</td><td>Arte</td><td>Arquitetura no estilo gótico.</td></tr>
+                            <tr><td>28/03/2026</td><td><strong>Ciências</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">Jussara Ferreira dos Santos</span></td><td>Temperatura e sensação térmica. Escalas de temperatura.</td></tr>
+                            <tr><td>04/02/2026</td><td>Ciências</td><td>Calor e temperatura. Transferência de calor na natureza.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- VIEW 6: APONTAMENTOS DO ALUNO -->
+                <div id="view-apontamentos" class="hidden">
+                    <h2 class="page-title">Apontamentos do Aluno</h2>
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>NOTIFICAÇÃO</th>
+                                <th>DESCRIÇÃO</th>
+                                <th>DATA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="status-badge status-done">Contato com pai/mãe</span></td>
+                                <td>Sr. Responsável, Agradecemos o seu comparecimento à Reunião de Pais e Entrega de Boletins realizada no dia 20/04. Sua presença é essencial para o desenvolvimento acadêmico. Atenciosamente, Selma Alves Nogueira - Orientação Educacional CASPL.</td>
+                                <td>22/04/2026</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge status-done">Contato com pai/mãe</span></td>
+                                <td>Sr. Responsável, Agradecemos o seu comparecimento à 1ª Reunião de Pais para Aprovação do PPF e Regimento Escolar 2026 realizada no dia 20/01. Atenciosamente, Selma Alves Nogueira - Orientação Educacional CASPL.</td>
+                                <td>20/01/2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="bottom-nav-btns">
+                        <button class="btn-bottom-tab" onclick="switchView('horario-aula')">Horário de Aula</button>
+                        <button class="btn-bottom-tab" onclick="switchView('avaliacoes')">Avaliações</button>
+                        <button class="btn-bottom-tab" onclick="switchView('notas-faltas')">Notas e Faltas</button>
+                    </div>
+                </div>
+
+                <!-- VIEW 7: TRILHAS DE APRENDIZAGEM (CURSOS REPLAY) -->
+                <div id="view-cursos" class="hidden">
+                    <h2 class="page-title">Trilhas de Aprendizagem (Projeto Replay)</h2>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-thumb" style="background: linear-gradient(135deg, #a855f7, #3b82f6);">MATEMÁTICA</div>
+                            <div class="course-body">
+                                <div class="course-title">Projeto Replay - 7º Ano Matemática</div>
+                                <div class="course-sub">Prof. Maria Célia</div>
+                            </div>
+                        </div>
+
+                        <div class="course-card">
+                            <div class="course-thumb" style="background: linear-gradient(135deg, #ec4899, #f43f5e);">LÍNGUA PORTUGUESA</div>
+                            <div class="course-body">
+                                <div class="course-title">Projeto Replay - 7º Ano Português</div>
+                                <div class="course-sub">Prof. Virginia Kelly</div>
+                            </div>
+                        </div>
+
+                        <div class="course-card">
+                            <div class="course-thumb" style="background: linear-gradient(135deg, #10b981, #06b6d4);">CIÊNCIAS</div>
+                            <div class="course-body">
+                                <div class="course-title">Projeto Replay - 7º Ano Ciências</div>
+                                <div class="course-sub">Prof. Jussara Ferreira</div>
+                            </div>
+                        </div>
+
+                        <div class="course-card">
+                            <div class="course-thumb" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">HISTÓRIA</div>
+                            <div class="course-body">
+                                <div class="course-title">Projeto Replay - 7º Ano História</div>
+                                <div class="course-sub">Prof. Gabriele Amancio</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PAINEL WIDGETS À DIREITA -->
+            <aside class="widgets-panel">
+                <div class="widget-card">
+                    <div class="widget-header">
+                        <span>Atalhos</span>
+                        <i class="fas fa-ellipsis-h" style="color: var(--text-muted); cursor: pointer;"></i>
+                    </div>
+                    <div class="shortcuts-grid">
+                        <div class="shortcut-btn" onclick="switchView('avaliacoes')">
+                            <i class="fas fa-clipboard-check"></i>
+                            <span>Avaliações</span>
+                        </div>
+                        <div class="shortcut-btn" onclick="switchView('notas-faltas')">
+                            <i class="fas fa-star"></i>
+                            <span>Notas</span>
+                        </div>
+                        <div class="shortcut-btn" onclick="switchView('apontamentos')">
+                            <i class="fas fa-comment-alt"></i>
+                            <span>Apontamentos</span>
+                        </div>
+                        <div class="shortcut-btn" onclick="switchView('horario-aula')">
+                            <i class="fas fa-clock"></i>
+                            <span>Horário</span>
+                        </div>
+                        <div class="shortcut-btn" onclick="switchView('avaliacoes')">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>Minhas provas</span>
+                        </div>
+                        <div class="shortcut-btn" onclick="switchView('cursos')">
+                            <i class="fas fa-play-circle"></i>
+                            <span>Replay</span>
+                        </div>
+                        <div class="shortcut-btn" onclick="switchView('cursos')">
+                            <i class="fas fa-shapes"></i>
+                            <span>3edu</span>
+                        </div>
+                        <div class="shortcut-btn" onclick="switchView('apontamentos')">
+                            <i class="fas fa-sticky-note"></i>
+                            <span>Observações</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget-card">
+                    <div class="widget-header">
+                        <span>Cursos</span>
+                    </div>
+                    <div style="font-size: 0.8rem; font-weight: 700; color: var(--purple-main); cursor: pointer;" onclick="switchView('cursos')">
+                        <i class="fas fa-graduation-cap" style="margin-right: 6px;"></i> Trilhas de Aprendizagem
+                    </div>
+                </div>
+
+                <div class="widget-card">
+                    <div class="widget-header">
+                        <span>Lives</span>
+                    </div>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; font-size: 0.78rem; color: var(--text-muted); text-align: center;">
+                        <i class="fas fa-video-slash" style="margin-bottom: 4px; font-size: 1.2rem; display: block;"></i>
+                        Nenhuma transmissão ao vivo no momento.
                     </div>
                 </div>
             </aside>
         </div>
     </div>
 
-    <!-- LÓGICA DE INTERAÇÃO -->
+    <!-- SCRIPT DE NAVEGAÇÃO E INTERAÇÃO -->
     <script>
-        function openGoogleModal() {
-            document.getElementById('google-modal').style.display = 'flex';
+        const navData = {
+            agenda: {
+                title: "FILTRAR AGENDA",
+                items: [
+                    { id: "caixa-entrada", label: "Caixa de entrada", icon: "fas fa-inbox" },
+                    { id: "caixa-entrada", label: "Aulas", icon: "fas fa-chalkboard-teacher" },
+                    { id: "caixa-entrada", label: "Atividades", icon: "fas fa-tasks" },
+                    { id: "avaliacoes", label: "CPB Provas", icon: "fas fa-file-alt" },
+                    { id: "caixa-entrada", label: "Comunicados", icon: "fas fa-bullhorn" }
+                ],
+                hasCalendar: true
+            },
+            aluno: {
+                title: "ALUNO",
+                items: [
+                    { id: "horario-aula", label: "Horário de Aula", icon: "fas fa-clock" },
+                    { id: "avaliacoes", label: "Avaliações", icon: "fas fa-clipboard-check" },
+                    { id: "notas-faltas", label: "Notas e Faltas", icon: "fas fa-star" },
+                    { id: "conteudo-programatico", label: "Conteúdo Programático", icon: "fas fa-book" },
+                    { id: "apontamentos", label: "Apontamentos do Aluno", icon: "fas fa-user-edit" },
+                    { id: "modulo-academico", label: "Módulo Acadêmico", icon: "fas fa-university" }
+                ],
+                hasCalendar: false
+            },
+            cpb: {
+                title: "CPB PROVA",
+                items: [
+                    { id: "avaliacoes", label: "Avaliações", icon: "fas fa-file-alt" },
+                    { id: "avaliacoes", label: "PAAEB", icon: "fas fa-check-double" }
+                ],
+                hasCalendar: false
+            },
+            cursos: {
+                title: "TRILHAS DE APRENDIZAGEM",
+                items: [
+                    { id: "cursos", label: "Cursos / Projeto Replay", icon: "fas fa-graduation-cap" }
+                ],
+                hasCalendar: false
+            }
+        };
+
+        let currentActiveView = "caixa-entrada";
+
+        function renderSubmenu(navKey) {
+            const drawer = document.getElementById('submenu-drawer');
+            const data = navData[navKey];
+
+            let html = `<div class="drawer-title">${data.title}</div>`;
+
+            data.items.forEach(item => {
+                const isActive = item.id === currentActiveView ? "active" : "";
+                html += `
+                    <a class="drawer-item ${isActive}" onclick="switchView('${item.id}', this)">
+                        <i class="${item.icon}"></i>
+                        <span>${item.label}</span>
+                    </a>
+                `;
+            });
+
+            if (data.hasCalendar) {
+                html += `
+                    <div class="sidebar-mini-calendar">
+                        <div class="cal-head">
+                            <span>Setembro 2026</span>
+                            <i class="fas fa-chevron-right" style="cursor:pointer;"></i>
+                        </div>
+                        <div class="cal-days-grid">
+                            <span class="cal-day-header">D</span><span class="cal-day-header">S</span><span class="cal-day-header">T</span><span class="cal-day-header">Q</span><span class="cal-day-header">Q</span><span class="cal-day-header">S</span><span class="cal-day-header">S</span>
+                            <span class="cal-day-cell">30</span><span class="cal-day-cell">31</span><span class="cal-day-cell">1</span><span class="cal-day-cell">2</span><span class="cal-day-cell">3</span><span class="cal-day-cell">4</span><span class="cal-day-cell">5</span>
+                            <span class="cal-day-cell">6</span><span class="cal-day-cell">7</span><span class="cal-day-cell">8</span><span class="cal-day-cell">9</span><span class="cal-day-cell">10</span><span class="cal-day-cell">11</span><span class="cal-day-cell">12</span>
+                            <span class="cal-day-cell">13</span><span class="cal-day-cell">14</span><span class="cal-day-cell active">15</span><span class="cal-day-cell">16</span><span class="cal-day-cell">17</span><span class="cal-day-cell">18</span><span class="cal-day-cell">19</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            drawer.innerHTML = html;
         }
 
-        function closeGoogleModal() {
-            document.getElementById('google-modal').style.display = 'none';
+        function selectTopNav(navKey) {
+            document.querySelectorAll('.sidebar-icon-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-btn-${navKey}`).classList.add('active');
+            renderSubmenu(navKey);
         }
 
-        function startPortalLogin() {
-            closeGoogleModal();
-            document.getElementById('screen-login').style.display = 'none';
-            document.getElementById('screen-loading').style.display = 'flex';
+        function switchView(viewId, drawerEl) {
+            if (viewId === 'modulo-academico') {
+                const overlay = document.getElementById('loading-overlay');
+                overlay.style.display = 'flex';
+                setTimeout(() => { overlay.style.display = 'none'; }, 1500);
+                return;
+            }
 
-            // Simula o tempo de carregamento e autenticação do CLA
-            setTimeout(() => {
-                document.getElementById('screen-loading').style.display = 'none';
-                document.getElementById('screen-portal').style.display = 'flex';
-            }, 1800);
+            currentActiveView = viewId;
+
+            const views = ['caixa-entrada', 'horario-aula', 'notas-faltas', 'avaliacoes', 'conteudo-programatico', 'apontamentos', 'cursos'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) target.classList.remove('hidden');
+
+            if (drawerEl) {
+                document.querySelectorAll('.drawer-item').forEach(di => di.classList.remove('active'));
+                drawerEl.classList.add('active');
+            }
         }
 
-        function switchNav(navId, el) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            el.classList.add('active');
-        }
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            selectTopNav('agenda');
+        });
     </script>
 </body>
 </html>
