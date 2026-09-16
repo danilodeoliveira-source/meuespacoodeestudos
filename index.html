@@ -38,11 +38,11 @@
             overflow-x: hidden;
         }
 
-        /* MODAL DE LOGIN / REGISTRO */
+        /* MODAL DE LOGIN (DESATIVADO POR PADRÃO) */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center;
+            display: none; justify-content: center; align-items: center;
             z-index: 99999;
         }
 
@@ -219,42 +219,40 @@
             <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem;">ACESSO AO ESTÚDIO 2050</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">Preencha seus dados para acessar turmas, livros A4 e monitoramento de notas.</p>
 
-            <form id="profile-form" onsubmit="saveProfile(event); return false;">
-                <div class="form-group">
-                    <label>NOME COMPLETO DO ESTUDANTE OU PROFESSOR</label>
-                    <input type="text" id="user-name" placeholder="Ex: Lucas Silva" required>
-                </div>
+            <div class="form-group">
+                <label>NOME COMPLETO DO ESTUDANTE OU PROFESSOR</label>
+                <input type="text" id="user-name" placeholder="Ex: Lucas Silva">
+            </div>
 
-                <div class="form-group">
-                    <label>SOU PROFESSOR OU ALUNO?</label>
-                    <select id="user-role" onchange="toggleRoleFields()" required>
-                        <option value="aluno">Aluno(a)</option>
-                        <option value="professor">Professor(a)</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label>SOU PROFESSOR OU ALUNO?</label>
+                <select id="user-role" onchange="toggleRoleFields()">
+                    <option value="aluno">Aluno(a)</option>
+                    <option value="professor">Professor(a)</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label>SÉRIE / ANO ESCOLAR</label>
-                    <select id="user-grade" required>
-                        <option value="6º Ano">6º Ano (Ensino Fundamental)</option>
-                        <option value="7º Ano">7º Ano (Ensino Fundamental)</option>
-                        <option value="8º Ano">8º Ano (Ensino Fundamental)</option>
-                        <option value="9º Ano">9º Ano (Ensino Fundamental)</option>
-                        <option value="1º Ano EM">1º Ano (Ensino Médio)</option>
-                        <option value="2º Ano EM">2º Ano (Ensino Médio)</option>
-                        <option value="3º Ano EM">3º Ano (Ensino Médio)</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label>SÉRIE / ANO ESCOLAR</label>
+                <select id="user-grade">
+                    <option value="6º Ano">6º Ano (Ensino Fundamental)</option>
+                    <option value="7º Ano">7º Ano (Ensino Fundamental)</option>
+                    <option value="8º Ano">8º Ano (Ensino Fundamental)</option>
+                    <option value="9º Ano">9º Ano (Ensino Fundamental)</option>
+                    <option value="1º Ano EM">1º Ano (Ensino Médio)</option>
+                    <option value="2º Ano EM">2º Ano (Ensino Médio)</option>
+                    <option value="3º Ano EM">3º Ano (Ensino Médio)</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label id="classroom-label">NOME OU CÓDIGO DA(S) SALA(S)</label>
-                    <input type="text" id="user-classroom" placeholder="Ex: Turma 7A, Sala de Geografia 2050" required>
-                </div>
+            <div class="form-group">
+                <label id="classroom-label">NOME OU CÓDIGO DA(S) SALA(S)</label>
+                <input type="text" id="user-classroom" placeholder="Ex: Turma 7A, Sala de Geografia 2050">
+            </div>
 
-                <button type="button" onclick="saveProfile(event)" class="btn-main" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
-                    INICIAR ESTÚDIO <i class="fas fa-arrow-right"></i>
-                </button>
-            </form>
+            <button type="button" id="btn-login-submit" class="btn-main" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+                INICIAR ESTÚDIO <i class="fas fa-arrow-right"></i>
+            </button>
         </div>
     </div>
 
@@ -499,30 +497,17 @@
 
     <!-- LÓGICA JAVASCRIPT PRINCIPAL -->
     <script>
-        /* ================= ESTADO, SALVAMENTO E NOTAS ================= */
-        let userProfile = JSON.parse(localStorage.getItem('studyflow_v6_profile')) || null;
-        let studentAnswers = JSON.parse(localStorage.getItem('studyflow_student_answers_v6')) || {};
+        /* ================= ESTADO E LOGIN GARANTIDO ================= */
+        let userProfile = JSON.parse(localStorage.getItem('studyflow_v7_profile')) || null;
+        let studentAnswers = JSON.parse(localStorage.getItem('studyflow_v7_answers')) || {};
         let currentPage = 0; // 0 = Capa, 1 a 65 = Páginas
         const totalPages = 65;
 
-        function hideModal() {
+        // FECHA O MODAL SEM ERRO EM TODAS AS SITUAÇÕES
+        function forceCloseModal() {
             const modal = document.getElementById('profile-modal');
             if (modal) {
-                modal.classList.add('hidden');
                 modal.style.setProperty('display', 'none', 'important');
-            }
-        }
-
-        function checkProfile() {
-            const modal = document.getElementById('profile-modal');
-            if (!userProfile) {
-                if (modal) {
-                    modal.classList.remove('hidden');
-                    modal.style.setProperty('display', 'flex', 'important');
-                }
-            } else {
-                hideModal();
-                updateProfileUI();
             }
         }
 
@@ -540,47 +525,41 @@
                 if (classroomEl) classroomEl.value = userProfile.classroom;
             }
             if (modal) {
-                modal.classList.remove('hidden');
                 modal.style.setProperty('display', 'flex', 'important');
             }
         }
 
-        function saveProfile(e) {
-            if (e) e.preventDefault();
+        function executeLogin() {
             try {
                 const nameEl = document.getElementById('user-name');
                 const roleEl = document.getElementById('user-role');
                 const gradeEl = document.getElementById('user-grade');
                 const classroomEl = document.getElementById('user-classroom');
 
-                const name = nameEl ? nameEl.value.trim() : 'Estudante';
+                const name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'Estudante';
                 const role = roleEl ? roleEl.value : 'aluno';
                 const grade = gradeEl ? gradeEl.value : '7º Ano';
-                const classroom = classroomEl ? classroomEl.value.trim() : 'Geral';
-
-                if (!name) {
-                    alert("Por favor, digite seu nome!");
-                    return;
-                }
+                const classroom = (classroomEl && classroomEl.value.trim()) ? classroomEl.value.trim() : 'Geral';
 
                 userProfile = { name, role, grade, classroom };
-                localStorage.setItem('studyflow_v6_profile', JSON.stringify(userProfile));
+                localStorage.setItem('studyflow_v7_profile', JSON.stringify(userProfile));
 
-                // ESCONDE O MODAL IMEDIATAMENTE
-                hideModal();
+                // 1. FECHA O MODAL PRIMEIRO
+                forceCloseModal();
 
+                // 2. ATUALIZA A INTERFACE E ABRE O LOBBY
                 updateProfileUI();
                 switchTab('lobby');
             } catch (err) {
-                console.error("Erro ao salvar perfil:", err);
-                hideModal();
+                console.error("Erro no login:", err);
+                forceCloseModal(); // Garante fechar mesmo se der aviso
             }
         }
 
         function updateProfileUI() {
             try {
                 if (!userProfile) return;
-                
+
                 const titleEl = document.getElementById('welcome-title');
                 const subEl = document.getElementById('sub-welcome');
                 const badgeEl = document.getElementById('badge-role');
@@ -773,7 +752,7 @@
                     timestamp: Date.now()
                 };
 
-                localStorage.setItem('studyflow_student_answers_v6', JSON.stringify(studentAnswers));
+                localStorage.setItem('studyflow_v7_answers', JSON.stringify(studentAnswers));
 
                 const qBox = document.getElementById(`qbox-${qKey}`);
                 if (qBox) {
@@ -817,7 +796,6 @@
                 if (!container) return;
 
                 if (currentPage === 0) {
-                    // CAPA DO LIVRO
                     const pageDisp = document.getElementById('page-display');
                     if (pageDisp) pageDisp.textContent = `Capa do Livro (${bimestre}º Bimestre)`;
 
@@ -846,7 +824,6 @@
                         </div>
                     `;
                 } else {
-                    // PÁGINA COM QUESTÃO AUTÓNOMA A4
                     const pageDisp = document.getElementById('page-display');
                     if (pageDisp) pageDisp.textContent = `Página ${currentPage} de ${totalPages}`;
                     
@@ -943,7 +920,7 @@
             if (input) input.value = '';
 
             setTimeout(() => {
-                let response = `[**Gemini 3.1 Pro**]: Analisei sua solicitação ("${prompt}"). Sua média atual calculada é de **${(Object.keys(studentAnswers).length > 0 ? ((Object.values(studentAnswers).filter(a=>a.isCorrect).length / Object.keys(studentAnswers).length)*10).toFixed(1) : '0.0')} / 10.0**. Continue praticando no módulo de livros!`;
+                let response = `[**Gemini 3.1 Pro**]: Analisei sua solicitação ("${prompt}"). Sua média acumulada calculada é de **${(Object.keys(studentAnswers).length > 0 ? ((Object.values(studentAnswers).filter(a=>a.isCorrect).length / Object.keys(studentAnswers).length)*10).toFixed(1) : '0.0')} / 10.0**. Continue praticando no módulo de livros!`;
 
                 logs.innerHTML += `<div class="chat-msg ia">${response}</div>`;
                 logs.scrollTop = logs.scrollHeight;
@@ -1046,9 +1023,24 @@
             canvas.addEventListener('touchmove', draw);
         }
 
-        /* INICIALIZAÇÃO SEGURA DA PÁGINA */
+        /* INICIALIZAÇÃO INCONDICIONAL QUANDO O DOM CARREGAR */
         window.addEventListener('DOMContentLoaded', () => {
-            checkProfile();
+            const btnSubmit = document.getElementById('btn-login-submit');
+            if (btnSubmit) {
+                btnSubmit.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    executeLogin();
+                });
+            }
+
+            // Verifica perfil salvo
+            if (!userProfile) {
+                const modal = document.getElementById('profile-modal');
+                if (modal) modal.style.setProperty('display', 'flex', 'important');
+            } else {
+                forceCloseModal();
+                updateProfileUI();
+            }
         });
     </script>
 </body>
