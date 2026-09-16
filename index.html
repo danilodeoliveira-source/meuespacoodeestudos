@@ -15,7 +15,7 @@
 
     <style>
         :root {
-            --bg-body: #f8fafc;
+            --bg-body: #ffffff;
             --bg-card: #ffffff;
             --border-color: #cbd5e1;
             --primary: #2563eb;
@@ -43,7 +43,7 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
             display: flex; justify-content: center; align-items: center;
-            z-index: 9999;
+            z-index: 99999;
         }
 
         .modal-card {
@@ -65,7 +65,6 @@
             background: #f1f5f9; border: 1px solid var(--border-color);
             padding: 10px 12px; border-radius: 6px; color: var(--text-dark); font-family: inherit; font-size: 0.95rem; outline: none;
         }
-        .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
 
         /* LAYOUT PRINCIPAL */
         .app-container { display: flex; width: 100%; min-height: 100vh; }
@@ -88,12 +87,12 @@
             color: var(--primary); background: #eff6ff; border-color: #bfdbfe;
         }
 
-        main { flex: 1; padding: 2rem; overflow-y: auto; background-color: #f8fafc; }
+        main { flex: 1; padding: 2rem; overflow-y: auto; background-color: #ffffff; }
 
         header {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
-            background: #ffffff; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background: #ffffff; padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);
         }
 
         .btn-main {
@@ -220,7 +219,7 @@
             <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem;">ACESSO AO ESTÚDIO 2050</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">Preencha seus dados para acessar turmas, livros A4 e monitoramento de notas.</p>
 
-            <form onsubmit="saveProfile(event)">
+            <form id="profile-form" onsubmit="saveProfile(event); return false;">
                 <div class="form-group">
                     <label>NOME COMPLETO DO ESTUDANTE OU PROFESSOR</label>
                     <input type="text" id="user-name" placeholder="Ex: Lucas Silva" required>
@@ -252,7 +251,7 @@
                     <input type="text" id="user-classroom" placeholder="Ex: Turma 7A, Sala de Geografia 2050" required>
                 </div>
 
-                <button type="submit" class="btn-main" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+                <button type="button" onclick="saveProfile(event)" class="btn-main" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
                     INICIAR ESTÚDIO <i class="fas fa-arrow-right"></i>
                 </button>
             </form>
@@ -501,19 +500,28 @@
     <!-- LÓGICA JAVASCRIPT PRINCIPAL -->
     <script>
         /* ================= ESTADO, SALVAMENTO E NOTAS ================= */
-        let userProfile = JSON.parse(localStorage.getItem('studyflow_v5_profile')) || null;
-        let studentAnswers = JSON.parse(localStorage.getItem('studyflow_student_answers')) || {};
+        let userProfile = JSON.parse(localStorage.getItem('studyflow_v6_profile')) || null;
+        let studentAnswers = JSON.parse(localStorage.getItem('studyflow_student_answers_v6')) || {};
         let currentPage = 0; // 0 = Capa, 1 a 65 = Páginas
         const totalPages = 65;
+
+        function hideModal() {
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.setProperty('display', 'none', 'important');
+            }
+        }
 
         function checkProfile() {
             const modal = document.getElementById('profile-modal');
             if (!userProfile) {
-                modal.classList.remove('hidden');
-                modal.style.display = 'flex';
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.style.setProperty('display', 'flex', 'important');
+                }
             } else {
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
+                hideModal();
                 updateProfileUI();
             }
         }
@@ -521,116 +529,151 @@
         function openProfileModal() {
             const modal = document.getElementById('profile-modal');
             if (userProfile) {
-                document.getElementById('user-name').value = userProfile.name;
-                document.getElementById('user-role').value = userProfile.role;
-                document.getElementById('user-grade').value = userProfile.grade;
-                document.getElementById('user-classroom').value = userProfile.classroom;
+                const nameEl = document.getElementById('user-name');
+                const roleEl = document.getElementById('user-role');
+                const gradeEl = document.getElementById('user-grade');
+                const classroomEl = document.getElementById('user-classroom');
+
+                if (nameEl) nameEl.value = userProfile.name;
+                if (roleEl) roleEl.value = userProfile.role;
+                if (gradeEl) gradeEl.value = userProfile.grade;
+                if (classroomEl) classroomEl.value = userProfile.classroom;
             }
-            modal.classList.remove('hidden');
-            modal.style.display = 'flex';
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.style.setProperty('display', 'flex', 'important');
+            }
         }
 
         function saveProfile(e) {
             if (e) e.preventDefault();
+            try {
+                const nameEl = document.getElementById('user-name');
+                const roleEl = document.getElementById('user-role');
+                const gradeEl = document.getElementById('user-grade');
+                const classroomEl = document.getElementById('user-classroom');
 
-            const name = document.getElementById('user-name').value.trim();
-            const role = document.getElementById('user-role').value;
-            const grade = document.getElementById('user-grade').value;
-            const classroom = document.getElementById('user-classroom').value.trim();
+                const name = nameEl ? nameEl.value.trim() : 'Estudante';
+                const role = roleEl ? roleEl.value : 'aluno';
+                const grade = gradeEl ? gradeEl.value : '7º Ano';
+                const classroom = classroomEl ? classroomEl.value.trim() : 'Geral';
 
-            if (!name) return;
+                if (!name) {
+                    alert("Por favor, digite seu nome!");
+                    return;
+                }
 
-            userProfile = { name, role, grade, classroom };
-            localStorage.setItem('studyflow_v5_profile', JSON.stringify(userProfile));
+                userProfile = { name, role, grade, classroom };
+                localStorage.setItem('studyflow_v6_profile', JSON.stringify(userProfile));
 
-            const modal = document.getElementById('profile-modal');
-            modal.classList.add('hidden');
-            modal.style.display = 'none !important';
-            modal.setAttribute("style", "display: none !important;");
+                // ESCONDE O MODAL IMEDIATAMENTE
+                hideModal();
 
-            updateProfileUI();
-            switchTab('lobby');
+                updateProfileUI();
+                switchTab('lobby');
+            } catch (err) {
+                console.error("Erro ao salvar perfil:", err);
+                hideModal();
+            }
         }
 
         function updateProfileUI() {
-            if (!userProfile) return;
-            document.getElementById('welcome-title').textContent = `OLÁ, ${userProfile.name.toUpperCase()} 👋`;
-            document.getElementById('sub-welcome').textContent = `Perfil: ${userProfile.role.toUpperCase()} | Série: ${userProfile.grade} | Sala: ${userProfile.classroom}`;
-            document.getElementById('badge-role').textContent = userProfile.role.toUpperCase();
-            document.getElementById('user-display-name').textContent = userProfile.name;
+            try {
+                if (!userProfile) return;
+                
+                const titleEl = document.getElementById('welcome-title');
+                const subEl = document.getElementById('sub-welcome');
+                const badgeEl = document.getElementById('badge-role');
+                const userDispEl = document.getElementById('user-display-name');
 
-            calculateGradeAndStats();
-            loadBookPage();
+                if (titleEl) titleEl.textContent = `OLÁ, ${userProfile.name.toUpperCase()} 👋`;
+                if (subEl) subEl.textContent = `Perfil: ${userProfile.role.toUpperCase()} | Série: ${userProfile.grade} | Sala: ${userProfile.classroom}`;
+                if (badgeEl) badgeEl.textContent = userProfile.role.toUpperCase();
+                if (userDispEl) userDispEl.textContent = userProfile.name;
+
+                calculateGradeAndStats();
+                loadBookPage();
+            } catch (e) {
+                console.error("Erro em updateProfileUI:", e);
+            }
         }
 
         function toggleRoleFields() {
-            const role = document.getElementById('user-role').value;
-            const label = document.getElementById('classroom-label');
-            if (role === 'professor') {
-                label.textContent = "NOME DAS SALAS QUE IRÁ MINISTRAR AULA";
-            } else {
-                label.textContent = "NOME OU CÓDIGO DA(S) SALA(S) ONDE ESTUDA";
+            const roleEl = document.getElementById('user-role');
+            const labelEl = document.getElementById('classroom-label');
+            if (roleEl && labelEl) {
+                if (roleEl.value === 'professor') {
+                    labelEl.textContent = "NOME DAS SALAS QUE IRÁ MINISTRAR AULA";
+                } else {
+                    labelEl.textContent = "NOME OU CÓDIGO DA(S) SALA(S) ONDE ESTUDA";
+                }
             }
         }
 
         /* ================= CÁLCULO DA MÉDIA PELA IA MONITORADORA ================= */
         function calculateGradeAndStats() {
-            const keys = Object.keys(studentAnswers);
-            const total = keys.length;
-            let correct = 0;
+            try {
+                const keys = Object.keys(studentAnswers || {});
+                const total = keys.length;
+                let correct = 0;
 
-            keys.forEach(k => {
-                if (studentAnswers[k].isCorrect) correct++;
-            });
+                keys.forEach(k => {
+                    if (studentAnswers[k] && studentAnswers[k].isCorrect) correct++;
+                });
 
-            const wrong = total - correct;
-            let grade = 0.0;
+                const wrong = total - correct;
+                let grade = 0.0;
 
-            if (total > 0) {
-                grade = parseFloat(((correct / total) * 10).toFixed(1));
-            }
-
-            // Atualiza Interface de Notas
-            const headerBadgeVal = document.getElementById('header-grade-val');
-            const dashDisplay = document.getElementById('dashboard-grade-display');
-            const statusBox = document.getElementById('status-grade-box');
-
-            if (headerBadgeVal) headerBadgeVal.textContent = `Média: ${grade.toFixed(1)} / 10.0`;
-            if (dashDisplay) dashDisplay.textContent = `${grade.toFixed(1)} / 10.0`;
-
-            document.getElementById('stat-total').textContent = total;
-            document.getElementById('stat-correct').textContent = correct;
-            document.getElementById('stat-wrong').textContent = wrong;
-
-            const isPassed = grade >= 6.0;
-
-            if (statusBox) {
-                if (total === 0) {
-                    statusBox.className = "grade-badge-card grade-fail";
-                    statusBox.innerHTML = `<i class="fas fa-info-circle"></i> Status: PENDENTE (Nenhuma questão resolvida)`;
-                } else if (isPassed) {
-                    statusBox.className = "grade-badge-card grade-pass";
-                    statusBox.innerHTML = `<i class="fas fa-check-circle"></i> Status: APROVADO (Média >= 6.0)`;
-                } else {
-                    statusBox.className = "grade-badge-card grade-fail";
-                    statusBox.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Status: EM RECUPERAÇÃO (Média < 6.0)`;
+                if (total > 0) {
+                    grade = parseFloat(((correct / total) * 10).toFixed(1));
                 }
-            }
 
-            // Relatório de Monitoramento do Professor emitido pela IA
-            const report = document.getElementById('ai-teacher-report');
-            if (report) {
-                if (total === 0) {
-                    report.innerHTML = `[**IA Gemini 3.1 Pro**]: O aluno **${userProfile ? userProfile.name : 'Estudante'}** ainda não iniciou a resolução das questões A4. Aguardando dados.`;
-                } else {
-                    report.innerHTML = `
-                        [**IA Gemini 3.1 Pro Monitoring**]:<br>
-                        - **Aluno:** ${userProfile ? userProfile.name : 'Estudante'} (${userProfile ? userProfile.grade : ''})<br>
-                        - **Média Geral:** <strong>${grade.toFixed(1)}</strong> / 10.0 (Mínimo para aprovação: 6.0)<br>
-                        - **Aproveitamento:** ${((correct/total)*100).toFixed(0)}% de acertos em ${total} questões.<br>
-                        - **Parecer da IA:** ${isPassed ? 'O estudante apresenta excelente domínio dos conceitos e encontra-se APROVADO.' : 'O estudante necessita de reforço nos tópicos com erro para atingir a média mínima de 6.0.'}
-                    `;
+                const headerBadgeVal = document.getElementById('header-grade-val');
+                const dashDisplay = document.getElementById('dashboard-grade-display');
+                const statusBox = document.getElementById('status-grade-box');
+
+                if (headerBadgeVal) headerBadgeVal.textContent = `Média: ${grade.toFixed(1)} / 10.0`;
+                if (dashDisplay) dashDisplay.textContent = `${grade.toFixed(1)} / 10.0`;
+
+                const statTotal = document.getElementById('stat-total');
+                const statCorrect = document.getElementById('stat-correct');
+                const statWrong = document.getElementById('stat-wrong');
+
+                if (statTotal) statTotal.textContent = total;
+                if (statCorrect) statCorrect.textContent = correct;
+                if (statWrong) statWrong.textContent = wrong;
+
+                const isPassed = grade >= 6.0;
+
+                if (statusBox) {
+                    if (total === 0) {
+                        statusBox.className = "grade-badge-card grade-fail";
+                        statusBox.innerHTML = `<i class="fas fa-info-circle"></i> Status: PENDENTE (Nenhuma questão resolvida)`;
+                    } else if (isPassed) {
+                        statusBox.className = "grade-badge-card grade-pass";
+                        statusBox.innerHTML = `<i class="fas fa-check-circle"></i> Status: APROVADO (Média >= 6.0)`;
+                    } else {
+                        statusBox.className = "grade-badge-card grade-fail";
+                        statusBox.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Status: EM RECUPERAÇÃO (Média < 6.0)`;
+                    }
                 }
+
+                const report = document.getElementById('ai-teacher-report');
+                if (report) {
+                    if (total === 0) {
+                        report.innerHTML = `[**IA Gemini 3.1 Pro**]: O aluno **${userProfile ? userProfile.name : 'Estudante'}** ainda não iniciou a resolução das questões A4. Aguardando respostas.`;
+                    } else {
+                        report.innerHTML = `
+                            [**IA Gemini 3.1 Pro Monitoring**]:<br>
+                            - **Aluno:** ${userProfile ? userProfile.name : 'Estudante'} (${userProfile ? userProfile.grade : ''})<br>
+                            - **Média Geral:** <strong>${grade.toFixed(1)}</strong> / 10.0 (Mínimo para aprovação: 6.0)<br>
+                            - **Aproveitamento:** ${((correct/total)*100).toFixed(0)}% de acertos em ${total} questões.<br>
+                            - **Parecer Pedagógico:** ${isPassed ? 'O estudante apresenta excelente desempenho e está APROVADO.' : 'O estudante necessita de reforço para atingir a média 6.0.'}
+                        `;
+                    }
+                }
+            } catch (e) {
+                console.error("Erro ao calcular média:", e);
             }
         }
 
@@ -638,7 +681,6 @@
         function generateStandaloneQuestion(subject, page, bimestre, grade) {
             const qKey = `${subject}_b${bimestre}_p${page}_${grade}`;
 
-            // Banco de Questões Autônomas com Imagens e Enunciados Completos
             let qData = {
                 key: qKey,
                 title: `Questão Autônoma #${page} - ${subject.toUpperCase()}`,
@@ -661,23 +703,40 @@
                 expWrong: "Incorreto! A opção escolhida não condiz com a representação gráfica. A alternativa correta é a 'A', pois ilustra a interação e o equilíbrio direto."
             };
 
-            // Customizações por Matéria
             if (subject === 'geografia') {
-                qData.enunciado = `[Geografia - Questão ${page}]: A imagem abaixo ilustra a divisão regional do Brasil segundo o IBGE. Qual região destaca-se por possuir o maior número de estados federativos?`;
-                qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
-                    <rect x="10" y="10" width="280" height="140" fill="#eff6ff" stroke="#2563eb" stroke-width="2" rx="6"/>
-                    <path d="M 50 40 Q 150 20 220 50 Q 250 110 180 140 Q 80 130 50 40 Z" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
-                    <text x="110" y="85" fill="#15803d" font-weight="bold" font-size="14">Região Nordeste (9 Estados)</text>
-                </svg>`;
-                qData.options = [
-                    "Região Norte",
-                    "Região Nordeste",
-                    "Região Sudeste",
-                    "Região Sul"
-                ];
-                qData.correctIndex = 1;
-                qData.expRight = "Correto! A região Nordeste conta com 9 estados (AL, BA, CE, MA, PB, PE, PI, RN, SE), sendo a região com a maior quantidade de unidades federativas do Brasil.";
-                qData.expWrong = "Incorreto! A resposta correta é a opção 'Região Nordeste', que possui 9 estados no total.";
+                if (grade.includes("6º")) {
+                    qData.enunciado = `[Geografia 6º Ano - Questão ${page}]: A imagem abaixo representa a projeção do Globo Terrestre Político. Qual linha imaginária divide a Terra nos Hemisférios Norte e Sul?`;
+                    qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
+                        <circle cx="150" cy="80" r="60" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+                        <line x1="90" y1="80" x2="210" y2="80" stroke="#dc2626" stroke-width="2"/>
+                        <text x="110" y="75" fill="#dc2626" font-weight="bold" font-size="11">Linha do Equador (0°)</text>
+                    </svg>`;
+                    qData.options = [
+                        "Meridiano de Greenwich",
+                        "Linha do Equador",
+                        "Trópico de Câncer",
+                        "Trópico de Capricórnio"
+                    ];
+                    qData.correctIndex = 1;
+                    qData.expRight = "Correto! A Linha do Equador é o paralelo principal de latitude 0° que divide o planeta nos Hemisférios Norte e Sul.";
+                    qData.expWrong = "Incorreto! A resposta correta é a 'Linha do Equador'. O Meridiano de Greenwich divide a Terra em Leste e Oeste.";
+                } else {
+                    qData.enunciado = `[Geografia - Questão ${page}]: A imagem abaixo ilustra a divisão regional do Brasil segundo o IBGE. Qual região destaca-se por possuir o maior número de estados federativos?`;
+                    qData.imageSVG = `<svg width="100%" height="160" viewBox="0 0 300 160">
+                        <rect x="10" y="10" width="280" height="140" fill="#eff6ff" stroke="#2563eb" stroke-width="2" rx="6"/>
+                        <path d="M 50 40 Q 150 20 220 50 Q 250 110 180 140 Q 80 130 50 40 Z" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+                        <text x="110" y="85" fill="#15803d" font-weight="bold" font-size="14">Região Nordeste (9 Estados)</text>
+                    </svg>`;
+                    qData.options = [
+                        "Região Norte",
+                        "Região Nordeste",
+                        "Região Sudeste",
+                        "Região Sul"
+                    ];
+                    qData.correctIndex = 1;
+                    qData.expRight = "Correto! A região Nordeste conta com 9 estados (AL, BA, CE, MA, PB, PE, PI, RN, SE), sendo a região com a maior quantidade de unidades federativas do Brasil.";
+                    qData.expWrong = "Incorreto! A resposta correta é a opção 'Região Nordeste', que possui 9 estados no total.";
+                }
             } else if (subject === 'matematica') {
                 const valA = page * 3;
                 const valB = 10;
@@ -704,132 +763,145 @@
 
         /* ================= SALVAMENTO DE RESPOSTAS DO ALUNO ================= */
         function selectAnswer(qKey, chosenIdx, correctIdx, expRight, expWrong) {
-            const isCorrect = (chosenIdx === correctIdx);
+            try {
+                const isCorrect = (chosenIdx === correctIdx);
 
-            // Salva instantaneamente no localStorage
-            studentAnswers[qKey] = {
-                chosenIdx,
-                correctIdx,
-                isCorrect,
-                timestamp: Date.now()
-            };
+                studentAnswers[qKey] = {
+                    chosenIdx,
+                    correctIdx,
+                    isCorrect,
+                    timestamp: Date.now()
+                };
 
-            localStorage.setItem('studyflow_student_answers', JSON.stringify(studentAnswers));
+                localStorage.setItem('studyflow_student_answers_v6', JSON.stringify(studentAnswers));
 
-            // Atualiza UI da questão
-            const qBox = document.getElementById(`qbox-${qKey}`);
-            if (qBox) {
-                const btns = qBox.querySelectorAll('.quiz-opt-btn');
-                btns.forEach((btn, idx) => {
-                    btn.disabled = true;
-                    if (idx === correctIdx) btn.classList.add('correct-choice');
-                    if (idx === chosenIdx && !isCorrect) btn.classList.add('wrong-choice');
-                });
+                const qBox = document.getElementById(`qbox-${qKey}`);
+                if (qBox) {
+                    const btns = qBox.querySelectorAll('.quiz-opt-btn');
+                    btns.forEach((btn, idx) => {
+                        btn.disabled = true;
+                        if (idx === correctIdx) btn.classList.add('correct-choice');
+                        if (idx === chosenIdx && !isCorrect) btn.classList.add('wrong-choice');
+                    });
 
-                const expCard = document.getElementById(`exp-${qKey}`);
-                if (expCard) {
-                    expCard.style.display = 'block';
-                    if (isCorrect) {
-                        expCard.className = "explanation-card correct";
-                        expCard.innerHTML = `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${expRight}`;
-                    } else {
-                        expCard.className = "explanation-card wrong";
-                        expCard.innerHTML = `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${expWrong}`;
+                    const expCard = document.getElementById(`exp-${qKey}`);
+                    if (expCard) {
+                        expCard.style.display = 'block';
+                        if (isCorrect) {
+                            expCard.className = "explanation-card correct";
+                            expCard.innerHTML = `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${expRight}`;
+                        } else {
+                            expCard.className = "explanation-card wrong";
+                            expCard.innerHTML = `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${expWrong}`;
+                        }
                     }
                 }
-            }
 
-            // Recalcula média instantaneamente
-            calculateGradeAndStats();
+                calculateGradeAndStats();
+            } catch (err) {
+                console.error("Erro ao salvar resposta:", err);
+            }
         }
 
         /* ================= RENDERIZAÇÃO DO LIVRO A4 ================= */
         function loadBookPage() {
-            const subject = document.getElementById('book-subject').value;
-            const bimestre = document.getElementById('book-bimestre').value;
-            const grade = userProfile ? userProfile.grade : "7º Ano";
-            const container = document.getElementById('a4-render');
+            try {
+                const subjEl = document.getElementById('book-subject');
+                const bimEl = document.getElementById('book-bimestre');
 
-            if (currentPage === 0) {
-                // RENDERIZA A CAPA DO LIVRO
-                document.getElementById('page-display').textContent = `Capa do Livro (${bimestre}º Bimestre)`;
-                container.innerHTML = `
-                    <div class="book-cover">
-                        <div>
-                            <span class="gemini-badge">Apostila Oficial A4</span>
-                            <h1 style="font-family: 'Orbitron'; font-size: 2.2rem; color: var(--primary); margin-top: 1rem;">${subject.toUpperCase()}</h1>
-                            <h2 style="font-size: 1.2rem; color: var(--text-muted); margin-top: 0.5rem;">${subject.toUpperCase()} - ${bimestre}º BIMESTRE</h2>
+                const subject = subjEl ? subjEl.value : 'geografia';
+                const bimestre = bimEl ? bimEl.value : '1';
+                const grade = userProfile ? userProfile.grade : "7º Ano";
+                const container = document.getElementById('a4-render');
+
+                if (!container) return;
+
+                if (currentPage === 0) {
+                    // CAPA DO LIVRO
+                    const pageDisp = document.getElementById('page-display');
+                    if (pageDisp) pageDisp.textContent = `Capa do Livro (${bimestre}º Bimestre)`;
+
+                    container.innerHTML = `
+                        <div class="book-cover">
+                            <div>
+                                <span class="gemini-badge">Apostila Oficial A4</span>
+                                <h1 style="font-family: 'Orbitron'; font-size: 2.2rem; color: var(--primary); margin-top: 1rem;">${subject.toUpperCase()}</h1>
+                                <h2 style="font-size: 1.2rem; color: var(--text-muted); margin-top: 0.5rem;">${subject.toUpperCase()} - ${bimestre}º BIMESTRE</h2>
+                            </div>
+
+                            <div>
+                                <svg width="100%" height="160" viewBox="0 0 300 160">
+                                    <circle cx="150" cy="80" r="50" fill="none" stroke="#2563eb" stroke-width="4"/>
+                                    <text x="100" y="85" fill="#2563eb" font-weight="bold">${subject.toUpperCase()}</text>
+                                </svg>
+                                <div style="margin-top: 1.5rem; padding: 1rem; background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px;">
+                                    <strong>SÉRIE: ${grade.toUpperCase()}</strong><br>
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">EDIÇÃO DE 65 PÁGINAS // ${bimestre}º BIMESTRE</span>
+                                </div>
+                            </div>
+
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">
+                                Plataforma StudyFlow 2050 - Todos os direitos reservados
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // PÁGINA COM QUESTÃO AUTÓNOMA A4
+                    const pageDisp = document.getElementById('page-display');
+                    if (pageDisp) pageDisp.textContent = `Página ${currentPage} de ${totalPages}`;
+                    
+                    const qData = generateStandaloneQuestion(subject, currentPage, bimestre, grade);
+                    const savedAns = studentAnswers[qData.key];
+
+                    container.innerHTML = `
+                        <div class="a4-header">
+                            <div>
+                                <div style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--primary);">${subject.toUpperCase()} // QUESTÃO AUTÓNOMA</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Módulo do ${bimestre}º Bimestre | ${grade}</div>
+                            </div>
+                            <div style="font-family: 'Roboto Mono'; font-weight: bold;">PÁG ${currentPage} / ${totalPages}</div>
                         </div>
 
-                        <div>
-                            <svg width="100%" height="160" viewBox="0 0 300 160">
-                                <circle cx="150" cy="80" r="50" fill="none" stroke="#2563eb" stroke-width="4"/>
-                                <text x="100" y="85" fill="#2563eb" font-weight="bold">${subject.toUpperCase()}</text>
-                            </svg>
-                            <div style="margin-top: 1.5rem; padding: 1rem; background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px;">
-                                <strong>SÉRIE: ${grade.toUpperCase()}</strong><br>
-                                <span style="color: var(--text-muted); font-size: 0.9rem;">EDIÇÃO DE 65 PÁGINAS // ${bimestre}º BIMESTRE</span>
+                        <div class="a4-body">
+                            <div class="standalone-question-box" id="qbox-${qData.key}">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;"><i class="fas fa-question-circle"></i> ${qData.title}</h4>
+                                <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 12px; font-weight: 600;">${qData.enunciado}</p>
+
+                                <div class="graphic-area" style="margin-bottom: 15px;">
+                                    ${qData.imageSVG}
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    ${qData.options.map((opt, idx) => {
+                                        let btnClass = "quiz-opt-btn";
+                                        let disabledAttr = "";
+
+                                        if (savedAns) {
+                                            disabledAttr = "disabled";
+                                            if (idx === qData.correctIndex) btnClass += " correct-choice";
+                                            if (idx === savedAns.chosenIdx && !savedAns.isCorrect) btnClass += " wrong-choice";
+                                        }
+
+                                        return `<button class="${btnClass}" ${disabledAttr} onclick="selectAnswer('${qData.key}', ${idx}, ${qData.correctIndex}, '${qData.expRight.replace(/'/g, "\\'")}', '${qData.expWrong.replace(/'/g, "\\')}')">
+                                            ${String.fromCharCode(65 + idx)}) ${opt}
+                                        </button>`;
+                                    }).join('')}
+                                </div>
+
+                                <div class="explanation-card ${savedAns ? (savedAns.isCorrect ? 'correct' : 'wrong') : ''}" id="exp-${qData.key}" style="display: ${savedAns ? 'block' : 'none'};">
+                                    ${savedAns ? (savedAns.isCorrect ? `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${qData.expRight}` : `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${qData.expWrong}`) : ''}
+                                </div>
                             </div>
                         </div>
 
-                        <div style="font-size: 0.85rem; color: var(--text-muted);">
-                            Plataforma StudyFlow 2050 - Todos os direitos reservados
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 1.5rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+                            <span>StudyFlow 2050 - Material Didático Digital</span>
+                            <span>Página ${currentPage} / ${totalPages}</span>
                         </div>
-                    </div>
-                `;
-            } else {
-                // RENDERIZA QUESTÃO AUTÓNOMA DA PÁGINA A4
-                document.getElementById('page-display').textContent = `Página ${currentPage} de ${totalPages}`;
-                
-                const qData = generateStandaloneQuestion(subject, currentPage, bimestre, grade);
-                const savedAns = studentAnswers[qData.key];
-
-                container.innerHTML = `
-                    <div class="a4-header">
-                        <div>
-                            <div style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--primary);">${subject.toUpperCase()} // QUESTÃO AUTÓNOMA</div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted);">Módulo do ${bimestre}º Bimestre | ${grade}</div>
-                        </div>
-                        <div style="font-family: 'Roboto Mono'; font-weight: bold;">PÁG ${currentPage} / ${totalPages}</div>
-                    </div>
-
-                    <div class="a4-body">
-                        <div class="standalone-question-box" id="qbox-${qData.key}">
-                            <h4 style="color: var(--primary); margin-bottom: 10px;"><i class="fas fa-question-circle"></i> ${qData.title}</h4>
-                            <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 12px; font-weight: 600;">${qData.enunciado}</p>
-
-                            <div class="graphic-area" style="margin-bottom: 15px;">
-                                ${qData.imageSVG}
-                            </div>
-
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                ${qData.options.map((opt, idx) => {
-                                    let btnClass = "quiz-opt-btn";
-                                    let disabledAttr = "";
-
-                                    if (savedAns) {
-                                        disabledAttr = "disabled";
-                                        if (idx === qData.correctIndex) btnClass += " correct-choice";
-                                        if (idx === savedAns.chosenIdx && !savedAns.isCorrect) btnClass += " wrong-choice";
-                                    }
-
-                                    return `<button class="${btnClass}" ${disabledAttr} onclick="selectAnswer('${qData.key}', ${idx}, ${qData.correctIndex}, '${qData.expRight.replace(/'/g, "\\'")}', '${qData.expWrong.replace(/'/g, "\\')}')">
-                                        ${String.fromCharCode(65 + idx)}) ${opt}
-                                    </button>`;
-                                }).join('')}
-                            </div>
-
-                            <div class="explanation-card ${savedAns ? (savedAns.isCorrect ? 'correct' : 'wrong') : ''}" id="exp-${qData.key}" style="display: ${savedAns ? 'block' : 'none'};">
-                                ${savedAns ? (savedAns.isCorrect ? `<i class="fas fa-check-circle"></i> <strong>RESPOSTA CORRETA!</strong><br>${qData.expRight}` : `<i class="fas fa-times-circle"></i> <strong>RESPOSTA INCORRETA!</strong><br>${qData.expWrong}`) : ''}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 1.5rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
-                        <span>StudyFlow 2050 - Material Didático Digital</span>
-                        <span>Página ${currentPage} / ${totalPages}</span>
-                    </div>
-                `;
+                    `;
+                }
+            } catch (e) {
+                console.error("Erro em loadBookPage:", e);
             }
         }
 
@@ -848,7 +920,8 @@
                 if (section) section.classList.add('hidden');
             });
 
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.classList.remove('hidden');
 
             if (el) {
                 document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
@@ -861,16 +934,16 @@
         /* ================= GEMINI 3.1 PRO (CHAT) ================= */
         function sendPromptIA() {
             const input = document.getElementById('ia-prompt');
-            const prompt = input.value.trim();
+            const prompt = input ? input.value.trim() : '';
             const logs = document.getElementById('chat-logs');
 
-            if (!prompt) return;
+            if (!prompt || !logs) return;
 
             logs.innerHTML += `<div class="chat-msg user">[VOCÊ]: ${prompt}</div>`;
-            input.value = '';
+            if (input) input.value = '';
 
             setTimeout(() => {
-                let response = `[**Gemini 3.1 Pro**]: Analisei sua solicitação ("${prompt}"). Sua média atual é de **${(Object.keys(studentAnswers).length > 0 ? ((Object.values(studentAnswers).filter(a=>a.isCorrect).length / Object.keys(studentAnswers).length)*10).toFixed(1) : '0.0')} / 10.0**. Continue resolvendo os exercícios!`;
+                let response = `[**Gemini 3.1 Pro**]: Analisei sua solicitação ("${prompt}"). Sua média atual calculada é de **${(Object.keys(studentAnswers).length > 0 ? ((Object.values(studentAnswers).filter(a=>a.isCorrect).length / Object.keys(studentAnswers).length)*10).toFixed(1) : '0.0')} / 10.0**. Continue praticando no módulo de livros!`;
 
                 logs.innerHTML += `<div class="chat-msg ia">${response}</div>`;
                 logs.scrollTop = logs.scrollHeight;
@@ -882,29 +955,38 @@
         async function startCamera() {
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                document.getElementById('live-video').srcObject = stream;
-                document.getElementById('live-status').textContent = "🟢 TRANSMISSÃO AO VIVO ATIVA";
-                document.getElementById('live-status').style.background = "rgba(22, 163, 74, 0.8)";
+                const video = document.getElementById('live-video');
+                const status = document.getElementById('live-status');
+                if (video) video.srcObject = stream;
+                if (status) {
+                    status.textContent = "🟢 TRANSMISSÃO AO VIVO ATIVA";
+                    status.style.background = "rgba(22, 163, 74, 0.8)";
+                }
             } catch (err) {
-                alert("Permissão para câmera/microfone negada ou indisponível!");
+                alert("Permissão para câmera/microfone negada ou dispositivo indisponível!");
             }
         }
 
         function stopCamera() {
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
-                document.getElementById('live-video').srcObject = null;
-                document.getElementById('live-status').textContent = "🔴 CÂMERA DESLIGADA";
-                document.getElementById('live-status').style.background = "rgba(0,0,0,0.6)";
+                const video = document.getElementById('live-video');
+                const status = document.getElementById('live-status');
+                if (video) video.srcObject = null;
+                if (status) {
+                    status.textContent = "🔴 CÂMERA DESLIGADA";
+                    status.style.background = "rgba(0,0,0,0.6)";
+                }
             }
         }
 
         /* ================= PESQUISA GOOGLE ================= */
         function runGoogleSearch() {
-            const q = document.getElementById('google-query').value.trim();
+            const qEl = document.getElementById('google-query');
+            const q = qEl ? qEl.value.trim() : '';
             const box = document.getElementById('google-results-box');
 
-            if (!q) return;
+            if (!q || !box) return;
 
             box.innerHTML = `
                 <div style="margin-bottom: 10px;">
@@ -927,40 +1009,44 @@
 
         /* ================= LOUSA DIGITAL (CANVAS) ================= */
         const canvas = document.getElementById('math-canvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas ? canvas.getContext('2d') : null;
         let isDrawing = false;
         let currentColor = '#000000';
 
         function initCanvas() {
-            if (!canvas.parentElement) return;
+            if (!canvas || !canvas.parentElement) return;
             canvas.width = canvas.parentElement.clientWidth - 10;
             canvas.height = 280;
-            ctx.strokeStyle = currentColor;
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
+            if (ctx) {
+                ctx.strokeStyle = currentColor;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+            }
         }
 
-        function setCanvasColor(color) { currentColor = color; ctx.strokeStyle = color; }
-        function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+        function setCanvasColor(color) { currentColor = color; if (ctx) ctx.strokeStyle = color; }
+        function clearCanvas() { if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
         function startDraw(e) { isDrawing = true; draw(e); }
-        function stopDraw() { isDrawing = false; ctx.beginPath(); }
+        function stopDraw() { isDrawing = false; if (ctx) ctx.beginPath(); }
         function draw(e) {
-            if (!isDrawing) return;
+            if (!isDrawing || !ctx || !canvas) return;
             const rect = canvas.getBoundingClientRect();
             const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
             const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
             ctx.lineTo(x, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y);
         }
 
-        canvas.addEventListener('mousedown', startDraw);
-        canvas.addEventListener('mouseup', stopDraw);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchstart', startDraw);
-        canvas.addEventListener('touchend', stopDraw);
-        canvas.addEventListener('touchmove', draw);
+        if (canvas) {
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('touchstart', startDraw);
+            canvas.addEventListener('touchend', stopDraw);
+            canvas.addEventListener('touchmove', draw);
+        }
 
-        /* INICIALIZAÇÃO */
+        /* INICIALIZAÇÃO SEGURA DA PÁGINA */
         window.addEventListener('DOMContentLoaded', () => {
             checkProfile();
         });
