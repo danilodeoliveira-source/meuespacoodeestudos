@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Espaço de Estudos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cabeçalho personalizável -->
+        <header>
+            <h1 id="titulo-usuario">Meu Espaço de Estudos</h1>
+            <p>Organize sua rotina e personalize seu ambiente.</p>
+        </header>
+
+        <!-- Seção de Personalização -->
+        <section class="card">
+            <h2>Personalize seu Painel</h2>
+            <div class="input-group">
+                <label for="input-nome">Seu Nome / Título:</label>
+                <input type="text" id="input-nome" placeholder="Digite seu nome...">
+            </div>
+            
+            <div class="input-group">
+                <label for="input-cor">Cor de Fundo do Painel:</label>
+                <input type="color" id="input-cor" value="#ffffff">
+            </div>
+            
+            <button id="btn-salvar">Salvar Personalização</button>
+        </section>
+
+        <!-- Bloco de Notas / Tarefas Rápidas -->
+        <section class="card">
+            <h2>O que estudar hoje?</h2>
+            <textarea id="bloco-notas" placeholder="Escreva suas tarefas de hoje aqui... Ela fica salva automaticamente!"></textarea>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
